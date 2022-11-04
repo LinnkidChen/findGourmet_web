@@ -23,3 +23,4 @@ class Config(object):
     USERS_PER_PAGE = 10
     COMMENTS_PER_PAGE = 10
     MESSAGES_PER_PAGE = 10
+    10
