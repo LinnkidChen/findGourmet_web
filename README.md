@@ -11,4 +11,6 @@
 
 接口文档：
 
-<https://www.yuque.com/g/zhimingzhimao/ltxdad/olvhdo/collaborator/join?token=iIHPDs9TLUe0EgtK&goto=%2Fzhimingzhimao%2Fltxdad%2Folvhdo%2Fedit>#
+https://www.yuque.com/zhimingzhimao/ltxdad/olvhdo/edit
+
+后端参考：https://github.com/wangy8961/flask-vuejs-madblog
