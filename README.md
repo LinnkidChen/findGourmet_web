@@ -13,4 +13,3 @@
 
 https://www.yuque.com/zhimingzhimao/ltxdad/olvhdo/edit
 
-后端参考：https://github.com/wangy8961/flask-vuejs-madblog
