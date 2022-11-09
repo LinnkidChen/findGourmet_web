@@ -39,11 +39,15 @@ def get_token():
 @api.route('user/login/',methods=['POST'])
 def user_login():
     user_json=request.get_json()
-    
+    # print(user_json)
     user=User.query.filter_by(username=user_json.get('username').lower()).first()
     if user is not None and user.verify_password(user_json.get('password')):
-        return bad_request("invalid username or password")
-    return jsonify({'token': g.current_user.generate_auth_token(
+           login_user()
+           return jsonify({'token': g.current_user.generate_auth_token(
         expiration=3600), 'expiration': 3600})
 
+    else:
+        return bad_request("invalid username or password")
+        
+ 
     

@@ -13,5 +13,5 @@ migrate = Migrate(app, db)
 # save time to set User as FindG.user when operating database commandshell
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, User=User, Follow=Follow, Role=Role,
-                Permission=Permission, Post=Post, Comment=Comment)
+    return dict(db=db, User=User,  Role=Role,
+                Permission=Permission)
