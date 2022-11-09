@@ -82,12 +82,25 @@ class Follow(db.Model):
 
 
 class User(UserMixin, db.Model):
+    '''
+    初始化方法：User(username="1",role_str="Admin"/"User")
+    '''
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), unique=True, index=True)
-    username = db.Column(db.String(64), unique=True, index=True)
+    username = db.Column(db.Unicode(64), unique=True, index=True)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(128))
+    realName = db.Column(db.Unicode(64))
+    documentTypeName = db.Column(db.Unicode(64))
+    documentNumber = db.Column(db.String(32))
+    phoneNumber = db.Column(db.String(16))
+    level = db.Column(db.Integer)
+    introduce = db.Column(db.Text)
+    cityName = db.Column(db.Unicode(64))
+    createTime = db.Column(db.DateTime)
+    modifyTime=db.Column(db.DateTime)
+    role_str=db.Column(db.String(8))
     # confirmed = db.Column(db.Boolean, default=False)
     # name = db.Column(db.String(64))
     # location = db.Column(db.String(64))
