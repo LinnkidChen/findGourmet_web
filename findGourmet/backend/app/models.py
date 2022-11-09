@@ -119,7 +119,7 @@ class User(UserMixin, db.Model):
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
-            if self.role_str is 'Admin':#set to admin
+            if self.role_str == 'Admin':#set to admin
                 self.role = Role.query.filter_by(name='Administrator').first()
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
@@ -139,8 +139,9 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def generate_confirmation_token(self, expiration=3600):
-        s = Serializer(current_app.config['SECRET_KEY'], expiration)
-        return s.dumps({'confirm': self.id}).decode('utf-8')
+        s = Serializer(current_app.config['SECRET_KEY'])
+        return_value=s.dumps({'confirm': self.id}).decode('utf-8')
+        return return_value
 
     # def confirm(self, token):
     #     s = Serializer(current_app.config['SECRET_KEY'])
@@ -255,16 +256,16 @@ class User(UserMixin, db.Model):
         }
         return json_user
 
-    def generate_auth_token(self, expiration):
-        s = Serializer(current_app.config['SECRET_KEY'],
-                       expires_in=expiration)
-        return s.dumps({'id': self.id}).decode('utf-8')
+    def generate_auth_token(self):
+        s = Serializer(current_app.config['SECRET_KEY'],)
+        return_value=s.dumps({'id': self.id})
 
+        return return_value
     @staticmethod
-    def verify_auth_token(token):
+    def verify_auth_token(token,expiration=3600):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
-            data = s.loads(token)
+            data = s.loads(token,max_age=expiration)
         except:
             return None
         return User.query.get(data['id'])
