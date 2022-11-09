@@ -10,8 +10,27 @@ flask run之前务必设置：
 
 数据库中的数据
 
-username :john | password: mynameisJohn | is admin
-username :marry | password:mynameisMarry | not admin
-Postman 使用方法：https://blog.csdn.net/legend818/article/details/117364048
+| username | password | usertype
+|---|---|---|
+| john | mynameisJohn | is admin | 
+| marry | mynameisMarry | not admin |
+| 一个中文名字 |  | not admin |
+| 一个中文管理员用户 |  | admin |
+
+为用户添加密码的方法（shell）
+
+```
+flask shell
+
+user=User.query.filter_by(username="target_username").first()
+user.password="Target_Password"
+
+db.session.commit()
+```
+
+关于model中时间的用法
+<https://blog.csdn.net/aobian2884/article/details/101404395>
+
+Postman 使用方法：<https://blog.csdn.net/legend818/article/details/117364048>
 
 如果发现奇怪的403报错，可能是端口被占用，使用-p 8888更换大一些的端口
