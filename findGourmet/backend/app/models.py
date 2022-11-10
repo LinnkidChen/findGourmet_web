@@ -2,6 +2,7 @@ from datetime import datetime
 import hashlib
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import URLSafeTimedSerializer as Serializer
+
 # Rich Text requirement
 # from markdown import markdown
 # import bleach
@@ -10,7 +11,7 @@ from flask_login import UserMixin, AnonymousUserMixin
 from app.exceptions import ValidationError
 from . import db, login_manager
 
-#TODO need modification,copied from flasky
+# TODO need modification,copied from flasky
 class Permission:
     FOLLOW = 1
     COMMENT = 2
@@ -20,12 +21,12 @@ class Permission:
 
 
 class Role(db.Model):
-    __tablename__ = 'roles'
+    __tablename__ = "roles"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
     default = db.Column(db.Boolean, default=False, index=True)
     permissions = db.Column(db.Integer)
-    users = db.relationship('User', backref='role', lazy='dynamic')
+    users = db.relationship("User", backref="role", lazy="dynamic")
 
     def __init__(self, **kwargs):
         super(Role, self).__init__(**kwargs)
@@ -69,27 +70,26 @@ class Role(db.Model):
         return self.permissions & perm == perm
 
     def __repr__(self):
-        return '<Role %r>' % self.name
+        return "<Role %r>" % self.name
 
 
 class Follow(db.Model):
-    __tablename__ = 'follows'
-    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
-                            primary_key=True)
-    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),
-                            primary_key=True)
+    __tablename__ = "follows"
+    follower_id = db.Column(db.Integer, db.ForeignKey("users.id"), primary_key=True)
+    followed_id = db.Column(db.Integer, db.ForeignKey("users.id"), primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 
 class User(UserMixin, db.Model):
-    '''
+    """
     初始化方法：User(username="1",role_str="Admin"/"User")
-    '''
-    __tablename__ = 'users'
+    """
+
+    __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), unique=True, index=True)
     username = db.Column(db.Unicode(64), unique=True, index=True)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    role_id = db.Column(db.Integer, db.ForeignKey("roles.id"))
     password_hash = db.Column(db.String(128))
     realName = db.Column(db.Unicode(64))
     documentTypeName = db.Column(db.Unicode(64))
@@ -98,9 +98,9 @@ class User(UserMixin, db.Model):
     level = db.Column(db.Integer)
     introduce = db.Column(db.Text)
     cityName = db.Column(db.Unicode(64))
-    createTime = db.Column(db.DateTime,default=datetime.now)
-    modifyTime=db.Column(db.DateTime,default=datetime.now,onupdate=datetime.now)
-    role_str=db.Column(db.String(8))
+    createTime = db.Column(db.DateTime, default=datetime.now)
+    modifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+    role_str = db.Column(db.String(8))
     # confirmed = db.Column(db.Boolean, default=False)
     # name = db.Column(db.String(64))
     # location = db.Column(db.String(64))
@@ -132,8 +132,8 @@ class User(UserMixin, db.Model):
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
-            if self.role_str == 'Admin':#set to admin
-                self.role = Role.query.filter_by(name='Administrator').first()
+            if self.role_str == "Admin":  # set to admin
+                self.role = Role.query.filter_by(name="Administrator").first()
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
         # if self.email is not None and self.avatar_hash is None:
@@ -142,7 +142,7 @@ class User(UserMixin, db.Model):
 
     @property
     def password(self):
-        raise AttributeError('password is not a readable attribute')
+        raise AttributeError("password is not a readable attribute")
 
     @password.setter
     def password(self, password):
@@ -152,8 +152,8 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def generate_confirmation_token(self, expiration=3600):
-        s = Serializer(current_app.config['SECRET_KEY'])
-        return_value=s.dumps({'confirm': self.id}).decode('utf-8')
+        s = Serializer(current_app.config["SECRET_KEY"])
+        return_value = s.dumps({"confirm": self.id}).decode("utf-8")
         return return_value
 
     # def confirm(self, token):
@@ -259,32 +259,53 @@ class User(UserMixin, db.Model):
     def to_json(self):
         json_user = {
             # 'url': url_for('api.get_user', id=self.id),
-            'username': self.username,
-            'member_since': self.member_since,
-            'last_seen': self.last_seen,
+            "id": self.id,
+            "username": self.username,
+            "userType": self.role_str,
+            "documentTypeName": self.documentTypeName,
+            "documentNumber": self.documentNumber,
+            "phoneNumber": self.phoneNumber,
+            "level": self.role_id,
+            "introduce": self.introduce,
+            "cityName": self.cityName,
+            "createTime": self.createTime,
+            "modifyTime": self.modifyTime
             # 'posts_url': url_for('api.get_user_posts', id=self.id),
             # 'followed_posts_url': url_for('api.get_user_followed_posts',
-                                        #   id=self.id),
+            #   id=self.id),
             # 'post_count': self.posts.count()
         }
         return json_user
 
     def generate_auth_token(self):
-        s = Serializer(current_app.config['SECRET_KEY'],)
-        return_value=s.dumps({'id': self.id})
+        s = Serializer(
+            current_app.config["SECRET_KEY"],
+        )
+        return_value = s.dumps({"id": self.id})
 
         return return_value
+
     @staticmethod
-    def verify_auth_token(token,expiration=3600):
-        s = Serializer(current_app.config['SECRET_KEY'])
+    def verify_auth_token(token, expiration=3600):
+        s = Serializer(current_app.config["SECRET_KEY"])
         try:
-            data = s.loads(token,max_age=expiration)
+            data = s.loads(token, max_age=expiration)
         except:
             return None
-        return User.query.get(data['id'])
+        return User.query.get(data["id"])
+
+    def from_js(json_post):
+        username = json_post.get("username")
+        password = json_post.get("password")
+        userType = json_post.get("username")
+        username = json_post.get("username")
+        username = json_post.get("username")
+        username = json_post.get("username")
+        username = json_post.get("username")
+        username = json_post.get("username")
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return "<User %r>" % self.username
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -293,6 +314,7 @@ class AnonymousUser(AnonymousUserMixin):
 
     def is_administrator(self):
         return False
+
 
 login_manager.anonymous_user = AnonymousUser
 
@@ -332,12 +354,12 @@ def load_user(user_id):
 #         }
 #         return json_post
 
-    # @staticmethod
-    # def from_json(json_post):
-    #     body = json_post.get('body')
-    #     if body is None or body == '':
-    #         raise ValidationError('post does not have a body')
-    #     return Post(body=body)
+# @staticmethod
+# def from_json(json_post):
+#     body = json_post.get('body')
+#     if body is None or body == '':
+#         raise ValidationError('post does not have a body')
+#     return Post(body=body)
 
 
 # db.event.listen(Post.body, 'set', Post.on_changed_body)
