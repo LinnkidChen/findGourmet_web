@@ -297,12 +297,29 @@ class User(UserMixin, db.Model):
     def from_js(json_post):
         username = json_post.get("username")
         password = json_post.get("password")
-        userType = json_post.get("username")
-        username = json_post.get("username")
-        username = json_post.get("username")
-        username = json_post.get("username")
-        username = json_post.get("username")
-        username = json_post.get("username")
+        role_str = json_post.get("role")
+        realName = json_post.get("realName")
+        documentTypeName = json_post.get("documentTypeName")
+        documentNumber = json_post.get("documentNumber")
+        phoneNumber = json_post.get("phoneNumber")
+        role_id = json_post.get("level")
+        introduce = json_post.get("introduce")
+        cityName = json_post.get("cityName")
+        role_id = json_post.get("level")
+
+        user = User(
+            username=username,
+            role_str=role_str,
+            realName=realName,
+            documentNumber=documentNumber,
+            documentTypeName=documentTypeName,
+            phoneNumber=phoneNumber,
+            role_id=role_id,
+            introduce=introduce,
+            cityName=cityName,
+        )
+        user.password = password
+        return user
 
     def __repr__(self):
         return "<User %r>" % self.username
