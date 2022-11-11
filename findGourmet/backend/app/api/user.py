@@ -141,3 +141,14 @@ def getByUserName(id):
 
 # @api.route('user/register/',methods=['POST'])
 # def user_reg():
+
+# paginate usage
+# # >>> User.query.paginate(page=1,per_page=2,error_out=False)
+# # <flask_sqlalchemy.pagination.QueryPagination object at 0x1061fef10>
+# # >>> User.query.paginate(page=1,per_page=2,error_out=False)
+# # <flask_sqlalchemy.pagination.QueryPagination object at 0x1061999a0>
+# # >>> User.query.paginate(page=1,per_page=2,error_out=False).page
+# # 1
+# # >>> User.query.paginate(page=1,per_page=2,error_out=False).items
+# [<User 'john'>, <User 'marry'>]
+# >>>
