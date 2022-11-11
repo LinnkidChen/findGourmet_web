@@ -286,10 +286,11 @@ class User(UserMixin, db.Model):
         return return_value
 
     @staticmethod
-    def verify_auth_token(token, expiration=3600):
+    def verify_auth_token(token):
         s = Serializer(current_app.config["SECRET_KEY"])
         try:
-            data = s.loads(token, max_age=expiration)
+            print(current_app.config["TOKEN_EXPIRE"])
+            data = s.loads(token, max_age=current_app.config["TOKEN_EXPIRE"])
         except:
             return None
         return User.query.get(data["id"])

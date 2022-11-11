@@ -1,6 +1,7 @@
-from flask import g, jsonify, request, g
+from flask import g, jsonify, request, g, current_app
 from flask_httpauth import HTTPBasicAuth
 from ..models import User, Role
+
 from . import api
 from .errors import unauthorized, forbidden, bad_request
 
@@ -20,7 +21,7 @@ def verify_password(username_or_token, password):
     if username_or_token == "":
         return False
     if password == "":
-        g.current_user = User.verify_auth_token(username_or_token, expiration=3600)
+        g.current_user = User.verify_auth_token(username_or_token)
         g.token_used = True
         return g.current_user is not None
     user = User.query.filter_by(username=username_or_token.lower()).first()
@@ -36,7 +37,12 @@ def verify_password(username_or_token, password):
 def get_token():
     if g.current_user.is_anonymous or g.token_used:
         return unauthorized("Invalid credentials")
-    return jsonify({"token": g.current_user.generate_auth_token(), "expiration": 3600})
+    return jsonify(
+        {
+            "token": g.current_user.generate_auth_token(),
+            "expiration": current_app.config["TOKEN_EXPIRE"],
+        }
+    )
 
 
 @api.route("user/login/", methods=["POST"])
@@ -53,7 +59,10 @@ def user_login():
     ):
         g.current_user = user
         response = jsonify(
-            {"token": g.current_user.generate_auth_token(), "expiration": 3600}
+            {
+                "token": g.current_user.generate_auth_token(),
+                "expiration": current_app.config["TOKEN_EXPIRE"],
+            }
         )
         response.status_code = 200
         return response
@@ -81,7 +90,10 @@ def admin_user_login():
         if user in admin:
             g.current_user = user
             response = jsonify(
-                {"token": g.current_user.generate_auth_token(), "expiration": 3600}
+                {
+                    "token": g.current_user.generate_auth_token(),
+                    "expiration": current_app.config["TOKEN_EXPIRE"],
+                }
             )
             response.status_code = 200
             return response
