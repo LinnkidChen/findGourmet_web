@@ -35,7 +35,7 @@ Postman 使用方法：<https://blog.csdn.net/legend818/article/details/11736404
 
 如果发现奇怪的403报错，可能是端口被占用，使用-p 8888更换大一些的端口
 
-一个作弊的Token:"cheatToken"
+一个作弊的Token:"cheatToken" 会将当前的人物设置为第一个管理员
 请将Token写在Postman- authorization-basicauth中
 
 在使用Token登录时，请务必将password设置为空
