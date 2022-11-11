@@ -1,7 +1,8 @@
 from flask import current_app, g, jsonify, request
 from flask_httpauth import HTTPBasicAuth
+import json
 
-from ..models import Role, User
+from ..models import Role, User, db
 from . import api
 from .errors import bad_request, forbidden, unauthorized
 
@@ -139,8 +140,36 @@ def getByUserName(id):
         return bad_request("User not found")
 
 
-# @api.route('user/register/',methods=['POST'])
-# def user_reg():
+@api.route("user/register/", methods=["POST"])
+def user_reg():
+    data = request.get_json()
+    user = User.from_js(data)
+    if user is not None:
+        db.session.add(user)
+        db.session.commit()
+        response = jsonify({"username": user.username})
+        response.status_code = 200
+        return response
+    else:
+        return bad_request("no username or password included in request")
+
+
+@api.route("/user/pageFindAll/<int:index>")
+def fine_all_users():
+    pass
+
+
+@api.route("/user/getByQuery", methods=["POST"])
+def query_user():
+    req_json = request.get_json()
+    valid_keys = ["id", "username", "level"]
+    users = User.query.filter_by(**req_json).all()  # TODO 更新一下分页
+    response = jsonify(
+        {"total": len(users), "records": [user.to_json for user in users]}
+    )
+    response.status_code = 200
+    return response
+
 
 # paginate usage
 # # >>> User.query.paginate(page=1,per_page=2,error_out=False)

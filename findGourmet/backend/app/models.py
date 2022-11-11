@@ -308,6 +308,9 @@ class User(UserMixin, db.Model):
         cityName = json_post.get("cityName")
         role_id = json_post.get("level")
 
+        if password is None or username is None:
+            return None
+
         user = User(
             username=username,
             role_str=role_str,
