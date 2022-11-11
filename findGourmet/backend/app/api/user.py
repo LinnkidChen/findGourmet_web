@@ -153,6 +153,46 @@ def user_reg():
     else:
         return bad_request("no username or password included in request")
 
+@api.route("user/modifyMessage", methods=['POST'])
+@auth.login_required
+def modifyMessage():
+    modify_dict = request.get_json()
+    user = User.query.filter_by(id=modify_dict['id']).first()
+    res_raw = {"username":user.username}
+    if len(modify_dict['phoneNumber']) == 11 and modify_dict['phoneNumber'].isdigit():
+        user.phoneNumber = modify_dict['phoneNumber']
+        db.session.commit()
+        res_raw['phoneNumber'] = 'modify success'
+    else:
+        res_raw['phoneNumber'] = 'invalid phoneNumber'
+
+    if modify_dict['introduce'] != '' and modify_dict['introduce'] is not None:
+        user.introduce = modify_dict['introduce']
+        db.session.commit()
+        res_raw['introduce'] = 'modify sucess'
+    else:
+        res_raw['introduce'] = 'invalid introduce'
+
+    if len(modify_dict['password']) >= 6 and password_valid(modify_dict['password']):
+        user.password = modify_dict['password']
+        db.session.commit()
+        res_raw['password'] = 'modify success'
+    else:
+        res_raw['password'] = 'invalid password'
+
+    response = jsonify(res_raw)
+    response.status_code = 200
+    return response
+
+def password_valid(password):
+    digit = 0
+    for p in password:
+        if p.isdigit():
+            digit += 1
+    if digit>=2 and not password.islower() and not password.isupper():
+        return True
+    else:
+        return False
 
 @api.route("/user/pageFindAll/<int:index>")
 def fine_all_users():
