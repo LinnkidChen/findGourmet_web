@@ -345,6 +345,20 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+class findG(db.Model):
+    __tablename__ = 'findG'
+    id = db.Column(db.Integer, primary_key=True)    # 寻味道请求标识
+    userId = db.Column(db.Integer, db.ForeignKey('users.id'))   # 发布者标识
+    type = db.Column(db.Unicode(32))    # 寻味道请求类型
+    name = db.Column(db.Unicode(64))    # 寻味道请求名称
+    description = db.Column(db.UnicodeText) # 寻味道请求描述
+    price = db.Column(db.Integer)   # 最高单价
+    endTime = db.Column(db.DateTime)   # 请求结束时间
+    photo = db.Column(db.Unicode(128), nullable=True)
+    createTime = db.Column(db.DateTime, default=datetime.utcnow)
+    modifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+    state = db.Column(db.Unicode(32))
+
 # class Post(db.Model):
 #     __tablename__ = 'posts'
 #     id = db.Column(db.Integer, primary_key=True)
