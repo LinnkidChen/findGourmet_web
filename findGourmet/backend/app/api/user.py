@@ -221,3 +221,15 @@ def query_user():
 # # >>> User.query.paginate(page=1,per_page=2,error_out=False).items
 # [<User 'john'>, <User 'marry'>]
 # >>>
+
+@api.route("/user/getCitys")
+def getCitys():
+    users = User.query.all()
+    i = 1
+    citys = []
+    for user in users:
+        citys.append({"cityId": i, "cityName": user.cityName})
+        i += 1
+    response = jsonify(citys)
+    response.status_code = 200
+    return response
