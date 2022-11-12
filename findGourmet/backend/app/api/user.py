@@ -227,8 +227,12 @@ def getCitys():
     users = User.query.all()
     i = 1
     citys = []
+    city_set = set()
     for user in users:
-        citys.append({"cityId": i, "cityName": user.cityName})
+        city_set.add(user.cityName)
+    for city in city_set:
+        if city is not None:
+            citys.append({"cityId": i, "cityName": city})
         i += 1
     response = jsonify(citys)
     response.status_code = 200
