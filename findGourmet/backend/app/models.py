@@ -359,6 +359,16 @@ class findG(db.Model):
     modifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     state = db.Column(db.Unicode(32))
 
+class pleEat(db.Model):
+    __tablename__ = 'pleEat'
+    id = db.Column(db.Integer, primary_key=True)    # 品鉴响应标识
+    findG_id = db.Column(db.Integer, db.ForeignKey('findG.id')) # 味道请求标识
+    userId = db.Column(db.Integer, db.ForeignKey('users.id'))   # 响应用户标识
+    description = db.Column(db.UnicodeText) # 响应描述
+    createTime = db.Column(db.DateTime, default=datetime.utcnow)    # 创建时间
+    modifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)    # 修改时间
+    state = db.Column(db.Integer)   # 状态
+
 # class Post(db.Model):
 #     __tablename__ = 'posts'
 #     id = db.Column(db.Integer, primary_key=True)
