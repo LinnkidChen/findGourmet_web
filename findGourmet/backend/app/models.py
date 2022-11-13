@@ -355,19 +355,28 @@ class findG(db.Model):
     price = db.Column(db.Integer)   # 最高单价
     endTime = db.Column(db.DateTime)   # 请求结束时间
     photo = db.Column(db.Unicode(128), nullable=True)
-    createTime = db.Column(db.DateTime, default=datetime.utcnow)
+    createTime = db.Column(db.DateTime, default=datetime.now)
     modifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     state = db.Column(db.Unicode(32))
 
-class pleEat(db.Model):
+class pleEat(db.Model): # 请品鉴表
     __tablename__ = 'pleEat'
     id = db.Column(db.Integer, primary_key=True)    # 品鉴响应标识
     findG_id = db.Column(db.Integer, db.ForeignKey('findG.id')) # 味道请求标识
     userId = db.Column(db.Integer, db.ForeignKey('users.id'))   # 响应用户标识
     description = db.Column(db.UnicodeText) # 响应描述
-    createTime = db.Column(db.DateTime, default=datetime.utcnow)    # 创建时间
+    createTime = db.Column(db.DateTime, default=datetime.now)    # 创建时间
     modifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)    # 修改时间
     state = db.Column(db.Integer)   # 状态
+
+class Success(db.Model):    # "寻味道"成功明细表
+    id = db.Column(db.Integer, primary_key=True)    # 请求标识
+    userId = db.Column(db.Integer, db.ForeignKey('users.id'))   # 发布用户标识
+    userId2 = db.Column(db.Integer, db.ForeignKey('users.id'))  # 响应用户标识
+    date = db.Column(db.DateTime, default=datetime.now) # 达成日期
+    fee = db.Column(db.Integer) # 发布者支付中介费
+    fee2 = db.Column(db.Integer)    # 响应者支付中介费
+
 
 # class Post(db.Model):
 #     __tablename__ = 'posts'
