@@ -19,7 +19,7 @@ def verify_password(username_or_token, password):
     print("verifying ", username_or_token, password)
     if username_or_token == "cheatToken":
 
-        g.current_user = User.query.filter_by(role_str="Admin").first()
+        g.current_user = User.query.filter_by(username="john").first()
         g.token_used = False
         return True
     if username_or_token == "":
@@ -197,13 +197,26 @@ def password_valid(password):
         return False
 
 
-@api.route("/user/pageFindAll/<int:index>")
-def fine_all_users():
-    pass
+@api.route("/user/pageFindAll/<int:index>/<int:rows>")
+@auth.login_required
+def fine_all_users(index, rows):
+
+    if g.current_user.role.permissions is not current_app.config["ADMIN_PERMISSION"]:
+        return forbidden("Not logged in as an Admin")
+    users = User.query.paginate(page=index, per_page=rows).items
+    # users=users.
+    response = jsonify(
+        {"total": len(users), "records": [user.to_json for user in users]}
+    )
+    response.status_code = 200
+    return response
 
 
 @api.route("/user/getByQuery", methods=["POST"])
+@auth.login_required
 def query_user():
+    if g.current_user.role is not current_app.config["ADMIN_PERMISSION"]:
+        return forbidden("Not logged in as an Admin")
     req_json = request.get_json()
     valid_keys = ["id", "username", "level"]
     valid_keys = [valid_key for valid_key in valid_keys if valid_key in req_json.keys()]
