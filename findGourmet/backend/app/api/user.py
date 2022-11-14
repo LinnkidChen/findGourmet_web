@@ -206,7 +206,16 @@ def fine_all_users():
 def query_user():
     req_json = request.get_json()
     valid_keys = ["id", "username", "level"]
-    users = User.query.filter_by(**req_json).all()  # TODO 更新一下分页
+    valid_keys = [valid_key for valid_key in valid_keys if valid_key in req_json.keys()]
+    filter_dict = {your_key: req_json[your_key] for your_key in valid_keys}
+    # users = User.query.filter_by(**req_json).paginate()  # TODO 更新一下分页
+    users = (
+        User.query.filter_by(**filter_dict)
+        .paginate(page=req_json.get("page"), per_page=req_json.get("rows"))
+        .items
+    )
+
+    # users=users.
     response = jsonify(
         {"total": len(users), "records": [user.to_json for user in users]}
     )
@@ -220,7 +229,6 @@ def query_user():
 # # >>> User.query.paginate(page=1,per_page=2,error_out=False)
 # # <flask_sqlalchemy.pagination.QueryPagination object at 0x1061999a0>
 # # >>> User.query.paginate(page=1,per_page=2,error_out=False).page
-# # 1
 # # >>> User.query.paginate(page=1,per_page=2,error_out=False).items
 # [<User 'john'>, <User 'marry'>]
 # >>>
