@@ -250,7 +250,7 @@ def query_user():
 @api.route("/user/getCitys")
 def getCitys():
     users = User.query.all()
-    i = 1  # TODO 实现逻辑有点问题 把城市加在config里
+    i = 1
     citys = []
     city_set = set()
     for user in users:
