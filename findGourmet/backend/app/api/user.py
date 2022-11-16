@@ -215,7 +215,7 @@ def fine_all_users(index, rows):
 @api.route("/user/getByQuery", methods=["POST"])
 @auth.login_required
 def query_user():
-    if g.current_user.role is not current_app.config["ADMIN_PERMISSION"]:
+    if g.current_user.role.permissions is not current_app.config["ADMIN_PERMISSION"]:
         return forbidden("Not logged in as an Admin")
     req_json = request.get_json()
     valid_keys = ["id", "username", "level"]
