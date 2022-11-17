@@ -264,12 +264,17 @@ def getCitys():
     return response
 
 
-# @api.route("/findG/getType")
-# @auth.login_required
-# def getType():
-#     type_all=[{"findGTypeId":1,"findGTypeName":"家乡小吃"},{"findGTypeId":,"findGTypeName":},
-#     {"findGTypeId":,"findGTypeName":},{"findGTypeId":,"findGTypeName":},
-#     {"findGTypeId":,"findGTypeName":}]
+@api.route("/findG/getType")    # 获取寻味道请求类型
+@auth.login_required
+def getType():
+    type_all=[{"findGTypeId":1,"findGTypeName":"家乡小吃"},
+    {"findGTypeId":2,"findGTypeName":"地方特色小馆"},
+    {"findGTypeId":3,"findGTypeName":"香辣味"},
+    {"findGTypeId":4,"findGTypeName":"甜酸味"},
+    {"findGTypeId":5,"findGTypeName":"绝一味菜"}]
+    response = jsonify(type_all)
+    response.status_code = 200
+    return response
 
 
 @api.route("/findG/pageFind/<int:index>/<int:rows>")    # 得到所有寻味道请求的分页信息
