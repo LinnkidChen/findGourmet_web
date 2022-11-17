@@ -305,7 +305,27 @@ def get_findG_byInput(index, rows, input):
 @api.route("/findG/pageFind/byType/<int:index>/<int:rows>/<int:typeId>")    # 按类型查找 
 @auth.login_required
 def get_findG_byType(index, rows, typeId):
-    pass
+    if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
+        return forbidden("Not logged in as an Admin")
+    findGs = None
+    if typeId == 1:
+        findGs = FindG.query.filter_by(type='家乡小吃').paginate(page=index, per_page=rows).items
+    elif typeId == 2:
+        findGs = FindG.query.filter_by(type='地方特色小馆').paginate(page=index, per_page=rows).items
+    elif typeId == 3:
+        findGs = FindG.query.filter_by(type='香辣味').paginate(page=index, per_page=rows).items
+    elif typeId == 4:
+        findGs = FindG.query.filter_by(type='甜酸味').paginate(page=index, per_page=rows).items
+    elif typeId == 5:
+        findGs = FindG.query.filter_by(type='绝一味菜').paginate(page=index, per_page=rows).items
+    response = jsonify(
+        {"total": len(findGs), "records": [findG.to_json() for findG in findGs]}
+    )
+    response.status_code = 200
+    return response
+
+
+
 
 #     id = db.Column(db.Integer, primary_key=True)  # 寻味道请求标识
 #     userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 发布者标识
