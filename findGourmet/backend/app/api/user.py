@@ -324,7 +324,33 @@ def get_findG_byType(index, rows, typeId):
     response.status_code = 200
     return response
 
-
+@api.route("/findG/pageFind/byTypeAndName/<int:index>/<int:rows>/<int:value>/<input>")  
+#   按类型和模糊名称同时查找
+@auth.login_required
+def get_findG_byTypeAndName(index, rows, value, input):
+    if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
+        return forbidden("Not logged in as an Admin")
+    findGs = None
+    if value == 1:
+        findGs = FindG.query.filter(FindG.name.like("%"+ str(input) +"%"),FindG.type=='家乡小吃') \
+        .paginate(page=index, per_page=rows).items
+    elif value == 2:
+        findGs = FindG.query.filter(FindG.name.like("%"+ str(input) +"%"),
+        FindG.type=='地方特色小馆').paginate(page=index, per_page=rows).items
+    elif value == 3:
+        findGs = FindG.query.filter(FindG.name.like("%"+ str(input) +"%"),
+        FindG.type=='香辣味').paginate(page=index, per_page=rows).items
+    elif value == 4:
+        findGs = FindG.query.filter(FindG.name.like("%"+ str(input) +"%"),
+        FindG.type=='甜酸味').paginate(page=index, per_page=rows).items
+    elif value == 5:
+        findGs = FindG.query.filter(FindG.name.like("%"+ str(input) +"%"),
+        FindG.type=='绝一味菜').paginate(page=index, per_page=rows).items
+    response = jsonify(
+        {"total": len(findGs), "records": [findG.to_json() for findG in findGs]}
+    )
+    response.status_code = 200
+    return response
 
 
 #     id = db.Column(db.Integer, primary_key=True)  # 寻味道请求标识
