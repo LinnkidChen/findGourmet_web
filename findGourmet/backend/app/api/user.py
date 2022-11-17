@@ -264,6 +264,14 @@ def getCitys():
     return response
 
 
+# @api.route("/findG/getType")
+# @auth.login_required
+# def getType():
+#     type_all=[{"findGTypeId":1,"findGTypeName":"家乡小吃"},{"findGTypeId":,"findGTypeName":},
+#     {"findGTypeId":,"findGTypeName":},{"findGTypeId":,"findGTypeName":},
+#     {"findGTypeId":,"findGTypeName":}]
+
+
 @api.route("/findG/pageFind/<int:index>/<int:rows>")    # 得到所有寻味道请求的分页信息
 @auth.login_required
 def get_findG_all(index, rows):
@@ -277,7 +285,7 @@ def get_findG_all(index, rows):
     return response
 
 
-@api.route("/findG/pageFind/<int:index>/<int:rows>/<input>")
+@api.route("/findG/pageFind/byName/<int:index>/<int:rows>/<input>") # 模糊名称查找
 @auth.login_required
 def get_findG_byInput(index, rows, input):
     if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
@@ -289,7 +297,10 @@ def get_findG_byInput(index, rows, input):
     response.status_code = 200
     return response
 
-
+@api.route("/findG/pageFind/byType/<int:index>/<int:rows>/<int:typeId>")    # 按类型查找 
+@auth.login_required
+def get_findG_byType(index, rows, typeId):
+    pass
 
 #     id = db.Column(db.Integer, primary_key=True)  # 寻味道请求标识
 #     userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 发布者标识
