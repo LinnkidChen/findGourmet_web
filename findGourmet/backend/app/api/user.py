@@ -2,7 +2,7 @@ from flask import current_app, g, jsonify, request
 from flask_httpauth import HTTPBasicAuth
 import json
 
-from ..models import Role, User, db
+from ..models import Role, User, db, FindG
 from . import api
 from .errors import bad_request, forbidden, unauthorized
 
@@ -140,7 +140,7 @@ def getByUserName(id):
         return bad_request("User not found")
 
 
-@api.route("user/register/", methods=["POST"])
+@api.route("user/register", methods=["POST"])
 def user_reg():
     data = request.get_json()
     user = User.from_js(data)
@@ -201,7 +201,7 @@ def password_valid(password):
 @auth.login_required
 def fine_all_users(index, rows):
 
-    if g.current_user.role.permissions is not current_app.config["ADMIN_PERMISSION"]:
+    if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
         return forbidden("Not logged in as an Admin")
     users = User.query.paginate(page=index, per_page=rows).items
     # users=users.
@@ -215,7 +215,7 @@ def fine_all_users(index, rows):
 @api.route("/user/getByQuery", methods=["POST"])
 @auth.login_required
 def query_user():
-    if g.current_user.role.permissions is not current_app.config["ADMIN_PERMISSION"]:
+    if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
         return forbidden("Not logged in as an Admin")
     req_json = request.get_json()
     valid_keys = ["id", "username", "level"]
@@ -262,3 +262,31 @@ def getCitys():
     response = jsonify(citys)
     response.status_code = 200
     return response
+
+@api.route("/findG/pageFind/<int:index>/<int:rows>")    # 得到所有寻味道请求的分页信息
+@auth.login_required
+def get_findG_all(index, rows):
+    if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
+        return forbidden("Not logged in as an Admin")
+    findGs = FindG.query.paginate(page=index, per_page=rows).items
+    response = jsonify(
+        {"total": len(findGs), "records": [findG.to_json() for findG in findGs]}
+    )
+    response.status_code = 200
+    return response
+
+
+
+#     id = db.Column(db.Integer, primary_key=True)  # 寻味道请求标识
+#     userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 发布者标识
+#     type = db.Column(db.Unicode(32))  # 寻味道请求类型
+#     name = db.Column(db.Unicode(64))  # 寻味道请求名称
+#     description = db.Column(db.UnicodeText)  # 寻味道请求描述
+#     people = db.Column(db.Integer, default=0)   # 已响应人数
+#     peopleCount = db.Column(db.Integer)     # 想要响应的总人数
+#     price = db.Column(db.Integer)  # 最高单价
+#     endTime = db.Column(db.DateTime)  # 请求结束时间
+#     photo = db.Column(db.Unicode(128), nullable=True)
+#     createTime = db.Column(db.DateTime, default=datetime.now)
+#     modifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+#     state = db.Column(db.Unicode(32))

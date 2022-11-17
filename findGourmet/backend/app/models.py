@@ -296,6 +296,7 @@ class User(UserMixin, db.Model):
             return None
         return User.query.get(data["id"])
 
+    @staticmethod
     def from_js(json_post):
         username = json_post.get("username")
         password = json_post.get("password")
@@ -307,7 +308,7 @@ class User(UserMixin, db.Model):
         role_id = json_post.get("level")
         introduce = json_post.get("introduce")
         cityName = json_post.get("cityName")
-        role_id = json_post.get("level")
+        # role_id = json_post.get("level")
 
         if password is None or username is None:
             return None
@@ -346,13 +347,15 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-class findG(db.Model):
+class FindG(db.Model):
     __tablename__ = "findG"
     id = db.Column(db.Integer, primary_key=True)  # 寻味道请求标识
     userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 发布者标识
     type = db.Column(db.Unicode(32))  # 寻味道请求类型
     name = db.Column(db.Unicode(64))  # 寻味道请求名称
     description = db.Column(db.UnicodeText)  # 寻味道请求描述
+    people = db.Column(db.Integer, default=0)   # 已响应人数
+    peopleCount = db.Column(db.Integer)     # 想要响应的总人数
     price = db.Column(db.Integer)  # 最高单价
     endTime = db.Column(db.DateTime)  # 请求结束时间
     photo = db.Column(db.Unicode(128), nullable=True)
@@ -360,6 +363,30 @@ class findG(db.Model):
     modifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     state = db.Column(db.Unicode(32))
 
+    def to_json(self):
+        json_findG = {
+            "id": self.id,
+            "userId": self.userId,
+            "type": self.type,
+            "name": self.name,
+            "description": self.description,
+            "people": self.people,
+            "peopleCount": self.peopleCount,
+            "price": self.price,
+            "endTime": self.endTime,
+            "photo":self.photo,
+            "createTime": self.createTime,
+            "modifyTime": self.modifyTime,
+            "state": self.state
+        }
+        return json_findG
+
+    # @staticmethod
+    # def from_js(json_post):
+    #     id = json_post.get("id")
+
+    def __repr__(self):
+        return "<FindG %r>" % self.name
 
 class pleEat(db.Model):  # 请品鉴表
     __tablename__ = "pleEat"
@@ -373,6 +400,7 @@ class pleEat(db.Model):  # 请品鉴表
     )  # 修改时间
     state = db.Column(db.Integer)  # 状态
 
+    
 
 class Success(db.Model):  # "寻味道"成功明细表
     id = db.Column(db.Integer, primary_key=True)  # 请求标识
