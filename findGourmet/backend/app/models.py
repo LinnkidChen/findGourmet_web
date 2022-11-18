@@ -400,6 +400,17 @@ class PleEat(db.Model):  # 请品鉴表
     )  # 修改时间
     state = db.Column(db.Integer)  # 状态
 
+    def to_json(self):
+        js_pleEat = {
+            "id": self.id,
+            "findG_id": self.findG_id,
+            "userId": self.userId,
+            "description": self.description,
+            "createTime": self.createTime,
+            "modifyTime": self.modifyTime,
+            "state": self.state
+        }
+        return js_pleEat
     
 
 class Success(db.Model):  # "寻味道"成功明细表

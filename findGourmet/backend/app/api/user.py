@@ -415,6 +415,22 @@ def addPleEat():
     return response
 
 
+# 管理员获取所有请品鉴信息
+@api.route("pleEat/pageFind/<int:index>/<int:rows>")
+@auth.login_required
+def get_pleEat_all(index, rows):
+    if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
+        return forbidden("Not logged in as an Admin")
+    pleEats = PleEat.query.paginate(page=index, per_page=rows).items
+    response = jsonify(
+        {
+            "total":len(pleEats),
+            "records":[pleEat.to_json() for pleEat in pleEats]
+        }
+    )
+    response.status_code = 200
+    return response
+
 
 # class pleEat(db.Model):  # 请品鉴表
 #     __tablename__ = "pleEat"
