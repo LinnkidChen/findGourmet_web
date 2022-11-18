@@ -388,7 +388,7 @@ class FindG(db.Model):
     def __repr__(self):
         return "<FindG %r>" % self.name
 
-class pleEat(db.Model):  # 请品鉴表
+class PleEat(db.Model):  # 请品鉴表
     __tablename__ = "pleEat"
     id = db.Column(db.Integer, primary_key=True)  # 品鉴响应标识
     findG_id = db.Column(db.Integer, db.ForeignKey("findG.id"))  # 味道请求标识

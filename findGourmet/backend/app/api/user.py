@@ -2,7 +2,7 @@ from flask import current_app, g, jsonify, request
 from flask_httpauth import HTTPBasicAuth
 import json
 
-from ..models import Role, User, db, FindG
+from ..models import Role, User, db, FindG, PleEat
 from . import api
 from .errors import bad_request, forbidden, unauthorized
 import datetime
@@ -384,7 +384,7 @@ def addFindG():
     fG_new = FindG(**add_fG_fi)
     db.session.add(fG_new)
     db.session.commit()
-    response = jsonify({"state":"add success"})
+    response = jsonify({"state":"findG add success"})
     response.status_code = 200
     return response
 
@@ -396,9 +396,40 @@ def delFindG(id):
     findG_del = FindG.query.get(id)
     db.session.delete(findG_del)
     db.session.commit()
-    response = jsonify({"state":"delete success"})
+    response = jsonify({"state":"findG delete success"})
     response.status_code = 200
     return response
+
+
+# 填写请品鉴信息后 点击 确认按钮
+@api.route("pleEat/add", methods=['POST'])
+@auth.login_required
+def addPleEat():
+    req_json = request.get_json()
+    pleEat = PleEat(**req_json)
+    pleEat.state = 0    # 待接受
+    db.session.add(pleEat)
+    db.session.commit()
+    response = jsonify({"state":"pleEat add success"})
+    response.status_code = 200
+    return response
+
+
+
+# class pleEat(db.Model):  # 请品鉴表
+#     __tablename__ = "pleEat"
+#     id = db.Column(db.Integer, primary_key=True)  # 品鉴响应标识
+#     findG_id = db.Column(db.Integer, db.ForeignKey("findG.id"))  # 味道请求标识
+#     userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 响应用户标识
+#     description = db.Column(db.UnicodeText)  # 响应描述
+#     createTime = db.Column(db.DateTime, default=datetime.now)  # 创建时间
+#     modifyTime = db.Column(
+#         db.DateTime, default=datetime.now, onupdate=datetime.now
+#     )  # 修改时间
+#     state = db.Column(db.Integer)  # 状态
+
+
+
 #     id = db.Column(db.Integer, primary_key=True)  # 寻味道请求标识
 #     userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 发布者标识
 #     type = db.Column(db.Unicode(32))  # 寻味道请求类型
