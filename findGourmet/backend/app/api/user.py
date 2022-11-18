@@ -5,6 +5,7 @@ import json
 from ..models import Role, User, db, FindG
 from . import api
 from .errors import bad_request, forbidden, unauthorized
+import datetime
 
 auth = HTTPBasicAuth()
 
@@ -302,6 +303,7 @@ def get_findG_byInput(index, rows, input):
     response.status_code = 200
     return response
 
+
 @api.route("/findG/pageFind/byType/<int:index>/<int:rows>/<int:typeId>")    # 按类型查找 
 @auth.login_required
 def get_findG_byType(index, rows, typeId):
@@ -353,6 +355,50 @@ def get_findG_byTypeAndName(index, rows, value, input):
     return response
 
 
+# 得到自己已经发布的所有寻味道请求的分页信息
+@api.route("findG/pageFind/byUserId/<int:index>/<int:rows>/<int:id>")
+@auth.login_required
+def get_findG_byUserId(index, rows, id):
+    findGs = FindG.query.filter_by(userId=id).paginate(page=index, per_page=rows).items
+    response = jsonify(
+        {"total": len(findGs), "records": [findG.to_json() for findG in findGs]}
+    )
+    response.status_code = 200
+    return response
+    
+
+# 发布寻味道请求信息
+@api.route("findG/add",methods=['POST'])
+@auth.login_required
+def addFindG():
+    add_fG = request.get_json() # 初始的字典
+    endTime = datetime.datetime.strptime(add_fG.get("endTime"), "%Y-%m-%d %H:%M:%S")
+    add_fG_fi={"userId":add_fG.get("userId"),
+               "type":add_fG.get("type"),
+               "name":add_fG.get("name"),
+               "description":add_fG.get("description"),
+               "peopleCount":add_fG.get("peopleCount"),
+               "endTime":endTime,
+            #   "typeId":add_fG.get("typeId")
+    }  # 最终的字典,因时间格式传入数据库时要经过转换
+    fG_new = FindG(**add_fG_fi)
+    db.session.add(fG_new)
+    db.session.commit()
+    response = jsonify({"state":"add success"})
+    response.status_code = 200
+    return response
+
+
+# 删除寻味道请求
+@api.route("findG/delById/<int:id>",methods=['POST'])
+@auth.login_required
+def delFindG(id):
+    findG_del = FindG.query.get(id)
+    db.session.delete(findG_del)
+    db.session.commit()
+    response = jsonify({"state":"delete success"})
+    response.status_code = 200
+    return response
 #     id = db.Column(db.Integer, primary_key=True)  # 寻味道请求标识
 #     userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 发布者标识
 #     type = db.Column(db.Unicode(32))  # 寻味道请求类型
