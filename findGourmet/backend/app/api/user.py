@@ -6,6 +6,10 @@ from ..models import Role, User, db, FindG, PleEat
 from . import api
 from .errors import bad_request, forbidden, unauthorized
 import datetime
+from werkzeug.utils import secure_filename
+import random
+from findGourmet import basedir
+import os
 
 auth = HTTPBasicAuth()
 
@@ -367,12 +371,21 @@ def get_findG_byUserId(index, rows, id):
     return response
     
 
+# 点击显示详细信息按钮展示信息
+@api.route("findG/findById/<int:id>")
+@auth.login_required
+def showInfo(id):
+    findG = FindG.query.filter_by(id=id).first()
+    return findG.to_json()
+
+
 # 发布寻味道请求信息
 @api.route("findG/add",methods=['POST'])
 @auth.login_required
 def addFindG():
     add_fG = request.get_json() # 初始的字典
-    endTime = datetime.datetime.strptime(add_fG.get("endTime"), "%Y-%m-%d %H:%M:%S")
+    endTime = datetime.datetime.strptime(
+        add_fG.get("endTime"), "%Y-%m-%d %H:%M:%S")
     add_fG_fi={"userId":add_fG.get("userId"),
                "type":add_fG.get("type"),
                "name":add_fG.get("name"),
@@ -394,11 +407,15 @@ def addFindG():
 @auth.login_required
 def delFindG(id):
     findG_del = FindG.query.get(id)
-    db.session.delete(findG_del)
-    db.session.commit()
-    response = jsonify({"state":"findG delete success"})
-    response.status_code = 200
-    return response
+    pleEats = PleEat.query.filter_by(findG_id=id).all()
+    if len(pleEats) == 0:
+        db.session.delete(findG_del)
+        db.session.commit()
+        response = jsonify({"state":"findG delete success"})
+        response.status_code = 200
+        return response
+    else:
+        return forbidden("The findG already be responded")
 
 
 # 填写请品鉴信息后 点击 确认按钮
@@ -432,7 +449,7 @@ def get_pleEat_all(index, rows):
     return response
 
 
-# class pleEat(db.Model):  # 请品鉴表
+# class PleEat(db.Model):  # 请品鉴表
 #     __tablename__ = "pleEat"
 #     id = db.Column(db.Integer, primary_key=True)  # 品鉴响应标识
 #     findG_id = db.Column(db.Integer, db.ForeignKey("findG.id"))  # 味道请求标识
