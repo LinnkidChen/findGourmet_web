@@ -1,3 +1,19 @@
+from flask import current_app, g, jsonify, request
+from flask_httpauth import HTTPBasicAuth
+import json
+
+from ..models import Role, User, db, FindG, PleEat
+from . import api
+from .errors import bad_request, forbidden, unauthorized
+import datetime
+from werkzeug.utils import secure_filename
+import random
+from findGourmet import basedir
+import os
+
+auth = HTTPBasicAuth()
+
+
 @api.route("/findG/getType")  # 获取寻味道请求类型
 @auth.login_required
 def getType():
