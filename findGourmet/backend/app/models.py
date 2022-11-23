@@ -358,7 +358,7 @@ class FindG(db.Model):
     peopleCount = db.Column(db.Integer)     # 想要响应的总人数
     price = db.Column(db.Integer)  # 最高单价
     endTime = db.Column(db.DateTime)  # 请求结束时间
-    photo = db.Column(db.Unicode(128), nullable=True)
+    photo = db.Column(db.UnicodeText, nullable=True)
     createTime = db.Column(db.DateTime, default=datetime.now)
     modifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     state = db.Column(db.Unicode(32))
@@ -392,6 +392,7 @@ class PleEat(db.Model):  # 请品鉴表
     __tablename__ = "pleEat"
     id = db.Column(db.Integer, primary_key=True)  # 品鉴响应标识
     findG_id = db.Column(db.Integer, db.ForeignKey("findG.id"))  # 味道请求标识
+    # findG_name = db.Column(db.Unicode(64),db.ForeignKey("findG.name"))    # 味道请求名称
     userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 响应用户标识
     description = db.Column(db.UnicodeText)  # 响应描述
     createTime = db.Column(db.DateTime, default=datetime.now)  # 创建时间
@@ -404,6 +405,7 @@ class PleEat(db.Model):  # 请品鉴表
         js_pleEat = {
             "id": self.id,
             "findG_id": self.findG_id,
+            # "findG_name": self.findG_name,
             "userId": self.userId,
             "description": self.description,
             "createTime": self.createTime,

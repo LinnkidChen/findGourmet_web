@@ -10,8 +10,8 @@ from werkzeug.utils import secure_filename
 import random
 from findGourmet import basedir
 import os
-
-auth = HTTPBasicAuth()
+from .user import auth
+# auth = HTTPBasicAuth()
 
 
 @api.route("/findG/getType")  # 获取寻味道请求类型
@@ -231,6 +231,27 @@ def get_pleEat_all(index, rows):
     response = jsonify(
         {"total": len(pleEats), "records": [pleEat.to_json() for pleEat in pleEats]}
     )
+    response.status_code = 200
+    return response
+
+
+@api.route("pleEat/pageFind/byUser/<int:index>/<int:rows>/<int:userId>")
+@auth.login_required
+def get_my_pleEat(index, rows, userId):
+    pleEats = PleEat.query.filter_by(userId=userId
+    ).paginate(page=index, per_page=rows).items
+    response_raw = {"total":len(pleEats), "records":[]}
+    for pleEat in pleEats:
+        findG = FindG.query.filter_by(id=pleEat.findG_id).first()
+        response_raw["records"].append({"id":pleEat.id,
+        "findGId":pleEat.findG_id, 
+        "findGName":findG.name,
+        "userId":pleEat.userId, 
+        "description":pleEat.description,
+        "createTime":pleEat.createTime,
+        "modifyTime":pleEat.modifyTime,
+        "state":pleEat.state})
+    response = jsonify(response_raw)
     response.status_code = 200
     return response
 

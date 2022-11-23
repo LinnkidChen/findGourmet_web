@@ -267,5 +267,3 @@ def getCitys():
     response = jsonify(citys)
     response.status_code = 200
     return response
-
-
