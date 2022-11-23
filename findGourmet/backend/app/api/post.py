@@ -228,13 +228,23 @@ def get_pleEat_all(index, rows):
     if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
         return forbidden("Not logged in as an Admin")
     pleEats = PleEat.query.paginate(page=index, per_page=rows).items
-    response = jsonify(
-        {"total": len(pleEats), "records": [pleEat.to_json() for pleEat in pleEats]}
-    )
+    response_raw = {"total":len(pleEats), "records":[]}
+    for pleEat in pleEats:
+        findG = FindG.query.filter_by(id=pleEat.findG_id).first()
+        response_raw["records"].append({"id":pleEat.id,
+        "findGId":pleEat.findG_id, 
+        "findGName":findG.name,
+        "userId":pleEat.userId, 
+        "description":pleEat.description,
+        "createTime":pleEat.createTime,
+        "modifyTime":pleEat.modifyTime,
+        "state":pleEat.state})
+    response = jsonify(response_raw)
     response.status_code = 200
     return response
 
 
+# 我的请品鉴列表
 @api.route("pleEat/pageFind/byUser/<int:index>/<int:rows>/<int:userId>")
 @auth.login_required
 def get_my_pleEat(index, rows, userId):
@@ -254,6 +264,8 @@ def get_my_pleEat(index, rows, userId):
     response = jsonify(response_raw)
     response.status_code = 200
     return response
+
+
 
 
 # class PleEat(db.Model):  # 请品鉴表
