@@ -2,7 +2,7 @@ from flask import current_app, g, jsonify, request
 from flask_httpauth import HTTPBasicAuth
 import json
 
-from ..models import Role, User, db, FindG, PleEat
+from ..models import Role, User, db, FindG, PleEat, Success
 from . import api
 from .errors import bad_request, forbidden, unauthorized
 import datetime
@@ -266,6 +266,62 @@ def get_my_pleEat(index, rows, userId):
     return response
 
 
+# 判断是否有新的请品鉴消息
+@api.route("pleEat/pageFind/byfindG/<int:index>/<int:rows>/<int:id>")
+@auth.login_required
+def judge(index, rows, id):
+    pleEats = PleEat.query.filter_by(
+        findG_id=id).paginate(page=index, 
+        per_page=rows).items
+    response_raw = {"total":len(pleEats),"records":[]}
+    for pleEat in pleEats:
+        findG = FindG.query.filter_by(id=id).first()
+        response_raw["records"].append(
+            {
+                "id": pleEat.id, # 品鉴响应标识
+                "findGId": pleEat.findG_id, # 味道请求标识
+                "findGName": findG.name, # 寻味道请求名字
+                "userId": pleEat.userId, # 响应用户ID（请品鉴）
+                "description": pleEat.description, # 响应描述（请品鉴）
+                "createTime": pleEat.createTime, # 创建时间（请品鉴）
+                "modifyTime": pleEat.modifyTime, # 修改时间（请品鉴）
+    	        # 状态 0：待处理  1：同意  2：拒绝  3：取消
+                "state":  pleEat.state
+            }
+        )
+    response = jsonify(response_raw)
+    response.code = 200
+    return response
+
+
+# # TODO 同意/拒绝请求
+# @api.route("pleEat/modifyState", methods=['POST'])
+# @auth.login_required
+# def modifyState():
+#     req_json = request.get_json()
+#     pleEat = PleEat.query.filter_by(
+#         id=req_json["id"]).first()
+#     pleEat.state = req_json["state"]
+#     db.session.commit()
+#     if req_json["state"] == 1:
+#         success = Success(id=pleEat.)
+#     pass
+
+
+# class Success(db.Model):  # "寻味道"成功明细表
+#     id = db.Column(db.Integer, primary_key=True)  # 请求标识
+#     userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 发布用户标识
+#     userId2 = db.Column(db.Integer, db.ForeignKey("users.id"))  # 响应用户标识
+#     date = db.Column(db.DateTime, default=datetime.now)  # 达成日期
+#     fee = db.Column(db.Integer)  # 发布者支付中介费
+#     fee2 = db.Column(db.Integer)  # 响应者支付中介费
+
+# 点击 确认修改请品鉴信息的按钮
+# @api.route("pleEat/modify", methods=['POST'])
+# @auth.login_required
+# def modify_pleEat():
+#     req_json = request.get_json()
+    
 
 
 # class PleEat(db.Model):  # 请品鉴表
