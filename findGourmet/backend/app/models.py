@@ -418,12 +418,22 @@ class PleEat(db.Model):  # 请品鉴表
 
 
 class Success(db.Model):  # "寻味道"成功明细表
+
+    __tablename__ = "success"
     id = db.Column(db.Integer, primary_key=True)  # 请求标识
     userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 发布用户标识
+    user1 = db.relationship("User", backref="publisher", foreign_keys=[userId])
+
     userId2 = db.Column(db.Integer, db.ForeignKey("users.id"))  # 响应用户标识
+    user2 = db.relationship("User", backref="commenter", foreign_keys=[userId2])
     date = db.Column(db.DateTime, default=datetime.now)  # 达成日期
     fee = db.Column(db.Integer)  # 发布者支付中介费
     fee2 = db.Column(db.Integer)  # 响应者支付中介费
+
+    def __init__(self, userid1, userid2) -> None:
+        super().__init__()
+        self.user1 = User.query.filter_by(id=userid1).first()
+        self.user2 = User.query.filter_by(id=userid2).first()
 
 
 # class Post(db.Model):
