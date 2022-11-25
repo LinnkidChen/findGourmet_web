@@ -354,14 +354,15 @@ class FindG(db.Model):
     type = db.Column(db.Unicode(32))  # 寻味道请求类型
     name = db.Column(db.Unicode(64))  # 寻味道请求名称
     description = db.Column(db.UnicodeText)  # 寻味道请求描述
-    people = db.Column(db.Integer, default=0)   # 已响应人数
-    peopleCount = db.Column(db.Integer)     # 想要响应的总人数
+    people = db.Column(db.Integer, default=0)  # 已响应人数
+    peopleCount = db.Column(db.Integer)  # 想要响应的总人数
     price = db.Column(db.Integer)  # 最高单价
     endTime = db.Column(db.DateTime)  # 请求结束时间
     photo = db.Column(db.UnicodeText, nullable=True)
     createTime = db.Column(db.DateTime, default=datetime.now)
     modifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     state = db.Column(db.Unicode(32))
+    photos = db.Column(db.String[128])  # 储存图片的散列值，使用md5加密。用空格分割，最多存储3个。
 
     def to_json(self):
         json_findG = {
@@ -374,10 +375,10 @@ class FindG(db.Model):
             "peopleCount": self.peopleCount,
             "price": self.price,
             "endTime": self.endTime,
-            "photo":self.photo,
+            "photo": self.photo,
             "createTime": self.createTime,
             "modifyTime": self.modifyTime,
-            "state": self.state
+            "state": self.state,
         }
         return json_findG
 
@@ -387,6 +388,7 @@ class FindG(db.Model):
 
     def __repr__(self):
         return "<FindG %r>" % self.name
+
 
 class PleEat(db.Model):  # 请品鉴表
     __tablename__ = "pleEat"
@@ -410,10 +412,10 @@ class PleEat(db.Model):  # 请品鉴表
             "description": self.description,
             "createTime": self.createTime,
             "modifyTime": self.modifyTime,
-            "state": self.state
+            "state": self.state,
         }
         return js_pleEat
-    
+
 
 class Success(db.Model):  # "寻味道"成功明细表
     id = db.Column(db.Integer, primary_key=True)  # 请求标识

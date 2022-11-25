@@ -9,8 +9,11 @@ import datetime
 from werkzeug.utils import secure_filename
 import random
 from findGourmet import basedir
+import base64
+import hashlib
 import os
 from .user import auth
+
 # auth = HTTPBasicAuth()
 
 
@@ -27,6 +30,27 @@ def getType():
     response = jsonify(type_all)
     response.status_code = 200
     return response
+
+
+@api.route("/findG/UploadFindGPhoto/<int:postID>", methods=["POST"])
+@auth.login_required
+def addPhoto(postID):
+    post = FindG.query.filter_by(id=postID).first()
+
+    if post.userId != g.current_user.id:
+        return forbidden("Not your findG post.")
+    number = request.form.get("number")
+    photo = request.files.get("file")
+    photo_hash = hashlib.md5(photo.read()).hexdigest()
+    photo_path = os.path.join(basedir, "UserImages")
+    print(photo_path)
+    photo_path = os.path.join(photo_path, photo_hash + ".jpg")
+    photo.seek(0)
+    photo.save(photo_path)
+    imgs = post.photos
+    imgs = imgs.split()
+    ##TODO 将hash写入post并commit
+    return {"photo_hash": photo_hash}
 
 
 @api.route("/findG/pageFind/<int:index>/<int:rows>")  # 得到所有寻味道请求的分页信息
@@ -228,17 +252,21 @@ def get_pleEat_all(index, rows):
     if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
         return forbidden("Not logged in as an Admin")
     pleEats = PleEat.query.paginate(page=index, per_page=rows).items
-    response_raw = {"total":len(pleEats), "records":[]}
+    response_raw = {"total": len(pleEats), "records": []}
     for pleEat in pleEats:
         findG = FindG.query.filter_by(id=pleEat.findG_id).first()
-        response_raw["records"].append({"id":pleEat.id,
-        "findGId":pleEat.findG_id, 
-        "findGName":findG.name,
-        "userId":pleEat.userId, 
-        "description":pleEat.description,
-        "createTime":pleEat.createTime,
-        "modifyTime":pleEat.modifyTime,
-        "state":pleEat.state})
+        response_raw["records"].append(
+            {
+                "id": pleEat.id,
+                "findGId": pleEat.findG_id,
+                "findGName": findG.name,
+                "userId": pleEat.userId,
+                "description": pleEat.description,
+                "createTime": pleEat.createTime,
+                "modifyTime": pleEat.modifyTime,
+                "state": pleEat.state,
+            }
+        )
     response = jsonify(response_raw)
     response.status_code = 200
     return response
@@ -248,19 +276,24 @@ def get_pleEat_all(index, rows):
 @api.route("pleEat/pageFind/byUser/<int:index>/<int:rows>/<int:userId>")
 @auth.login_required
 def get_my_pleEat(index, rows, userId):
-    pleEats = PleEat.query.filter_by(userId=userId
-    ).paginate(page=index, per_page=rows).items
-    response_raw = {"total":len(pleEats), "records":[]}
+    pleEats = (
+        PleEat.query.filter_by(userId=userId).paginate(page=index, per_page=rows).items
+    )
+    response_raw = {"total": len(pleEats), "records": []}
     for pleEat in pleEats:
         findG = FindG.query.filter_by(id=pleEat.findG_id).first()
-        response_raw["records"].append({"id":pleEat.id,
-        "findGId":pleEat.findG_id, 
-        "findGName":findG.name,
-        "userId":pleEat.userId, 
-        "description":pleEat.description,
-        "createTime":pleEat.createTime,
-        "modifyTime":pleEat.modifyTime,
-        "state":pleEat.state})
+        response_raw["records"].append(
+            {
+                "id": pleEat.id,
+                "findGId": pleEat.findG_id,
+                "findGName": findG.name,
+                "userId": pleEat.userId,
+                "description": pleEat.description,
+                "createTime": pleEat.createTime,
+                "modifyTime": pleEat.modifyTime,
+                "state": pleEat.state,
+            }
+        )
     response = jsonify(response_raw)
     response.status_code = 200
     return response
@@ -270,23 +303,23 @@ def get_my_pleEat(index, rows, userId):
 @api.route("pleEat/pageFind/byfindG/<int:index>/<int:rows>/<int:id>")
 @auth.login_required
 def judge(index, rows, id):
-    pleEats = PleEat.query.filter_by(
-        findG_id=id).paginate(page=index, 
-        per_page=rows).items
-    response_raw = {"total":len(pleEats),"records":[]}
+    pleEats = (
+        PleEat.query.filter_by(findG_id=id).paginate(page=index, per_page=rows).items
+    )
+    response_raw = {"total": len(pleEats), "records": []}
     for pleEat in pleEats:
         findG = FindG.query.filter_by(id=id).first()
         response_raw["records"].append(
             {
-                "id": pleEat.id, # 品鉴响应标识
-                "findGId": pleEat.findG_id, # 味道请求标识
-                "findGName": findG.name, # 寻味道请求名字
-                "userId": pleEat.userId, # 响应用户ID（请品鉴）
-                "description": pleEat.description, # 响应描述（请品鉴）
-                "createTime": pleEat.createTime, # 创建时间（请品鉴）
-                "modifyTime": pleEat.modifyTime, # 修改时间（请品鉴）
-    	        # 状态 0：待处理  1：同意  2：拒绝  3：取消
-                "state":  pleEat.state
+                "id": pleEat.id,  # 品鉴响应标识
+                "findGId": pleEat.findG_id,  # 味道请求标识
+                "findGName": findG.name,  # 寻味道请求名字
+                "userId": pleEat.userId,  # 响应用户ID（请品鉴）
+                "description": pleEat.description,  # 响应描述（请品鉴）
+                "createTime": pleEat.createTime,  # 创建时间（请品鉴）
+                "modifyTime": pleEat.modifyTime,  # 修改时间（请品鉴）
+                # 状态 0：待处理  1：同意  2：拒绝  3：取消
+                "state": pleEat.state,
             }
         )
     response = jsonify(response_raw)
@@ -321,7 +354,6 @@ def judge(index, rows, id):
 # @auth.login_required
 # def modify_pleEat():
 #     req_json = request.get_json()
-    
 
 
 # class PleEat(db.Model):  # 请品鉴表

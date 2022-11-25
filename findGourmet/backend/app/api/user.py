@@ -6,7 +6,7 @@ from ..models import Role, User, db, FindG, PleEat
 from . import api
 from .errors import bad_request, forbidden, unauthorized
 import datetime
-from werkzeug.utils import secure_filename
+
 import random
 from findGourmet import basedir
 import os
