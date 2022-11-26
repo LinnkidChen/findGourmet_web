@@ -20,6 +20,7 @@ class Config:
     FINDG_COMMENTS_PER_PAGE = 30
     TOKEN_EXPIRE = 3600
     ADMIN_PERMISSION = 9
+    POST_PHOTO_NUM = 3
 
     @staticmethod
     def init_app(app):

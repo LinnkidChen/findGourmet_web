@@ -40,16 +40,29 @@ def addPhoto(postID):
     if post.userId != g.current_user.id:
         return forbidden("Not your findG post.")
     number = request.form.get("number")
+    number = int(number)
+    if number >= current_app.config["POST_PHOTO_NUM"]:
+        return bad_request("invalid photo number")
     photo = request.files.get("file")
     photo_hash = hashlib.md5(photo.read()).hexdigest()
-    photo_path = os.path.join(basedir, "UserImages")
-    print(photo_path)
+    photo_path = os.path.join(basedir, "app")
+    photo_path = os.path.join(photo_path, "static")
+    photo_path = os.path.join(photo_path, "UserImages")
     photo_path = os.path.join(photo_path, photo_hash + ".jpg")
+    print(photo_path)
     photo.seek(0)
     photo.save(photo_path)
     imgs = post.photos
+    if imgs == None:
+        imgs = ""
     imgs = imgs.split()
-    ##TODO 将hash写入post并commit
+    if number < len(imgs):
+        imgs[number] = photo_hash
+    else:
+        imgs += [photo_hash]
+    imgs = " ".join(imgs)  # seperator being " "
+    post.photos = imgs
+    db.session.commit()
     return {"photo_hash": photo_hash}
 
 
