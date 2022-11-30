@@ -362,7 +362,7 @@ class FindG(db.Model):
     createTime = db.Column(db.DateTime, default=datetime.now)
     modifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     state = db.Column(db.Unicode(32))
-    photos = db.Column(db.String[128])  # 储存图片的散列值，使用md5加密。用空格分割，最多存储3个。
+    photos = db.Column(db.String(128))  # 储存图片的散列值，使用md5加密。用空格分割，最多存储3个。
 
     def to_json(self):
         json_findG = {

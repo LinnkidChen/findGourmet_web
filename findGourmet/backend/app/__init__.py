@@ -34,5 +34,5 @@ def create_app(config_name='default'):
 
     from .api import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api')
-
+    api_blueprint._got_registered_once = False  # 消除警告
     return app

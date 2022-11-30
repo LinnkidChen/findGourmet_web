@@ -350,9 +350,26 @@ def judge(index, rows, id):
 #     pleEat.state = req_json["state"]
 #     db.session.commit()
 #     if req_json["state"] == 1:
-#         success = Success(id=pleEat.)
+#         success = Success()
 #     pass
 
+
+# 点击 确认修改请品鉴信息的按钮
+@api.route("pleEat/modify", methods=['POST'])
+@auth.login_required
+def modifyPleEat():
+    req_json = request.get_json()   # 获得前端请求
+    pleEat = PleEat.query.filter_by(id=req_json["id"]).first()
+    if req_json["description"] == '':
+        response = bad_request("The pleEat description must be not null!")
+        return response
+    else:
+        pleEat.description = req_json["description"]
+        db.session.commit()
+        response = jsonify({"state":"The pleEat modify success"})
+        response.status_code = 200
+        return response
+    
 
 # class Success(db.Model):  # "寻味道"成功明细表
 #     id = db.Column(db.Integer, primary_key=True)  # 请求标识
