@@ -15,6 +15,12 @@ import os
 from .user import auth
 
 # auth = HTTPBasicAuth()
+def get_photo_path(photo_hash):
+    photo_path = os.path.join(basedir, "app")
+    photo_path = os.path.join(photo_path, "static")
+    photo_path = os.path.join(photo_path, "UserImages")
+    photo_path = os.path.join(photo_path, photo_hash + ".jpg")
+    return photo_path
 
 
 @api.route("/findG/getType")  # 获取寻味道请求类型
@@ -45,11 +51,8 @@ def addPhoto(postID):
         return bad_request("invalid photo number")
     photo = request.files.get("file")
     photo_hash = hashlib.md5(photo.read()).hexdigest()
-    photo_path = os.path.join(basedir, "app")
-    photo_path = os.path.join(photo_path, "static")
-    photo_path = os.path.join(photo_path, "UserImages")
-    photo_path = os.path.join(photo_path, photo_hash + ".jpg")
-    print(photo_path)
+    photo_path = get_photo_path(photo_hash)
+    # print(photo_path)
     photo.seek(0)
     photo.save(photo_path)
     imgs = post.photos
@@ -64,6 +67,11 @@ def addPhoto(postID):
     post.photos = imgs
     db.session.commit()
     return {"photo_hash": photo_hash}
+
+
+@api.route("/findG/delGraphByLocation")
+def del_photo():
+    pass
 
 
 @api.route("/findG/pageFind/<int:index>/<int:rows>")  # 得到所有寻味道请求的分页信息
@@ -355,21 +363,21 @@ def judge(index, rows, id):
 
 
 # 点击 确认修改请品鉴信息的按钮
-@api.route("pleEat/modify", methods=['POST'])
+@api.route("pleEat/modify", methods=["POST"])
 @auth.login_required
 def modifyPleEat():
-    req_json = request.get_json()   # 获得前端请求
+    req_json = request.get_json()  # 获得前端请求
     pleEat = PleEat.query.filter_by(id=req_json["id"]).first()
-    if req_json["description"] == '':
+    if req_json["description"] == "":
         response = bad_request("The pleEat description must be not null!")
         return response
     else:
         pleEat.description = req_json["description"]
         db.session.commit()
-        response = jsonify({"state":"The pleEat modify success"})
+        response = jsonify({"state": "The pleEat modify success"})
         response.status_code = 200
         return response
-    
+
 
 # class Success(db.Model):  # "寻味道"成功明细表
 #     id = db.Column(db.Integer, primary_key=True)  # 请求标识
