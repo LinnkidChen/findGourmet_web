@@ -358,7 +358,7 @@ class FindG(db.Model):
     peopleCount = db.Column(db.Integer)  # 想要响应的总人数
     price = db.Column(db.Integer)  # 最高单价
     endTime = db.Column(db.DateTime)  # 请求结束时间
-    photo = db.Column(db.UnicodeText, nullable=True)
+    # photo = db.Column(db.UnicodeText, nullable=True)
     createTime = db.Column(db.DateTime, default=datetime.now)
     modifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     state = db.Column(db.Unicode(32))
@@ -375,10 +375,11 @@ class FindG(db.Model):
             "peopleCount": self.peopleCount,
             "price": self.price,
             "endTime": self.endTime,
-            "photo": self.photo,
+            # "photo": self.photo,
             "createTime": self.createTime,
             "modifyTime": self.modifyTime,
             "state": self.state,
+            "photos": self.photos.split(),
         }
         return json_findG
 
