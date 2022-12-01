@@ -45,13 +45,19 @@ def addPhoto(postID):
 
     if post.userId != g.current_user.id:
         return forbidden("Not your findG post.")
-    number = request.form.get("number")
-    number = int(number)
-    if number >= current_app.config["POST_PHOTO_NUM"]:
-        return bad_request("invalid photo number")
+    # number = request.form.get("number")
+    # number = int(number)
+    if (
+        post.photos is not None
+        and len(post.photos.split()) >= current_app.config["POST_PHOTO_NUM"]
+    ):
+        return bad_request("photo number exceed limit.")
     photo = request.files.get("file")
-    photo_hash = hashlib.md5(photo.read()).hexdigest()
+    photo_hash = hashlib.md5(
+        photo.read() + str(g.current_user.id).encode("utf-8")
+    ).hexdigest()
     photo_path = get_photo_path(photo_hash)
+
     # print(photo_path)
     photo.seek(0)
     photo.save(photo_path)
@@ -59,9 +65,10 @@ def addPhoto(postID):
     if imgs == None:
         imgs = ""
     imgs = imgs.split()
-    if number < len(imgs):
-        imgs[number] = photo_hash
-    else:
+    # if number < len(imgs):
+    #     imgs[number] = photo_hash
+    # else:
+    if photo_hash not in imgs:
         imgs += [photo_hash]
     imgs = " ".join(imgs)  # seperator being " "
     post.photos = imgs
@@ -69,9 +76,27 @@ def addPhoto(postID):
     return {"photo_hash": photo_hash}
 
 
-@api.route("/findG/delGraphByLocation")
+@api.route("/findG/delGraphByLocation", methods=["POST"])
+@auth.login_required
 def del_photo():
-    pass
+    req = request.get_json()
+    loc = req["location"]
+    postid = req["postid"]
+
+    post = FindG.query.filter_by(id=postid).first()
+    if post.userId != g.current_user.id:
+        return forbidden("Not your post.")
+    imgs = post.photos
+    imgs = imgs.split()
+    imgs = [img for img in imgs if img != loc]
+    imgs = " ".join(imgs)
+    post.photos = imgs
+    db.session.commit()
+
+    os.remove(get_photo_path(loc))
+    response = jsonify({})
+    response.status_code = 200
+    return response
 
 
 @api.route("/findG/pageFind/<int:index>/<int:rows>")  # 得到所有寻味道请求的分页信息
