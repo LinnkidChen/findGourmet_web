@@ -404,6 +404,20 @@ def modifyPleEat():
         return response
 
 
+# 点击 删除请品鉴信息按钮
+@api.route("pleEat/deleteById/<int:id>", methods=['POST'])
+@auth.login_required
+def delPleEat(id):
+    pleEat = PleEat.query.get(id)
+    if pleEat == None:
+        response = bad_request("This pleEat does not exist")
+        return response
+    db.session.delete(pleEat)
+    db.session.commit()
+    response = jsonify({"state":"This pleEat delete success"})
+    response.status_code = 200
+    return response
+
 # class Success(db.Model):  # "寻味道"成功明细表
 #     id = db.Column(db.Integer, primary_key=True)  # 请求标识
 #     userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 发布用户标识
