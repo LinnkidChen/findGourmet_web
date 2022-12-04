@@ -10,6 +10,8 @@ from flask import current_app, request, url_for
 from flask_login import UserMixin, AnonymousUserMixin
 from app.exceptions import ValidationError
 from . import db, login_manager
+from dateutil.relativedelta import relativedelta
+from itertools import product
 
 # TODO need modification,copied from flasky
 class Permission:
@@ -363,6 +365,7 @@ class FindG(db.Model):
     modifyTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     state = db.Column(db.Unicode(32))
     photos = db.Column(db.String(128))  # 储存图片的散列值，使用md5加密。用空格分割，最多存储3个。
+    author = db.relationship("User", backref=db.backref("posts"))
 
     def to_json(self):
         json_findG = {
@@ -403,6 +406,7 @@ class PleEat(db.Model):  # 请品鉴表
         db.DateTime, default=datetime.now, onupdate=datetime.now
     )  # 修改时间
     state = db.Column(db.Integer)  # 状态
+    FindGpost = db.relationship("FindG", backref=db.backref("PleEats"))
 
     def to_json(self):
         js_pleEat = {
@@ -441,12 +445,20 @@ class Success(db.Model):  # "寻味道"成功明细表
     date = db.Column(db.DateTime, default=datetime.now)  # 达成日期
     fee = db.Column(db.Integer)  # 发布者支付中介费
     fee2 = db.Column(db.Integer)  # 响应者支付中介费
+    cityName = db.Column(db.Unicode(64))
+    Date = db.Column(db.DateTime)
+    type = db.Column(db.Unicode(32))  # 寻味道请求类型
 
-    def __init__(self, userid1, commentorIds) -> None:
+    def __init__(
+        self,
+        userid1,
+        commentorIds,
+    ) -> None:
         super().__init__()
         self.user1 = User.query.filter_by(id=userid1).first()
         for commentorId in commentorIds:
             self.commentors.append(User.query.filter_by(id=commentorId).first())
+        self.cityName = self.user1.cityName
 
     def __repr__(self):
         return f"Success {self.user1.username} {self.id}"
