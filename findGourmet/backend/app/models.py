@@ -459,6 +459,7 @@ class Success(db.Model):  # "寻味道"成功明细表
         for commentorId in commentorIds:
             self.commentors.append(User.query.filter_by(id=commentorId).first())
         self.cityName = self.user1.cityName
+        # 需要一些update
 
     def __repr__(self):
         return f"Success {self.user1.username} {self.id}"
