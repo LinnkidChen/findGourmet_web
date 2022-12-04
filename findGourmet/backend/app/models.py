@@ -431,7 +431,7 @@ class Success(db.Model):  # "寻味道"成功明细表
     id = db.Column(db.Integer, primary_key=True)  # 请求标识
     userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 发布用户标识
     user1 = db.relationship("User", backref="published", foreign_keys=[userId])
-
+    userId2 = db.Column(db.Integer, db.ForeignKey("users.id"))
     commentors = db.relationship(
         "User",
         secondary=Success_Commentor,
@@ -450,6 +450,62 @@ class Success(db.Model):  # "寻味道"成功明细表
 
     def __repr__(self):
         return f"Success {self.user1.username} {self.id}"
+
+
+class FeeSummary(db.Model):
+    # 根据每天，城市，类别划分计算总的钱
+
+    __tablename__ = "feeSummary"
+    id = db.Column(db.Integer, primary_key=True)
+    cityName = db.Column(db.Unicode(64))
+    totalFee = db.Column(db.Integer, default=0)
+    Date = db.Column(db.DateTime)
+    type = db.Column(db.Unicode(32))  # 寻味道请求类型
+    modTime = db.Column(db.DateTime)
+
+    def __init__(self, cityName, Date, type):
+        if (
+            FeeSummary.query.filter_by(cityName=cityName, Date=Date, type=type).first()
+            is not None
+        ):
+            raise Exception("already exist")
+        else:
+            self.cityName = cityName
+            self.Date = Date
+            self.sum_all_fees()
+
+    def sum_all_fees(self):
+
+        tickets = (
+            Success.query.filter_by(cityName=self.cityName, type=self.type)
+            .filter(Success.date >= self.Date)
+            .filter(Success.date < self.Date + relativedelta(days=+1))
+        ).all()
+        sum = 0
+        for ticket in tickets:
+            sum += ticket.fee
+            sum += ticket.fee2
+        self.totalFee = sum
+
+    @staticmethod
+    # TODO 没写完
+    def create_fee_summary():
+        all_summary = FeeSummary.query.all()
+        all_city = User.query.filter(User.posts).all()
+        all_city = [user.city for user in all_city]
+        all_type = FindG.query.with_entities(FindG.type).distinct().all()
+        all_type = [type[0] for type in all_type]
+        all_dates = FindG.query.with_entities(FindG.modifyTime).distinct().all()
+        all_dates = [date[0] for date in all_dates]
+        unique_dates = []
+        for date in all_dates:
+            tmp = datetime(date.year, date.month, date.day)
+            if tmp not in unique_dates:
+                unique_dates += [tmp]
+        for type, city, date in product(all_type, all_city, all_dates):
+            posts = Success.query.filter_by(type=type, cityName=city).filter()
+        for summary in all_summary:
+            db.session.delete(summary)
 
 
 # class Post(db.Model):
