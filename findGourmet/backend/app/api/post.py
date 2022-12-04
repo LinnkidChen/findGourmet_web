@@ -38,6 +38,17 @@ def getType():
     return response
 
 
+@api.route("/findG/getGraphByFindGId/<int:postID>", methods=["GET"])
+def getFindGGraph(postID):
+    post = FindG.query.filter_by(id=postID).first()
+    if post == None:
+        return bad_request("post not exitst")
+    else:
+        return jsonify(
+            {"data": [{"data": photo} for photo in post.to_json()["photos"]]}
+        )
+
+
 @api.route("/findG/UploadFindGPhoto/<int:postID>", methods=["POST"])
 @auth.login_required
 def addPhoto(postID):
