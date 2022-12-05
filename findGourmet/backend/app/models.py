@@ -493,7 +493,7 @@ class FeeSummary(db.Model):
             self.sum_all_fees()
 
     def sum_all_fees(self):
-
+        # FIXME 待测试
         tickets = (
             Success.query.filter_by(cityName=self.cityName, type=self.type)
             .filter(Success.date >= self.date)
@@ -508,6 +508,7 @@ class FeeSummary(db.Model):
 
     @staticmethod
     def create_fee_summary():
+        # FIXME：待测试
         all_summary = FeeSummary.query.all()
         all_city = User.query.filter(User.posts).all()
         all_city = [user.city for user in all_city]
