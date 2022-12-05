@@ -385,14 +385,15 @@ def judge(index, rows, id):
 
 
 # TODO 同意/拒绝请求
-@api.route("pleEat/modifyState", methods=['POST'])
+@api.route("pleEat/modifyState", methods=["POST"])
 @auth.login_required
 def modifyState():
     req_json = request.get_json()
     pleEat = PleEat.query.get(req_json["id"])
     if pleEat == None:
-        response = jsonify({"exist state":"The pleEat id " 
-        + str(req_json["id"]) + " does not exist"})
+        response = jsonify(
+            {"exist state": "The pleEat id " + str(req_json["id"]) + " does not exist"}
+        )
         return response
     pleEat.state = req_json["state"]
     db.session.commit()
@@ -414,9 +415,9 @@ def modifyState():
             # prefix = success1.date
             # response = jsonify({"1":"su"})
             # return response
-            
-    else:   # 拒绝
-        response = jsonify({"state":"The pleEat already be refused"})
+
+    else:  # 拒绝
+        response = jsonify({"state": "The pleEat already be refused"})
         return response
 
 
@@ -438,7 +439,7 @@ def modifyPleEat():
 
 
 # 点击 删除请品鉴信息按钮
-@api.route("pleEat/deleteById/<int:id>", methods=['POST'])
+@api.route("pleEat/deleteById/<int:id>", methods=["POST"])
 @auth.login_required
 def delPleEat(id):
     pleEat = PleEat.query.get(id)
@@ -447,9 +448,10 @@ def delPleEat(id):
         return response
     db.session.delete(pleEat)
     db.session.commit()
-    response = jsonify({"state":"This pleEat delete success"})
+    response = jsonify({"state": "This pleEat delete success"})
     response.status_code = 200
     return response
+
 
 # class Success(db.Model):  # "寻味道"成功明细表
 

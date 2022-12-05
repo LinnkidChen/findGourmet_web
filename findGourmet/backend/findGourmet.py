@@ -6,7 +6,7 @@ from flask_migrate import Migrate
 from app import create_app, db
 
 # from app.models import User, Follow, Role, Permission, Post, Comment
-from app.models import User, Role, Permission, FindG, PleEat
+from app.models import User, Role, Permission, FindG, PleEat, Success, FeeSummary
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -17,5 +17,12 @@ migrate = Migrate(app, db, render_as_batch=False)
 @app.shell_context_processor
 def make_shell_context():
     return dict(
-        db=db, User=User, Role=Role, Permission=Permission, FindG=FindG, PleEat=PleEat
+        db=db,
+        User=User,
+        Role=Role,
+        Permission=Permission,
+        FindG=FindG,
+        PleEat=PleEat,
+        Success=Success,
+        FeeSummary=FeeSummary,
     )

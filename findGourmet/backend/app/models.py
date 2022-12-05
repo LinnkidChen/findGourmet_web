@@ -459,6 +459,7 @@ class Success(db.Model):  # "寻味道"成功明细表
         super().__init__()
         self.id = id
         self.findGPost = FindG.query.filter_by(id=id).first()
+        self.findGId = id
         self.user1 = User.query.filter_by(id=userid1).first()
         for commentorId in commentorIds:
             self.commentors.append(User.query.filter_by(id=commentorId).first())
@@ -495,17 +496,17 @@ class FeeSummary(db.Model):
 
         tickets = (
             Success.query.filter_by(cityName=self.cityName, type=self.type)
-            .filter(Success.date >= self.Date)
-            .filter(Success.date < self.Date + relativedelta(days=+1))
+            .filter(Success.date >= self.date)
+            .filter(Success.date < self.date + relativedelta(days=+1))
         ).all()
         sum = 0
         for ticket in tickets:
             sum += ticket.fee
             sum += ticket.fee2
         self.totalFee = sum
+        db.session.commit()
 
     @staticmethod
-    # TODO 没写完
     def create_fee_summary():
         all_summary = FeeSummary.query.all()
         all_city = User.query.filter(User.posts).all()
@@ -515,14 +516,28 @@ class FeeSummary(db.Model):
         all_dates = FindG.query.with_entities(FindG.modifyTime).distinct().all()
         all_dates = [date[0] for date in all_dates]
         unique_dates = []
+        feesums = []
         for date in all_dates:
             tmp = datetime(date.year, date.month, date.day)
             if tmp not in unique_dates:
                 unique_dates += [tmp]
         for type, city, date in product(all_type, all_city, all_dates):
-            posts = Success.query.filter_by(type=type, cityName=city).filter()
+            posts = (
+                Success.query.filter_by(type=type, cityName=city)
+                .filter(Success.date >= date)
+                .filter(Success.date < date + relativedelta(days=+1))
+            )
+            costsum = 0
+            for post in posts:
+                costsum += post.fee
+                costsum += post.fee2
+            feesum = FeeSummary(city, date, type)
+            feesum.totalFee = costsum
+            feesums += [feesum]
         for summary in all_summary:
             db.session.delete(summary)
+        db.session.add_all(feesums)
+        db.session.commit()
 
 
 # class Post(db.Model):
