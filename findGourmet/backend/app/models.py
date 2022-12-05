@@ -451,14 +451,17 @@ class Success(db.Model):  # "寻味道"成功明细表
 
     def __init__(
         self,
+        id,
         userid1,
         commentorIds,
     ) -> None:
         super().__init__()
+        self.id = id
         self.user1 = User.query.filter_by(id=userid1).first()
         for commentorId in commentorIds:
             self.commentors.append(User.query.filter_by(id=commentorId).first())
         self.cityName = self.user1.cityName
+        
         # 需要一些update
 
     def __repr__(self):
@@ -474,7 +477,7 @@ class FeeSummary(db.Model):
     totalFee = db.Column(db.Integer, default=0)
     Date = db.Column(db.DateTime)
     type = db.Column(db.Unicode(32))  # 寻味道请求类型
-    modTime = db.Column(db.DateTime)
+    modTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     def __init__(self, cityName, Date, type):
         if (

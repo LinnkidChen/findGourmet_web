@@ -2,7 +2,7 @@ from flask import current_app, g, jsonify, request
 from flask_httpauth import HTTPBasicAuth
 import json
 
-from ..models import Role, User, db, FindG, PleEat, Success
+from ..models import Role, User, db, FindG, PleEat, Success, FeeSummary
 from . import api
 from .errors import bad_request, forbidden, unauthorized
 import datetime
@@ -384,18 +384,40 @@ def judge(index, rows, id):
     return response
 
 
-# # TODO 同意/拒绝请求
-# @api.route("pleEat/modifyState", methods=['POST'])
-# @auth.login_required
-# def modifyState():
-#     req_json = request.get_json()
-#     pleEat = PleEat.query.filter_by(
-#         id=req_json["id"]).first()
-#     pleEat.state = req_json["state"]
-#     db.session.commit()
-#     if req_json["state"] == 1:
-#         success = Success()
-#     pass
+# TODO 同意/拒绝请求
+@api.route("pleEat/modifyState", methods=['POST'])
+@auth.login_required
+def modifyState():
+    req_json = request.get_json()
+    pleEat = PleEat.query.get(req_json["id"])
+    if pleEat == None:
+        response = jsonify({"exist state":"The pleEat id " 
+        + str(req_json["id"]) + " does not exist"})
+        return response
+    pleEat.state = req_json["state"]
+    db.session.commit()
+    if req_json["state"] == 1:  # 只可能为1或2，1表示"同意"
+        success = Success.query.get(pleEat.findG_id)
+        if success == None:
+            findG = FindG.query.get(pleEat.findG_id)
+            success1 = Success(findG.id, findG.userId, [pleEat.userId])
+            # success1.id = findG.id
+            success1.fee = 3
+            success1.fee2 = 1
+            db.session.add(success1)
+            findG.people += 1
+            db.session.commit()
+        else:
+            if findG.people + 1 == findG.peopleCount:
+                findG.people += 1
+                success.commentors.append(pleEat.userId)
+            # prefix = success1.date
+            # response = jsonify({"1":"su"})
+            # return response
+            
+    else:   # 拒绝
+        response = jsonify({"state":"The pleEat already be refused"})
+        return response
 
 
 # 点击 确认修改请品鉴信息的按钮
@@ -430,12 +452,24 @@ def delPleEat(id):
     return response
 
 # class Success(db.Model):  # "寻味道"成功明细表
+
+#     __tablename__ = "success"
 #     id = db.Column(db.Integer, primary_key=True)  # 请求标识
 #     userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 发布用户标识
-#     userId2 = db.Column(db.Integer, db.ForeignKey("users.id"))  # 响应用户标识
+#     user1 = db.relationship("User", backref="published", foreign_keys=[userId])
+#     userId2 = db.Column(db.Integer, db.ForeignKey("users.id"))
+#     commentors = db.relationship(
+#         "User",
+#         secondary=Success_Commentor,
+#         backref=db.backref("commentor", lazy="dynamic"),
+#         lazy="dynamic",
+#     )
 #     date = db.Column(db.DateTime, default=datetime.now)  # 达成日期
 #     fee = db.Column(db.Integer)  # 发布者支付中介费
 #     fee2 = db.Column(db.Integer)  # 响应者支付中介费
+#     cityName = db.Column(db.Unicode(64))
+#     Date = db.Column(db.DateTime)
+#     type = db.Column(db.Unicode(32))  # 寻味道请求类型
 
 # 点击 确认修改请品鉴信息的按钮
 # @api.route("pleEat/modify", methods=['POST'])
