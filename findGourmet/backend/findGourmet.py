@@ -11,9 +11,11 @@ from app.models import User, Role, Permission, FindG, PleEat
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = create_app(os.getenv("FLASK_CONFIG") or "default")
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, render_as_batch=False)
 
 # save time to set User as FindG.user when operating database commandshell
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, User=User, Role=Role, Permission=Permission, FindG=FindG, PleEat=PleEat)
+    return dict(
+        db=db, User=User, Role=Role, Permission=Permission, FindG=FindG, PleEat=PleEat
+    )

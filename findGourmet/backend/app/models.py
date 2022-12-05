@@ -366,6 +366,7 @@ class FindG(db.Model):
     state = db.Column(db.Unicode(32))
     photos = db.Column(db.String(128))  # 储存图片的散列值，使用md5加密。用空格分割，最多存储3个。
     author = db.relationship("User", backref=db.backref("posts"))
+    successPosts = db.relationship("Success", backref="FindGPosts")
 
     def to_json(self):
         json_findG = {
@@ -433,6 +434,7 @@ class Success(db.Model):  # "寻味道"成功明细表
 
     __tablename__ = "success"
     id = db.Column(db.Integer, primary_key=True)  # 请求标识
+    findGId = db.Column(db.Integer, db.ForeignKey("findG.id"))
     userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 发布用户标识
     user1 = db.relationship("User", backref="published", foreign_keys=[userId])
     userId2 = db.Column(db.Integer, db.ForeignKey("users.id"))
@@ -446,7 +448,6 @@ class Success(db.Model):  # "寻味道"成功明细表
     fee = db.Column(db.Integer)  # 发布者支付中介费
     fee2 = db.Column(db.Integer)  # 响应者支付中介费
     cityName = db.Column(db.Unicode(64))
-    Date = db.Column(db.DateTime)
     type = db.Column(db.Unicode(32))  # 寻味道请求类型
 
     def __init__(
@@ -457,12 +458,12 @@ class Success(db.Model):  # "寻味道"成功明细表
     ) -> None:
         super().__init__()
         self.id = id
+        self.findGPost = FindG.query.filter_by(id=id).first()
         self.user1 = User.query.filter_by(id=userid1).first()
         for commentorId in commentorIds:
             self.commentors.append(User.query.filter_by(id=commentorId).first())
         self.cityName = self.user1.cityName
-        
-        # 需要一些update
+        self.type = self.findGPost.type
 
     def __repr__(self):
         return f"Success {self.user1.username} {self.id}"

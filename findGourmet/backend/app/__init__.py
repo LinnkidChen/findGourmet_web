@@ -1,4 +1,5 @@
 from flask import Flask
+
 # from flask_bootstrap import Bootstrap
 # from flask_mail import Mail
 from flask_migrate import Migrate
@@ -13,9 +14,10 @@ db = SQLAlchemy()
 pagedown = PageDown()
 
 login_manager = LoginManager()
-login_manager.login_view = 'auth.login'
+login_manager.login_view = "auth.login"
 
-def create_app(config_name='default'):
+
+def create_app(config_name="default"):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
@@ -24,7 +26,7 @@ def create_app(config_name='default'):
     db.init_app(app)
     login_manager.init_app(app)
     pagedown.init_app(app)
-    Migrate(app,db)
+    Migrate(app, db, render_as_batch=False)
 
     # from .main import main as main_blueprint
     # app.register_blueprint(main_blueprint)
@@ -33,6 +35,7 @@ def create_app(config_name='default'):
     # app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
     from .api import api as api_blueprint
-    app.register_blueprint(api_blueprint, url_prefix='/api')
+
+    app.register_blueprint(api_blueprint, url_prefix="/api")
     api_blueprint._got_registered_once = False  # 消除警告
     return app
