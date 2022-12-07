@@ -13,6 +13,7 @@ import base64
 import hashlib
 import os
 from .user import auth
+commentors = []
 
 # auth = HTTPBasicAuth()
 def get_photo_path(photo_hash):
@@ -265,6 +266,7 @@ def addFindG():
         #   "typeId":add_fG.get("typeId")
     }  # 最终的字典,因时间格式传入数据库时要经过转换
     fG_new = FindG(**add_fG_fi)
+    fG_new.state = "待响应"
     db.session.add(fG_new)
     db.session.commit()
     response = jsonify({"state": "findG add success"})
@@ -396,29 +398,49 @@ def modifyState():
         )
         return response
     pleEat.state = req_json["state"]
+    findG = FindG.query.get(pleEat.findG_id)
     db.session.commit()
+    # if findG.state == '待响应':
     if req_json["state"] == 1:  # 只可能为1或2，1表示"同意"
-        success = Success.query.get(pleEat.findG_id)
-        if success == None:
-            findG = FindG.query.get(pleEat.findG_id)
-            success1 = Success(findG.id, findG.userId, [pleEat.userId])
-            # success1.id = findG.id
-            success1.fee = 3
-            success1.fee2 = 1
-            db.session.add(success1)
-            findG.people += 1
+        success = Success(findG.id, 
+        findG.userId, [pleEat.userId])
+        db.session.add(success)
+        db.session.commit()
+        Date_str = datetime.datetime.strftime(
+            success.date, "%Y-%m-%d") + " 00:00:00"
+        Date = datetime.datetime.strptime(
+            Date_str, "%Y-%m-%d %H:%M:%S")
+        user = User.query.get(findG.userId)
+        if (
+            FeeSummary.query.filter_by(
+                cityName=user.cityName, 
+            Date=Date, type=findG.type) != None
+        ):
+            feeSummary_exist = FeeSummary.query.filter_by(
+                cityName=user.cityName, 
+            Date=Date, type=findG.type)
+            feeSummary_exist.totalFee += 4
             db.session.commit()
         else:
-            if findG.people + 1 == findG.peopleCount:
-                findG.people += 1
-                success.commentors.append(pleEat.userId)
-            # prefix = success1.date
-            # response = jsonify({"1":"su"})
-            # return response
+            feeSummary = FeeSummary(user.cityName, 
+            Date, findG.type)
+            db.session.add(feeSummary)
+            db.session.commit()
+        findG.people += 1
+        if findG.people == findG.peopleCount:
+            findG.state = '已完成'
+            pass
+        response = jsonify({"state": "The pleEat already be agreed"})
+        return response
 
     else:  # 拒绝
         response = jsonify({"state": "The pleEat already be refused"})
         return response
+    # elif findG.state == '已完成':
+    #     response = jsonify({"state: The findG already finish! Can't accept pleEat(s)!"})
+    #     return response
+    # elif findG.state == '已取消':
+        
 
 
 # 点击 确认修改请品鉴信息的按钮

@@ -433,9 +433,9 @@ Success_Commentor = db.Table(
 class Success(db.Model):  # "寻味道"成功明细表
 
     __tablename__ = "success"
-    id = db.Column(db.Integer, primary_key=True)  # 请求标识
-    findGId = db.Column(db.Integer, db.ForeignKey("findG.id"))
-    userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 发布用户标识
+    id = db.Column(db.Integer, primary_key=True)  
+    findGId = db.Column(db.Integer, db.ForeignKey("findG.id"))  # 请求标识
+    userId = db.Column(db.Integer, db.ForeignKey("users.id"))   # 发布用户标识
     user1 = db.relationship("User", backref="published", foreign_keys=[userId])
     userId2 = db.Column(db.Integer, db.ForeignKey("users.id"))
     commentors = db.relationship(
@@ -457,14 +457,12 @@ class Success(db.Model):  # "寻味道"成功明细表
         commentorIds,
     ) -> None:
         super().__init__()
-        self.id = id
-        self.findGPost = FindG.query.filter_by(id=id).first()
         self.findGId = id
         self.user1 = User.query.filter_by(id=userid1).first()
         for commentorId in commentorIds:
             self.commentors.append(User.query.filter_by(id=commentorId).first())
         self.cityName = self.user1.cityName
-        self.type = self.findGPost.type
+    #    self.type = self.findGPost.type
 
     def __repr__(self):
         return f"Success {self.user1.username} {self.id}"
@@ -490,14 +488,15 @@ class FeeSummary(db.Model):
         else:
             self.cityName = cityName
             self.Date = Date
+            self.type = type
             self.sum_all_fees()
 
     def sum_all_fees(self):
         # FIXME 待测试
         tickets = (
             Success.query.filter_by(cityName=self.cityName, type=self.type)
-            .filter(Success.date >= self.date)
-            .filter(Success.date < self.date + relativedelta(days=+1))
+            .filter(Success.date >= self.Date)
+            .filter(Success.date < self.Date + relativedelta(days=+1))
         ).all()
         sum = 0
         for ticket in tickets:
