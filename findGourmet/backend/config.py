@@ -21,6 +21,7 @@ class Config:
     TOKEN_EXPIRE = 3600
     ADMIN_PERMISSION = 9
     POST_PHOTO_NUM = 3
+    TYPES = ["家乡小吃", "地方特色小馆", "香辣味", "甜酸味", "绝一味菜"]
 
     @staticmethod
     def init_app(app):

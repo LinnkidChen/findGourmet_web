@@ -433,9 +433,9 @@ Success_Commentor = db.Table(
 class Success(db.Model):  # "寻味道"成功明细表
 
     __tablename__ = "success"
-    id = db.Column(db.Integer, primary_key=True)  
+    id = db.Column(db.Integer, primary_key=True)
     findGId = db.Column(db.Integer, db.ForeignKey("findG.id"))  # 请求标识
-    userId = db.Column(db.Integer, db.ForeignKey("users.id"))   # 发布用户标识
+    userId = db.Column(db.Integer, db.ForeignKey("users.id"))  # 发布用户标识
     user1 = db.relationship("User", backref="published", foreign_keys=[userId])
     userId2 = db.Column(db.Integer, db.ForeignKey("users.id"))
     commentors = db.relationship(
@@ -462,6 +462,7 @@ class Success(db.Model):  # "寻味道"成功明细表
         for commentorId in commentorIds:
             self.commentors.append(User.query.filter_by(id=commentorId).first())
         self.cityName = self.user1.cityName
+
     #    self.type = self.findGPost.type
 
     def __repr__(self):
@@ -478,6 +479,7 @@ class FeeSummary(db.Model):
     Date = db.Column(db.DateTime)
     type = db.Column(db.Unicode(32))  # 寻味道请求类型
     modTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+    count = db.Column(db.Integer)
 
     def __init__(self, cityName, Date, type):
         if (
@@ -503,6 +505,7 @@ class FeeSummary(db.Model):
             sum += ticket.fee
             sum += ticket.fee2
         self.totalFee = sum
+        self.count = len(tickets)
         db.session.commit()
 
     @staticmethod
@@ -533,6 +536,7 @@ class FeeSummary(db.Model):
                 costsum += post.fee2
             feesum = FeeSummary(city, date, type)
             feesum.totalFee = costsum
+            feesum.count = len(posts)
             feesums += [feesum]
         for summary in all_summary:
             db.session.delete(summary)

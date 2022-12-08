@@ -6,7 +6,7 @@ from ..models import Role, User, db, FindG, PleEat, Success, FeeSummary
 from dateutil.relativedelta import relativedelta
 from . import api
 from .errors import bad_request, forbidden, unauthorized
-import datetime
+from datetime import datetime
 from werkzeug.utils import secure_filename
 import random
 from findGourmet import basedir
@@ -21,6 +21,15 @@ from .user import auth
 #     print(connection)
 #     print(target.id)
 #     print("insert.......")
+def get_date(input):
+    try:
+        result = datetime.strptime(input, "%Y-%m")  # 2022-01
+    except:
+        result = datetime.strptime(input, "%Y-%m-%d")
+
+    return result
+
+
 @db.event.listens_for(Success, "after_insert")
 def success_after_insert(mapper, connection, target):
     t_date = target.date
@@ -45,7 +54,9 @@ def success_after_insert(mapper, connection, target):
 # @db.event.listens_for(Success,"after_update")
 @api.route("/income/getIncomeByDayTimeByType/<start>/<end>")
 def GetIncByDayByType(start, end):
-    pass
+    start = get_date(start)
+    end = get_date(end)
+    types = current_app.config["TYPES"]
 
 
 @api.route("/income/getIncomeByMonthTimeByType/<start>/<end>")
