@@ -493,6 +493,15 @@ class FeeSummary(db.Model):
             self.type = type
             self.sum_all_fees()
 
+    def to_json(self):
+        tmp = {
+            "name": self.type,
+            "money": self.totalFee,
+            "count": self.count,
+            "date": self.date,
+        }
+        return tmp
+
     def sum_all_fees(self):
         # FIXME 待测试
         tickets = (
