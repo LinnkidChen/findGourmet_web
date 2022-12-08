@@ -404,6 +404,9 @@ def modifyState():
     if req_json["state"] == 1:  # 只可能为1或2，1表示"同意"
         success = Success(findG.id, 
         findG.userId, [pleEat.userId])
+        success.fee = 3
+        success.fee2 = 1
+        success.type = findG.type
         db.session.add(success)
         db.session.commit()
         Date_str = datetime.datetime.strftime(
@@ -414,11 +417,11 @@ def modifyState():
         if (
             FeeSummary.query.filter_by(
                 cityName=user.cityName, 
-            Date=Date, type=findG.type) != None
+            Date=Date, type=findG.type).first() != None
         ):
             feeSummary_exist = FeeSummary.query.filter_by(
                 cityName=user.cityName, 
-            Date=Date, type=findG.type)
+            Date=Date, type=findG.type).first()
             feeSummary_exist.totalFee += 4
             db.session.commit()
         else:
@@ -427,9 +430,10 @@ def modifyState():
             db.session.add(feeSummary)
             db.session.commit()
         findG.people += 1
+        
         if findG.people == findG.peopleCount:
             findG.state = '已完成'
-            pass
+        db.session.commit()
         response = jsonify({"state": "The pleEat already be agreed"})
         return response
 
