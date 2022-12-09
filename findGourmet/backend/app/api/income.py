@@ -86,6 +86,7 @@ def GetIncByDayByType(start, end):
                     }
                 ]
         sumlist += [tmplist]
+        i=i+relativedelta(days=1)
     return jsonify(sumlist)
 
 
@@ -104,6 +105,44 @@ def GetIncByDayByType1(start, end):
         for type in types:
             tmps = (
                 FeeSummary.query.filter_by(type=type)
+                .filter(FeeSummary.Date >= i)
+                .filter(FeeSummary.date < (i + relativedelta(months=+1)))
+                .all()
+            )
+            if tmps is None:
+                pass
+            else:
+                citysum = 0
+                count = 0
+                for tmp in tmps:
+                    citysum += tmp.totalFee
+                    count += tmp.count
+                tmplist += [
+                    {
+                        "name": type,
+                        "money": citysum,
+                        "count": count,
+                        "date": datetime.strftime("%Y-%M-%d"),
+                    }
+                ]
+        sumlist += [tmplist]
+        i=i+relativedelta(months=1)
+    return jsonify(sumlist)
+
+
+@api.route("/income/getIncomeByDayTimeByLocation/<start>/<end>/<city>")
+def GetIncByDayByType2(start, end, city):
+    start = get_date(start)
+    end = get_date(end)
+    types = current_app.config["TYPES"]
+    sumlist = []
+    result = []
+    i = start
+    while i <= end:
+        tmplist = []
+        for type in types:
+            tmps = (
+                FeeSummary.query.filter_by(type=type).filter_by(cityName=city)
                 .filter(FeeSummary.Date >= i)
                 .filter(FeeSummary.date < (i + relativedelta(days=+1)))
                 .all()
@@ -125,17 +164,48 @@ def GetIncByDayByType1(start, end):
                     }
                 ]
         sumlist += [tmplist]
+        i=i+relativedelta(days=1)
     return jsonify(sumlist)
 
-
-@api.route("/income/getIncomeByDayTimeByLocation/<start>/<end>/<city>")
-def GetIncByDayByType2(start, end, city):
-    pass
 
 
 @api.route("/income/getIncomeByMonthTimeByLocation/<start>/<end>/<city>")
 def GetIncByDayByType3(start, end, city):
-    pass
 
+    start = get_date(start)
+    end = get_date(end)
+    end = end + relativedelta(months=+1)
+    types = current_app.config["TYPES"]
+    sumlist = []
+    result = []
+    i = start
+    while i <= end:
+        tmplist = []
+        for type in types:
+            tmps = (
+                FeeSummary.query.filter_by(type=type).filter_by(cityName=city)
+                .filter(FeeSummary.Date >= i)
+                .filter(FeeSummary.date < (i + relativedelta(months=+1)))
+                .all()
+            )
+            if tmps is None:
+                pass
+            else:
+                citysum = 0
+                count = 0
+                for tmp in tmps:
+                    citysum += tmp.totalFee
+                    count += tmp.count
+                tmplist += [
+                    {
+                        "location":city,
+                        "money": citysum,
+                        "count": count,
+                        "date": datetime.strftime("%Y-%M-%d"),
+                    }
+                ]
+        sumlist += [tmplist]
+        i=i+relativedelta(months=1)
+    return jsonify(sumlist)
 
 # @api.route("/income/getIncomeByDayTimeByType/")
