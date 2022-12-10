@@ -73,9 +73,9 @@ export default {
                 var qs = require('qs')
                 var data = qs.stringify(this.loginForm)
                 if (kind == 'admin') {
-                    var url = '/api/user/adminLogin/'
+                    var url = '/user/adminLogin/'
                 } else {
-                    var url = '/api/user/login/'
+                    var url = '/user/login/'
                 }
                 var config = {
                     method: 'post',
@@ -95,7 +95,7 @@ export default {
                         // 根据用户名查找用户信息
                         var conf = {
                                 method: 'get',
-                                url: '/api/user/getByUserName/'+that.loginForm.username,
+                                url: '/user/getByUserName/'+that.loginForm.username,
                                 headers: {
                                     'Authorization':"Bearer "+ window.sessionStorage.getItem('token')
                             },
