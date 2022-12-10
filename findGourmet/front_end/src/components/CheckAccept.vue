@@ -41,10 +41,10 @@
 
         <!-- 基本信息 -->
         <el-dialog title="请求者基本信息" :visible.sync="infoVisable" width="50%">
-            <table style="width: 100%" class="myTable">
-                <tr v-for="item in userInfo">
-                    <td class="column" v-if="item">{{ item[0] }}</td>
-                    <td class="column" v-if="item">{{ item[1] }}</td>
+            <table style="width: 100%" class="myTable">
+                <tr v-for="item in userInfo">
+                    <td class="column" v-if="item">{{ item[0] }}</td>
+                    <td class="column" v-if="item">{{ item[1] }}</td>
                 </tr>
             </table>
         </el-dialog>

@@ -58,10 +58,10 @@
                 <el-button type="primary" @click="checkPic()" size="mini" style="margin-bottom: 5px;" icon="el-icon-picture"></el-button>
             </div>
            
-            <table style="width: 100%" class="myTable">
-                <tr v-for="item in call">
-                    <td class="column">{{ item[0] }}</td>
-                    <td class="column">{{ item[1] }}</td>
+            <table style="width: 100%" class="myTable">
+                <tr v-for="item in call">
+                    <td class="column">{{ item[0] }}</td>
+                    <td class="column">{{ item[1] }}</td>
                 </tr>
             </table>
             

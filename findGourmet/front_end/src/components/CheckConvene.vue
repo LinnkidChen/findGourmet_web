@@ -68,10 +68,10 @@
         <p>注：第一个下拉框可以选择查询类型，第二个输入框可以输入要查询的召集令模糊名称。</p>
         <!-- 展示令主信息 -->
         <el-dialog title="令主信息" :visible.sync="infoVisable" width="50%">
-            <table style="width: 100%" class="myTable">
-                <tr v-for="item in userInfo">
-                    <td class="column" v-if="item">{{ item[0] }}</td>
-                    <td class="column" v-if="item">{{ item[1] }}</td>
+            <table style="width: 100%" class="myTable">
+                <tr v-for="item in userInfo">
+                    <td class="column" v-if="item">{{ item[0] }}</td>
+                    <td class="column" v-if="item">{{ item[1] }}</td>
                 </tr>
             </table>
         </el-dialog>
