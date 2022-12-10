@@ -1,5 +1,5 @@
 from flask import current_app, g, jsonify, request
-from flask_httpauth import HTTPBasicAuth
+from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 import json
 
 from ..models import Role, User, db, FindG, PleEat
@@ -11,34 +11,39 @@ import random
 from findGourmet import basedir
 import os
 
-auth = HTTPBasicAuth()
+auth = HTTPTokenAuth(scheme='Bearer')
 
 
 @auth.error_handler
-def auth_error():
-    return unauthorized("Invalid password or User not exist or not logged in")
+def auth_error(status):
+    return "Access Denied", status
 
+# @auth.verify_password
+# def verify_password(username_or_token, password):
+#     print("verifying ", username_or_token, password)
+#     if username_or_token == "cheatToken":
 
-@auth.verify_password
-def verify_password(username_or_token, password):
-    print("verifying ", username_or_token, password)
-    if username_or_token == "cheatToken":
+#         g.current_user = User.query.filter_by(username="john").first()
+#         g.token_used = False
+#         return True
+#     if username_or_token == "":
+#         return False
+#     if password == "":
+#         g.current_user = User.verify_auth_token(username_or_token)
+#         g.token_used = True
+#         return g.current_user is not None
+#     user = User.query.filter_by(username=username_or_token.lower()).first()
+#     if not user:
+#         return False
+#     g.current_user = user
+#     g.token_used = False
+#     return user.verify_password(password)
 
-        g.current_user = User.query.filter_by(username="john").first()
-        g.token_used = False
-        return True
-    if username_or_token == "":
-        return False
-    if password == "":
-        g.current_user = User.verify_auth_token(username_or_token)
-        g.token_used = True
-        return g.current_user is not None
-    user = User.query.filter_by(username=username_or_token.lower()).first()
-    if not user:
-        return False
-    g.current_user = user
-    g.token_used = False
-    return user.verify_password(password)
+@auth.verify_token
+def verify_token(token):
+    g.current_user = User.verify_auth_token(token)
+    g.token_used = True
+    return g.current_user is not None
 
 
 @api.route("/tokens/", methods=["POST"])
@@ -57,14 +62,14 @@ def get_token():
 @api.route("user/login/", methods=["POST"])
 def user_login():
     
-    user_json = request.get_json()
-    # print(user_json)
+    user_json = request.form
+    print(user_json["password"])
     admin = Role.query.filter_by(id=1).first()
     admin = admin.users
-    user = User.query.filter_by(username=user_json.get("username").lower()).first()
+    user = User.query.filter_by(username=user_json["username"].lower()).first()
     if (
         user is not None
-        and user.verify_password(user_json.get("password"))
+        and user.verify_password(user_json["password"])
         and user not in admin
     ):
         g.current_user = user
@@ -78,7 +83,7 @@ def user_login():
         return response
 
     else:
-        if user in admin and user.verify_password(user_json.get("password")):
+        if user in admin and user.verify_password(user_json["password"]):
             return bad_request(
                 "You are an admin, please login via /api/user/adminLogin"
             )
@@ -88,21 +93,22 @@ def user_login():
 
 @api.route("user/adminLogin/", methods=["POST"])
 def admin_user_login():
-    user_json = request.get_json()
+    user_json = request.form
     # print(user_json)
     admin = Role.query.filter_by(id=1).first()
     admin = admin.users
 
     user = User.query.filter_by(
-        username=user_json.get("username").lower(),
+        username=user_json["username"].lower(),
     ).first()
-    if user is not None and user.verify_password(user_json.get("password")):
+    if user is not None and user.verify_password(user_json["password"]):
         if user in admin:
             g.current_user = user
             response = jsonify(
                 {
                     "token": g.current_user.generate_auth_token(),
                     "expiration": current_app.config["TOKEN_EXPIRE"],
+                    
                 }
             )
             response.status_code = 200

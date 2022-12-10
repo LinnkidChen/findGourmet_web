@@ -73,9 +73,9 @@ export default {
                 var qs = require('qs')
                 var data = qs.stringify(this.loginForm)
                 if (kind == 'admin') {
-                    var url = '/api/user/adminLogin'
+                    var url = '/api/user/adminLogin/'
                 } else {
-                    var url = '/api/user/login'
+                    var url = '/api/user/login/'
                 }
                 var config = {
                     method: 'post',
@@ -89,22 +89,23 @@ export default {
                 this.$http(config)
                 .then(function (response) {
                     console.log(response.data, data, url)
-                    if (response.data.code == '200') {
+                    if (response.status == '200') {
                         // 将登陆成功之后的token保存在sessionStorage中 --token只在当前网站打开期间生效,其他接口必须登陆之后才能访问
-                        window.sessionStorage.setItem('token', response.data.data)
+                        window.sessionStorage.setItem('token', response.data.token)
                         // 根据用户名查找用户信息
                         var conf = {
                                 method: 'get',
                                 url: '/api/user/getByUserName/'+that.loginForm.username,
                                 headers: {
-                                    'Authorization': window.sessionStorage.getItem('token')
-                                },
+                                    'Authorization':"Bearer "+ window.sessionStorage.getItem('token')
+                            },
+                                // "Bearer + <token>"
                             }
                         var axios = require('axios');
                         axios(conf)
                         .then(function(response) {
                             console.log(response.data)
-                            if (response.data.code == 200) {
+                            if (response.status == 200) {
                                 that.$router.push('/home')
                                 // 调用方法
                                 console.log(response.data, that.loginForm)
