@@ -20,7 +20,7 @@ dist/
 
 # virtualenv
 # .venv/
-# venv/
+venv1/
 # ENV/
 
 # VSCode settings
