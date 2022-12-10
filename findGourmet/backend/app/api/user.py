@@ -56,6 +56,7 @@ def get_token():
 
 @api.route("user/login/", methods=["POST"])
 def user_login():
+    
     user_json = request.get_json()
     # print(user_json)
     admin = Role.query.filter_by(id=1).first()

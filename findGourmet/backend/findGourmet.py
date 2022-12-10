@@ -12,8 +12,9 @@ from flask_cors import CORS
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = create_app(os.getenv("FLASK_CONFIG") or "default")
+
+
 migrate = Migrate(app, db, render_as_batch=False)
-CORS(app, resources=r'/*')
 
 # save time to set User as FindG.user when operating database commandshell
 @app.shell_context_processor
