@@ -8,7 +8,7 @@ import './plugins/element.js'
 import axios from 'axios'
 
 // 全局路径
-axios.defaults.baseURL = 'http://localhost:9998/'
+axios.defaults.baseURL = 'http://localhost:5000/'
 
 /* axios.interceptors.request.use((config) => {
     console.log(config)
