@@ -258,7 +258,7 @@ def addFindG():
     endTime = datetime.datetime.strptime(add_fG.get("endTime"), "%Y-%m-%d %H:%M:%S")
     add_fG_fi = {
         "userId": add_fG.get("userId"),
-        "type": add_fG.get("type"),
+        "type": add_fG.get("typeName"),
         "name": add_fG.get("name"),
         "description": add_fG.get("description"),
         "peopleCount": add_fG.get("peopleCount"),

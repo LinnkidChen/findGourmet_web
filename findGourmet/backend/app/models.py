@@ -410,7 +410,7 @@ class PleEat(db.Model):  # 请品鉴表
     modifyTime = db.Column(
         db.DateTime, default=datetime.now, onupdate=datetime.now
     )  # 修改时间
-    state = db.Column(db.Integer,default=)  # 状态
+    state = db.Column(db.Integer,default=0)  # 状态
     FindGpost = db.relationship("FindG", backref=db.backref("PleEats"))
 
     def to_json(self):
