@@ -70,7 +70,7 @@
         <el-dialog title="填写请求信息" :visible.sync="requestVisable" width="50%">
             <el-form label-width="120px" style="margin:10px 20px 10px 10px" >
                 <el-form-item label="召集令ID">
-                    <el-input v-model="request.callId" disabled></el-input>
+                    <el-input v-model="request.findG_id" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="请求者ID">
                     <el-input v-model="request.userId" disabled></el-input>
@@ -115,7 +115,7 @@ export default {
             call: [],               // 详细信息数组 
             haveRequest: {},        // 判断是否已经请求，其实这个后端已经完成了
             request: {
-                userId: '',
+                findG_id: '',
                 callId: '',
                 description: ''
             },
