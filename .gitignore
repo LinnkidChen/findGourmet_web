@@ -37,5 +37,6 @@ venv1/
 *.sublime-workspace
 *.sublime-project
 
-*node_modules/*
+**node_modules/*
 /venv
+node_modules/
