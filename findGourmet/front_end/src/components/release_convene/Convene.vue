@@ -85,7 +85,7 @@ export default {
     },
     created() {
         var that = this
-        this.$http.get("/findG/getCallType", {
+        this.$http.get("/findG/getType", {
                 headers: {
                     'Authorization': window.sessionStorage.getItem('token') 
                 }

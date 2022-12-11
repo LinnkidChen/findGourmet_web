@@ -263,7 +263,7 @@ export default {
     async mounted() {
         var axios = require('axios')
         // 获取所有的callIds，这个axios的异步特性真的害死我
-        let response = await this.$http.get('call/pageFind/byUserId/1/20/'+this.$store.state.user.id, {
+        let response = await this.$http.get('findG/pageFind/byUserId/1/20/'+this.$store.state.user.id, {
                             headers: {
                                 'Authorization': window.sessionStorage.getItem('token')
                             }
@@ -315,7 +315,7 @@ export default {
         // 初始化表格信息
         init() {
             var that = this
-            this.$http.get('call/pageFind/byUserId/'+ this.page+'/'+ this.rows+'/'+this.$store.state.user.id, {
+            this.$http.get('findG/pageFind/byUserId/'+ this.page+'/'+ this.rows+'/'+this.$store.state.user.id, {
                                 headers: {
                                     'Authorization': window.sessionStorage.getItem('token')
                                 }
@@ -334,7 +334,7 @@ export default {
         addEditVisable(id) {
             var that = this
             // 获取召集令类型列表
-            this.$http.get("/findG/getCallType", {
+            this.$http.get("/findG/getType", {
                     headers: {
                         'Authorization': window.sessionStorage.getItem('token') 
                     }
