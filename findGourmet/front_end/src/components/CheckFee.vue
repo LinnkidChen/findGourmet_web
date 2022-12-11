@@ -84,7 +84,7 @@ export default {
     created() {
         this.getCityList()
         var that = this
-        this.$http.get("/findG/getCallType", {
+        this.$http.get("/findG/getType", {
                 headers: {
                     'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
                 }
