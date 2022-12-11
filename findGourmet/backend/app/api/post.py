@@ -116,9 +116,11 @@ def del_photo():
 def get_findG_all(index, rows):
     # if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
     #     return forbidden("Not logged in as an Admin")
+    totals=FindG.query.count()
+    
     findGs = FindG.query.paginate(page=index, per_page=rows).items
     response = jsonify(
-        {"total": len(findGs), "records": [findG.to_json() for findG in findGs]}
+        {"total": totals, "records": [findG.to_json() for findG in findGs]}
     )
     response.status_code = 200
     return response
@@ -130,12 +132,14 @@ def get_findG_byInput(index, rows, input):
     if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
         return forbidden("Not logged in as an Admin")
     findGs = (
+        
         FindG.query.filter(FindG.name.like("%" + str(input) + "%"))
         .paginate(page=index, per_page=rows)
         .items
     )
+    totals=FindG.query.filter(FindG.name.like("%" + str(input) + "%")).count()
     response = jsonify(
-        {"total": len(findGs), "records": [findG.to_json() for findG in findGs]}
+        {"total": totals, "records": [findG.to_json() for findG in findGs]}
     )
     response.status_code = 200
     return response
@@ -150,27 +154,33 @@ def get_findG_byType(index, rows, typeId):
     if typeId == 1:
         findGs = (
             FindG.query.filter_by(type="家乡小吃").paginate(page=index, per_page=rows).items
+            
         )
+        totals=FindG.query.filter_by(type="家乡小吃").count()
     elif typeId == 2:
         findGs = (
             FindG.query.filter_by(type="地方特色小馆")
             .paginate(page=index, per_page=rows)
             .items
         )
+        totals=FindG.query.filter_by(type="地方特色小馆").count()
     elif typeId == 3:
         findGs = (
             FindG.query.filter_by(type="香辣味").paginate(page=index, per_page=rows).items
         )
+        totals=indG.query.filter_by(type="香辣味").count()
     elif typeId == 4:
         findGs = (
             FindG.query.filter_by(type="甜酸味").paginate(page=index, per_page=rows).items
         )
+        totals=FindG.query.filter_by(type="甜酸味").count()
     elif typeId == 5:
         findGs = (
             FindG.query.filter_by(type="绝一味菜").paginate(page=index, per_page=rows).items
         )
+        totals=FindG.query.filter_by(type="绝一味菜").count()
     response = jsonify(
-        {"total": len(findGs), "records": [findG.to_json() for findG in findGs]}
+        {"total": totals, "records": [findG.to_json() for findG in findGs]}
     )
     response.status_code = 200
     return response
@@ -191,6 +201,9 @@ def get_findG_byTypeAndName(index, rows, value, input):
             .paginate(page=index, per_page=rows)
             .items
         )
+        totals=FindG.query.filter(
+                FindG.name.like("%" + str(input) + "%"), FindG.type == "家乡小吃"
+            ).count()
     elif value == 2:
         findGs = (
             FindG.query.filter(
@@ -199,6 +212,9 @@ def get_findG_byTypeAndName(index, rows, value, input):
             .paginate(page=index, per_page=rows)
             .items
         )
+        totals=FindG.query.filter(
+                FindG.name.like("%" + str(input) + "%"), FindG.type == "地方特色小馆"
+            ).count()
     elif value == 3:
         findGs = (
             FindG.query.filter(
@@ -207,6 +223,9 @@ def get_findG_byTypeAndName(index, rows, value, input):
             .paginate(page=index, per_page=rows)
             .items
         )
+        totals=FindG.query.filter(
+                FindG.name.like("%" + str(input) + "%"), FindG.type == "香辣味"
+            ).count()
     elif value == 4:
         findGs = (
             FindG.query.filter(
@@ -215,6 +234,9 @@ def get_findG_byTypeAndName(index, rows, value, input):
             .paginate(page=index, per_page=rows)
             .items
         )
+        totals=FindG.query.filter(
+                FindG.name.like("%" + str(input) + "%"), FindG.type == "甜酸味"
+            ).count()
     elif value == 5:
         findGs = (
             FindG.query.filter(
@@ -223,8 +245,11 @@ def get_findG_byTypeAndName(index, rows, value, input):
             .paginate(page=index, per_page=rows)
             .items
         )
+        totals=FindG.query.filter(
+                FindG.name.like("%" + str(input) + "%"), FindG.type == "绝一味菜"
+            ).count()
     response = jsonify(
-        {"total": len(findGs), "records": [findG.to_json() for findG in findGs]}
+        {"total": totals, "records": [findG.to_json() for findG in findGs]}
     )
     response.status_code = 200
     return response
@@ -235,8 +260,9 @@ def get_findG_byTypeAndName(index, rows, value, input):
 @auth.login_required
 def get_findG_byUserId(index, rows, id):
     findGs = FindG.query.filter_by(userId=id).paginate(page=index, per_page=rows).items
+    totals=FindG.query.filter_by(userId=id).count()
     response = jsonify(
-        {"total": len(findGs), "records": [findG.to_json() for findG in findGs]}
+        {"total": totals, "records": [findG.to_json() for findG in findGs]}
     )
     response.status_code = 200
     return response
@@ -311,7 +337,8 @@ def get_pleEat_all(index, rows):
     if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
         return forbidden("Not logged in as an Admin")
     pleEats = PleEat.query.paginate(page=index, per_page=rows).items
-    response_raw = {"total": len(pleEats), "records": []}
+    totals= PleEat.query.count()
+    response_raw = {"total": totals, "records": []}
     for pleEat in pleEats:
         findG = FindG.query.filter_by(id=pleEat.findG_id).first()
         response_raw["records"].append(
@@ -338,7 +365,8 @@ def get_my_pleEat(index, rows, userId):
     pleEats = (
         PleEat.query.filter_by(userId=userId).paginate(page=index, per_page=rows).items
     )
-    response_raw = {"total": len(pleEats), "records": []}
+    totals= PleEat.query.filter_by(userId=userId).count()
+    response_raw = {"total": totals, "records": []}
     for pleEat in pleEats:
         findG = FindG.query.filter_by(id=pleEat.findG_id).first()
         response_raw["records"].append(
@@ -365,7 +393,8 @@ def judge(index, rows, id):
     pleEats = (
         PleEat.query.filter_by(findG_id=id).paginate(page=index, per_page=rows).items
     )
-    response_raw = {"total": len(pleEats), "records": []}
+    totals= PleEat.query.filter_by(findG_id=id).count()
+    response_raw = {"total": totals, "records": []}
     for pleEat in pleEats:
         findG = FindG.query.filter_by(id=id).first()
         response_raw["records"].append(
