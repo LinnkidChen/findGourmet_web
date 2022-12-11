@@ -146,7 +146,7 @@
             <el-table :data="requestData" :header-cell-style="{'text-align':'center'}" 
                       :cell-style="{'text-align':'center'}" border>
                 <el-table-column prop="id" label="请求标识" width="100"></el-table-column>
-                <el-table-column prop="callId" label="召集令ID" width="100"></el-table-column>
+                <el-table-column prop="findGId" label="召集令ID" width="100"></el-table-column>
                 <!-- 这里是不是需要加一个请求者姓名什么的 -->
                 <el-table-column prop="userId" label="请求者ID" width="100"></el-table-column>
                 <el-table-column prop="description" label="请求描述" width="250"></el-table-column>
@@ -155,8 +155,8 @@
                 <el-table-column prop="state" label="状态" width="100"></el-table-column>
                 <el-table-column label="操作" width="300">
                     <template slot-scope='scope'> 
-                        <el-button type="danger" :disabled="scope.row.state != '待处理'" @click="agreeRequest(scope.row.id, scope.row.callId)">同意</el-button>
-                        <el-button type="danger" :disabled="scope.row.state != '待处理'" @click="rejectRequest(scope.row.id, scope.row.callId)">拒绝</el-button>
+                        <el-button type="danger" :disabled="scope.row.state != '待处理'" @click="agreeRequest(scope.row.id, scope.row.findGId)">同意</el-button>
+                        <el-button type="danger" :disabled="scope.row.state != '待处理'" @click="rejectRequest(scope.row.id, scope.row.findGId)">拒绝</el-button>
                         <el-button type="primary" @click="checkInfo(scope.row.userId)">请求者信息</el-button>
                     </template>
                 </el-table-column>
