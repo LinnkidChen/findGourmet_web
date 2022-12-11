@@ -14,9 +14,9 @@
                 <el-select v-model="typeId" placeholder="默认展示全部召集令类型" @change="check($event)">
                     <el-option
                         v-for="item in callOption"
-                        :key="item.callTypeId"
-                        :label="item.callTypeName"
-                        :value="item.callTypeId"
+                        :key="item.findGTypeId"
+                        :label="item.findGTypeName"
+                        :value="item.findGTypeId"
                     >
                     </el-option>
                 </el-select>
@@ -102,7 +102,7 @@ export default {
             srcInitUrl: '',
             srcList: [],
             callOption: [
-                { callTypeId: '', callTypeName: '全部类别'}
+                { findGTypeId: '', findGTypeName: '全部类别'}
             ],
             typeId: '',
 

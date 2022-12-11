@@ -92,7 +92,7 @@ export default {
             axios(config)
             .then((rep) => {
                 console.log('modify', rep.data)
-                if (rep.data.code == 200) {
+                if (rep.status == 200) {
                     Message({
                         showClose: true,
                         type: 'success',

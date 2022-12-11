@@ -55,7 +55,7 @@
                     <el-input v-model="request.id" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="召集令ID">
-                    <el-input v-model="request.findGID" disabled></el-input>
+                    <el-input v-model="request.findGId" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="请求者ID">
                     <el-input v-model="request.userId" disabled></el-input>
