@@ -77,10 +77,10 @@
                 <el-button type="primary" @click="checkPic()" size="mini" style="margin-bottom: 5px;" icon="el-icon-picture"></el-button>
             </div>
             
-            <table style="width: 100%" class="myTable">
-                <tr v-for="item in call">
-                    <td class="column">{{ item[0] }}</td>
-                    <td class="column">{{ item[1] }}</td>
+            <table style="width: 100%" class="myTable">
+                <tr v-for="item in call">
+                    <td class="column">{{ item[0] }}</td>
+                    <td class="column">{{ item[1] }}</td>
                 </tr>
             </table>
         </el-dialog>
@@ -130,7 +130,7 @@ export default {
                     'Authorization': window.sessionStorage.getItem('token') 
                 }
             }).then(function(response) {
-                if(response.data.code != 200) {
+                if(response.status != 200) {
                     return that.$message({showClose: true, message: response.data.message, type: 'warning'})
                 }
                 var data = response.data.data
@@ -217,7 +217,7 @@ export default {
             };
             this.$http(config)
             .then(function (response) {
-                if (response.data.code == 200) {
+                if (response.status == 200) {
                     that.$message({showClose: true, message: response.data.message, type: 'success'})
                     that.init()
                 } else {
@@ -250,7 +250,7 @@ export default {
                 };
                 this.$http(config)
                 .then(function (response) {
-                    if (response.data.code == 200) {
+                    if (response.status == 200) {
                         that.$message({ showClose: true, message: response.data.message, type: 'success' })
                         that.init()
                     } else {
@@ -275,7 +275,7 @@ export default {
                             })
             .then(function(response) {
                 that.call = new Array(11)
-                if (response.data.code == 200) {
+                if (response.status == 200) {
                     Object.getOwnPropertyNames(response.data.data).forEach(function(key){
                         switch(key) {
                             case 'id': that.call[0] =['召集令标识', response.data.data[key]]; break;

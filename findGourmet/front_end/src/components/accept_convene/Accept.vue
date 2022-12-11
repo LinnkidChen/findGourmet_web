@@ -130,7 +130,7 @@ export default {
                 }
         })
         .then(function(response) {
-            if (response.data.code == 200) {
+            if (response.status == 200) {
                 that.callOption = that.callOption.concat(response.data.data)
             } else {
                 that.$message({showClose: true, message: response.data.message, type: 'warning'})
@@ -190,7 +190,7 @@ export default {
                             })
             .then(function(response) {
                 that.call = new Array(11)
-                if (response.data.code == 200) {
+                if (response.status == 200) {
                     Object.getOwnPropertyNames(response.data.data).forEach(function(key){
                         switch(key) {
                             case 'id': that.call[0] =['召集令标识', response.data.data[key]]; break;
@@ -246,7 +246,7 @@ export default {
             };
             this.$http(config)
             .then(function (response) {
-                if (response.data.code == 200) {
+                if (response.status == 200) {
                     that.$message({showClose: true, message: response.data.message, type: 'success'})
                     // that.init()
                     console.log("request success！")
@@ -299,7 +299,7 @@ export default {
                     'Authorization': window.sessionStorage.getItem('token') 
                 }
             }).then(function(response) {
-                if(response.data.code != 200) {
+                if(response.status != 200) {
                     return that.$message({showClose: true, message: response.data.message, type: 'warning'})
                 }
                 var data = response.data.data

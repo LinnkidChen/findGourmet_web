@@ -340,7 +340,7 @@ export default {
                     }
             })
             .then(function(response) {
-                if (response.data.code == 200) {
+                if (response.status == 200) {
                     that.callTypeOption = response.data.data
                 } else {
                     that.$message({showClose: true, message: response.data.message, type: 'warning'})
@@ -358,7 +358,7 @@ export default {
                                 }
                             })
             .then(function(response) { 
-                if (response.data.code == 200) {
+                if (response.status == 200) {
                     that.call = response.data.data 
                     that.getImageList()  // 获取该召集令已经上传的图片
                     that.editVisable = true
@@ -393,7 +393,7 @@ export default {
             };
             this.$http(config)
             .then(function (response) {
-                if (response.data.code == 200) {
+                if (response.status == 200) {
                     // that.$refs.upload.submit()
                     that.$message({showClose: true, message:'修改成功', type: 'success'})
                     that.init()
@@ -432,7 +432,7 @@ export default {
                 };
                 this.$http(config)
                 .then(function (response) {
-                    if (response.data.code == 200) {
+                    if (response.status == 200) {
                         that.$message({ showClose: true, message: response.data.message, type: 'success' })
                         that.init()
                     } else {
@@ -482,7 +482,7 @@ export default {
                                 }
                             })
             .then(function(response) {
-                if (response.data.code != 200) {
+                if (response.status != 200) {
                     return that.$message({showClose: true, message: response.data.message, type: 'warning'})
                 }
                 // console.log(response.data.data.records[0]['state'])
@@ -593,7 +593,7 @@ export default {
                             })
             .then(function(response) {
                 that.userInfo = new Array(7)
-                if (response.data.code == 200) {
+                if (response.status == 200) {
                     Object.getOwnPropertyNames(response.data.data).forEach(function(key){
                         // console.log(key, '---', response.data.data[key])
                         switch(key) {
@@ -625,7 +625,7 @@ export default {
                     'Authorization': window.sessionStorage.getItem('token') 
                 }
             }).then(function(response) {
-                if(response.data.code != 200) {
+                if(response.status != 200) {
                     return that.$message({showClose: true, message: response.data.message, type: 'warning'})
                 }
                 var data = response.data.data
@@ -656,7 +656,7 @@ export default {
                     'Authorization': window.sessionStorage.getItem('token') 
                 }
             }).then(function(response) {
-                if(response.data.code != 200) {
+                if(response.status != 200) {
                     return that.$message({showClose: true, message: response.data.message, type: 'warning'})
                 }
                 var data = response.data.data
@@ -711,7 +711,7 @@ export default {
                 };
                 this.$http(config)
                 .then(function(response) {
-                    if (response.data.code == 200) {
+                    if (response.status == 200) {
                         that.$message({showClose: true, message: response.data.message, type: 'success'})
                     } else {
                         that.$message({showClose: true, message: response.data.message, type: 'warning'})

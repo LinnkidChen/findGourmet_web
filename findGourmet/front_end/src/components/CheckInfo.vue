@@ -148,7 +148,7 @@ export default {
             this.$http(config)
             .then(function(response) {
                 console.log('checkInfo', response.data)
-                if (response.data.code == '400') {
+                if (response.status == '400') {
                     that.isPageShow = true
                     return that.$message({showClose: true, message:response.data.message})
                 }

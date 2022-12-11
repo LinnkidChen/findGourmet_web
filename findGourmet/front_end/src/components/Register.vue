@@ -117,7 +117,7 @@ export default {
         var that = this
         this.$http.get('/user/getDocuments')
         .then(function(response) {
-            if (response.data.code == 200) {
+            if (response.status == 200) {
                 that.documentTypeOption = response.data.data
             } else {
                 that.$message({showClose: true, message: response.data.message, type: 'warning'})
@@ -128,7 +128,7 @@ export default {
         })
         this.$http.get('/user/getCitys')
         .then(function(response) {
-            if (response.data.code == 200) {
+            if (response.status == 200) {
                 that.cityOption = response.data.data
             } else {
                 that.$message({showClose: true, message: response.data.message, type: 'warning'})

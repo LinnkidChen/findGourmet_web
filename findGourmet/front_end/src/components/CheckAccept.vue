@@ -117,7 +117,7 @@ export default {
             .then(function(response) {
                 console.log(response.data.data)
                 that.userInfo = new Array(12)
-                if (response.data.code == 200) {
+                if (response.status == 200) {
                     Object.getOwnPropertyNames(response.data.data).forEach(function(key){
                         // console.log(key, '---', response.data.data[key])
                         switch(key) {

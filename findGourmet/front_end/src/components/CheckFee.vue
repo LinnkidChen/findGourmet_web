@@ -90,7 +90,7 @@ export default {
                 }
         })
         .then(function(response) {
-            if (response.data.code == 200) {
+            if (response.status == 200) {
                 for(var i = 0; i < response.data.data.length; i++) {
                     that.type.push(response.data.data[i]['callTypeName'])
                 }
@@ -275,7 +275,7 @@ export default {
                 this.optionCnt['title']['text'] = this.city + '的成交单数随时间变化折线图'
             }
             
-            if (response.data.code != 200) {
+            if (response.status != 200) {
                 return that.$message({showClose: true, message: response.data.message, type: 'warning'})
             } else {
                 var res = response.data.data
@@ -333,7 +333,7 @@ export default {
             var that = this
             this.$http.get('/user/getCitys')
             .then(function(response) {
-                if (response.data.code == 200) {
+                if (response.status == 200) {
                     that.cityOption = response.data.data
                 } else {
                     that.$message({showClose: true, message: response.data.message, type: 'warning'})

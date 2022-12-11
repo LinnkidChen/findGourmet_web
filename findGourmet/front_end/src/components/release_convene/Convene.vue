@@ -91,7 +91,7 @@ export default {
                 }
         })
         .then(function(response) {
-            if (response.data.code == 200) {
+            if (response.status == 200) {
                 that.callOption = response.data.data
             } else {
                 that.$message({showClose: true, message: response.data.message, type: 'warning'})
@@ -146,7 +146,7 @@ export default {
                 this.$http(config)
                 .then(function (response) {
                     console.log(response.data, that.callForm.typeId, that.callForm.typeName);
-                    if (response.data.code == 200) {
+                    if (response.status == 200) {
                         that.$router.push('/myconvene')
                         window.sessionStorage.setItem('activeNav', '/myconvene')
                         that.$store.commit('call/set_activeNav', '/myconvene')
