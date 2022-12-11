@@ -37,5 +37,5 @@ venv1/
 *.sublime-workspace
 *.sublime-project
 
-/findGourmet/front_end/node_modules
+node_modules/
 /venv
