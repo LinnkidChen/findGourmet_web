@@ -12,8 +12,8 @@
             <el-table :data="tableData" :header-cell-style="{'text-align':'center'}" 
                       :cell-style="{'text-align':'center'}" border>
                 <el-table-column prop="id" label="请求标识" width="100"></el-table-column>
-                <el-table-column prop="callId" label="请求召集令标识" width="150"></el-table-column>
-                <el-table-column prop="callName" label="召集令名字" width="150"></el-table-column>
+                <el-table-column prop="findGId" label="请求召集令标识" width="150"></el-table-column>
+                <el-table-column prop="findGName" label="召集令名字" width="150"></el-table-column>
                 <el-table-column prop="userId" label="请求者ID" width="100"></el-table-column>
                 <el-table-column prop="description" label="请求描述" ></el-table-column>
                 <el-table-column prop="createTime" label="创建请求时间" width="180"></el-table-column>
@@ -22,13 +22,13 @@
                 <el-table-column label="操作" width="220">
                     <template slot-scope='scope'>
                         <el-tooltip effect="dark" :enterable="false" content="修改此条请求" placement="top">
-                            <el-button type="primary" :disabled="scope.row.state == '同意' || scope.row.state == '拒绝'" icon="el-icon-edit" @click="addEditVisable(scope.row.id, scope.row.callId, scope.row.userId, scope.row.description)"></el-button>
+                            <el-button type="primary" :disabled="scope.row.state == '同意' || scope.row.state == '拒绝'" icon="el-icon-edit" @click="addEditVisable(scope.row.id, scope.row.findGId, scope.row.userId, scope.row.description)"></el-button>
                         </el-tooltip>
                         <el-tooltip effect="dark" :enterable="false" content="删除此条请求" placement="top">
                            <el-button type="danger" :disabled="scope.row.state == '同意' || scope.row.state == '拒绝'" icon="el-icon-delete" @click="addDeleteVisable(scope.row.id)"></el-button>
                         </el-tooltip>
                         <el-tooltip effect="dark" :enterable="false" content="查看召集令信息" placement="top">
-                            <el-button type="primary" :disabled="scope.row.state != '同意'" icon="el-icon-chat-dot-square" @click="checkCall(scope.row.callId)"></el-button>
+                            <el-button type="primary" :disabled="scope.row.state != '同意'" icon="el-icon-chat-dot-square" @click="checkCall(scope.row.findGId)"></el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>
@@ -55,7 +55,7 @@
                     <el-input v-model="request.id" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="召集令ID">
-                    <el-input v-model="request.callId" disabled></el-input>
+                    <el-input v-model="request.findGID" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="请求者ID">
                     <el-input v-model="request.userId" disabled></el-input>
@@ -112,8 +112,8 @@ export default {
             request: {
                 id: '',
                 userId: '',
-                callId: '',
-                callName: '',
+                findGId: '',
+                findGName: '',
                 description: ''
             }
         }
@@ -189,10 +189,10 @@ export default {
             })
         },
         // 点击修改请求按钮显示对话框组件
-        addEditVisable(id, callId, userId, des) {
+        addEditVisable(id, findGId, userId, des) {
             this.editVisable = true
             this.request.id = id
-            this.request.callId = callId
+            this.request.findGId = findGId
             this.request.userId = userId
             this.request.description = des
         },

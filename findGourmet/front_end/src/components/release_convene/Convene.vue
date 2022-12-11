@@ -116,11 +116,11 @@ export default {
         showMessage(e) {
             let obj = {};
             obj = this.callOption.find((item)=>{ //这里的callOption就是上面遍历的数据源
-                return item.callTypeId === e;     //筛选出匹配数据
+                return item.findGTypeId === e;     //筛选出匹配数据
             });
-            this.callForm.typeName = obj.callTypeName  // label
+            this.callForm.typeName = obj.findGTypeName  // label
             this.callForm.typeId = e            // value
-            console.log('changeOption', e, obj.callTypeName)
+            console.log('changeOption', e, obj.findGTypeName)
         },
         // 发布召集令
         submit() {

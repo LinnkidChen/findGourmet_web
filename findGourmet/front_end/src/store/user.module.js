@@ -85,7 +85,7 @@ export default {
                 url: '/user/modifyMessage',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': window.sessionStorage.getItem('token')
+                    'Authorization': "Bearer " + window.sessionStorage.getItem('token')
                 },
                 data: JSON.stringify({id: state.id, phoneNumber: state.phoneNumber, introduce: state.introduce, password: state.password}),
             }
