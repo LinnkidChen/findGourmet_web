@@ -12,7 +12,7 @@
                       :cell-style="{'text-align':'center'}" border>
                 <el-table-column prop="id" label="请求标识" width="100"></el-table-column>
                 <el-table-column prop="findGId" label="请求召集令标识" width="150"></el-table-column>
-                <el-table-column prop="callName" label="召集令名字" width="150"></el-table-column>
+                <el-table-column prop="findGName" label="召集令名字" width="150"></el-table-column>
                 <el-table-column prop="userId" label="请求者ID" width="100"></el-table-column>
                 <el-table-column prop="description" label="请求描述" ></el-table-column>
                 <el-table-column prop="createTime" label="创建请求时间" width="180"></el-table-column>
