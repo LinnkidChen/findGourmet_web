@@ -198,7 +198,7 @@ export default {
             preImageUrl: '',
             previewVisible: false,
             fileList: [],
-            baseUrl: 'http://localhost:9998/call/upload/',
+            baseUrl: 'http://localhost:9998/findG/upload/',
             picVisable: false,
             srcInitUrl: '',
             srcList: [],
@@ -334,7 +334,7 @@ export default {
         addEditVisable(id) {
             var that = this
             // 获取召集令类型列表
-            this.$http.get("/call/getCallType", {
+            this.$http.get("/findG/getCallType", {
                     headers: {
                         'Authorization': window.sessionStorage.getItem('token') 
                     }
@@ -352,7 +352,7 @@ export default {
             })
 
             // 获取这个召集令的基本信息
-            this.$http.get(`/call/findById/${id}`,{
+            this.$http.get(`/findG/findById/${id}`,{
                                 headers: {
                                     'Authorization': window.sessionStorage.getItem('token')
                                 }
@@ -384,7 +384,7 @@ export default {
             var that = this
             var config = {
                 method: 'post',
-                url: '/call/modify',
+                url: '/findG/modify',
                 headers: { 
                     'Content-Type': 'application/json',
                     'Authorization': window.sessionStorage.getItem('token')
@@ -424,7 +424,7 @@ export default {
                 console.log(id, 'makesure delete')
                 var config = {
                     method: 'post',
-                    url: '/call/delById/'+id,
+                    url: '/findG/delById/'+id,
                     headers: { 
                         'Content-Type': 'application/json',
                         'Authorization': window.sessionStorage.getItem('token')
@@ -620,7 +620,7 @@ export default {
         // 获取已存在的图片
         getImageList() {
             var that = this
-            this.$http.get('/call/getGraphByCallId/'+this.call.id, {
+            this.$http.get('/findG/getGraphByCallId/'+this.call.id, {
                 headers: {
                     'Authorization': window.sessionStorage.getItem('token') 
                 }
@@ -637,7 +637,7 @@ export default {
                 }
                 // console.log(that.fileList)
             }).catch(function(error) {
-                console.log(error, '/call/getGraphByCallId/'+this.call.id)
+                console.log(error, '/findG/getGraphByCallId/'+this.call.id)
                 return that.$message({showClose: true, message: "请求错误", type: 'error'})
             }) 
         },
@@ -651,7 +651,7 @@ export default {
         showPic(id) {
             var that = this
             that.havePic = true
-            this.$http.get('/call/getGraphByCallId/'+id, {
+            this.$http.get('/findG/getGraphByCallId/'+id, {
                 headers: {
                     'Authorization': window.sessionStorage.getItem('token') 
                 }
@@ -672,7 +672,7 @@ export default {
                 that.srcInitUrl = that.srcList[0]
                 that.picVisable = true
             }).catch(function(error) {
-                console.log(error, '/call/getGraphByCallId/'+this.call.id)
+                console.log(error, '/findG/getGraphByCallId/'+this.call.id)
                 return that.$message({showClose: true, message: "请求错误", type: 'error'})
             })
         },
@@ -702,7 +702,7 @@ export default {
                     });
                 var config = {
                     method: 'post',
-                    url: '/call/delGraphByLocation',
+                    url: '/findG/delGraphByLocation',
                     headers: { 
                         'Authorization': window.sessionStorage.getItem('token'), 
                         'Content-Type': 'application/x-www-form-urlencoded'

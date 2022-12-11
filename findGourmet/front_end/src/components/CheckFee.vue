@@ -84,7 +84,7 @@ export default {
     created() {
         this.getCityList()
         var that = this
-        this.$http.get("/call/getCallType", {
+        this.$http.get("/findG/getCallType", {
                 headers: {
                     'Authorization': window.sessionStorage.getItem('token') 
                 }

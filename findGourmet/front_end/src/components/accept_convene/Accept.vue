@@ -124,7 +124,7 @@ export default {
     },
     created() {
         var that = this
-        this.$http.get("/call/getCallType", {
+        this.$http.get("/findG/getCallType", {
                 headers: {
                     'Authorization': window.sessionStorage.getItem('token') 
                 }
@@ -140,7 +140,7 @@ export default {
             console.log(error)
             that.$message({showClose: true, message: "请求召集令类型列表错误", type: 'error'})
         })
-        this.url = `/call/pageFind/${this.page}/${this.rows}`
+        this.url = `/findG/pageFind/${this.page}/${this.rows}`
         this.getConveneList(this.url)
     },
     methods: {
@@ -169,10 +169,10 @@ export default {
                 this.page = 1
             }
             if(this.typeId != '') {
-                this.url = `/call/pageFind/byType/${this.page}/${this.rows}/${this.typeId}`
+                this.url = `/findG/pageFind/byType/${this.page}/${this.rows}/${this.typeId}`
                 this.getConveneList(this.url)
             } else {
-                this.url = `/call/pageFind/${this.page}/${this.rows}`
+                this.url = `/findG/pageFind/${this.page}/${this.rows}`
                 this.getConveneList(this.url)
             }
         },
@@ -183,7 +183,7 @@ export default {
         // 点击显示详细信息按钮展示信息
         checkInfo(id) {
             var that = this
-            this.$http.get(`/call/findById/${id}`,{
+            this.$http.get(`/findG/findById/${id}`,{
                                 headers: {
                                     'Authorization': window.sessionStorage.getItem('token')
                                 }
@@ -294,7 +294,7 @@ export default {
             var that = this
             that.havePic = true
             // console.log(this.call)
-            this.$http.get('/call/getGraphByCallId/'+this.call[0][1], {
+            this.$http.get('/findG/getGraphByCallId/'+this.call[0][1], {
                 headers: {
                     'Authorization': window.sessionStorage.getItem('token') 
                 }
@@ -315,7 +315,7 @@ export default {
                 that.srcInitUrl = that.srcList[0]
                 that.picVisable = true
             }).catch(function(error) {
-                console.log(error, '/call/getGraphByCallId/'+this.call.id)
+                console.log(error, '/findG/getGraphByCallId/'+this.call.id)
                 return that.$message({showClose: true, message: "请求错误", type: 'error'})
             })
         },

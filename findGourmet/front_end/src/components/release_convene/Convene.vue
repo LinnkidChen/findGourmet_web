@@ -85,7 +85,7 @@ export default {
     },
     created() {
         var that = this
-        this.$http.get("/call/getCallType", {
+        this.$http.get("/findG/getCallType", {
                 headers: {
                     'Authorization': window.sessionStorage.getItem('token') 
                 }
@@ -135,7 +135,7 @@ export default {
 
                 var config = {
                     method: 'post',
-                    url: '/call/add',
+                    url: '/findG/add',
                     headers: { 
                         'Content-Type': 'application/json',
                         'Authorization': window.sessionStorage.getItem('token') 

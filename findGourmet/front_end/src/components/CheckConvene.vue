@@ -98,7 +98,7 @@ export default {
     },
     created() {
         var that = this
-        this.$http.get("/call/getCallType", {
+        this.$http.get("/findG/getCallType", {
                 headers: {
                     'Authorization': window.sessionStorage.getItem('token') 
                 }
@@ -114,7 +114,7 @@ export default {
             console.log(error)
             that.$message({showClose: true, message: "请求错误", type: 'error'})
         })
-        this.url = `/call/pageFind/${this.page}/${this.rows}`
+        this.url = `/findG/pageFind/${this.page}/${this.rows}`
         this.getConveneList(this.url, 'created()')
     },
     methods: {
@@ -142,17 +142,17 @@ export default {
                 this.page = 1
             }
             if(this.input != '' && this.value == '') {
-                this.url = `/call/pageFind/byName/${this.page}/${this.rows}/${this.input}`
+                this.url = `/findG/pageFind/byName/${this.page}/${this.rows}/${this.input}`
                 this.getConveneList(this.url, '模糊名称查找')
             } else if (this.value != '' && this.input == '') {
                 console.log(this.value)
-                this.url = `/call/pageFind/byType/${this.page}/${this.rows}/${this.value}`
+                this.url = `/findG/pageFind/byType/${this.page}/${this.rows}/${this.value}`
                 this.getConveneList(this.url, '类型查找')
             } else if (this.input != '' && this.value != '') {
-                this.url = `/call/pageFind/byTypeAndName/${this.page}/${this.rows}/${this.value}/${this.input}`
+                this.url = `/findG/pageFind/byTypeAndName/${this.page}/${this.rows}/${this.value}/${this.input}`
                 this.getConveneList(this.url, '模糊名称和类型查找')
             } else {
-                this.url = `/call/pageFind/${this.page}/${this.rows}`
+                this.url = `/findG/pageFind/${this.page}/${this.rows}`
                 this.getConveneList(this.url, '所有分页数据')
             }
         },

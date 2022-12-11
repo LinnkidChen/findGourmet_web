@@ -125,7 +125,7 @@ export default {
         checkPic() {
             var that = this
             that.havePic = true
-            this.$http.get('/call/getGraphByCallId/'+this.call[0][1], {
+            this.$http.get('/findG/getGraphByCallId/'+this.call[0][1], {
                 headers: {
                     'Authorization': window.sessionStorage.getItem('token') 
                 }
@@ -146,7 +146,7 @@ export default {
                 that.srcInitUrl = that.srcList[0]
                 that.picVisable = true
             }).catch(function(error) {
-                console.log(error, '/call/getGraphByCallId/'+this.call.id)
+                console.log(error, '/findG/getGraphByCallId/'+this.call.id)
                 return that.$message({showClose: true, message: "请求错误", type: 'error'})
             })
         },
@@ -268,7 +268,7 @@ export default {
         // 点击显示详细信息按钮展示信息
         checkCall(id) {
             var that = this
-            this.$http.get(`/call/findById/${id}`,{
+            this.$http.get(`/findG/findById/${id}`,{
                                 headers: {
                                     'Authorization': window.sessionStorage.getItem('token')
                                 }
