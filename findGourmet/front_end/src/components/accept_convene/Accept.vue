@@ -131,9 +131,9 @@ export default {
         })
         .then(function(response) {
             if (response.status == 200) {
-                that.callOption = that.callOption.concat(response.data.data)
+                that.callOption = that.callOption.concat(response.data)
             } else {
-                that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                that.$message({showClose: true, message: response.message, type: 'warning'})
             }
         })
         .catch(function(error) {
@@ -154,8 +154,8 @@ export default {
                 }
             })
             .then(function(response) {
-                that.tableData = response.data.data.records
-                that.total = response.data.data.total
+                that.tableData = response.data.records
+                that.total = response.data.total
             })
             .catch(function(error) {
                 console.error(error)
@@ -191,19 +191,19 @@ export default {
             .then(function(response) {
                 that.call = new Array(11)
                 if (response.status == 200) {
-                    Object.getOwnPropertyNames(response.data.data).forEach(function(key){
+                    Object.getOwnPropertyNames(response.data).forEach(function(key){
                         switch(key) {
-                            case 'id': that.call[0] =['召集令标识', response.data.data[key]]; break;
-                            case 'userId': that.call[1] = ['发布者ID', response.data.data[key]]; break;
-                            case 'typeName': that.call[2] = ['召集令类型', response.data.data[key]]; break;
-                            case 'name': that.call[3] = ['召集令名称', response.data.data[key]]; break;
-                            case 'description': that.call[4] = ['召集令描述', response.data.data[key]]; break;
-                            case 'people': that.call[5] = ['已召集人数', response.data.data[key]]; break;
-                            case 'peopleCount': that.call[6] = ['召集令总人数', response.data.data[key]]; break;
-                            case 'endTime': that.call[7] = ['召集结束时间', response.data.data[key]]; break;
-                            case 'createTime': that.call[8] = ['召集令创建时间', response.data.data[key]]; break;
-                            case 'modifyTime': that.call[9] = ['召集令修改时间', response.data.data[key]]; break;
-                            case 'stateName': that.call[10] = ['召集令状态', response.data.data[key]]; break;
+                            case 'id': that.call[0] =['召集令标识', response.data[key]]; break;
+                            case 'userId': that.call[1] = ['发布者ID', response.data[key]]; break;
+                            case 'typeName': that.call[2] = ['召集令类型', response.data[key]]; break;
+                            case 'name': that.call[3] = ['召集令名称', response.data[key]]; break;
+                            case 'description': that.call[4] = ['召集令描述', response.data[key]]; break;
+                            case 'people': that.call[5] = ['已召集人数', response.data[key]]; break;
+                            case 'peopleCount': that.call[6] = ['召集令总人数', response.data[key]]; break;
+                            case 'endTime': that.call[7] = ['召集结束时间', response.data[key]]; break;
+                            case 'createTime': that.call[8] = ['召集令创建时间', response.data[key]]; break;
+                            case 'modifyTime': that.call[9] = ['召集令修改时间', response.data[key]]; break;
+                            case 'stateName': that.call[10] = ['召集令状态', response.data[key]]; break;
                             default: break;
                         }
                     })
@@ -247,11 +247,11 @@ export default {
             this.$http(config)
             .then(function (response) {
                 if (response.status == 200) {
-                    that.$message({showClose: true, message: response.data.message, type: 'success'})
+                    that.$message({showClose: true, message: response.message, type: 'success'})
                     // that.init()
                     console.log("request success！")
                 } else {
-                    that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                    that.$message({showClose: true, message: response.message, type: 'warning'})
                 }
             })
             .catch(function (error) {
@@ -300,9 +300,9 @@ export default {
                 }
             }).then(function(response) {
                 if(response.status != 200) {
-                    return that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                    return that.$message({showClose: true, message: response.message, type: 'warning'})
                 }
-                var data = response.data.data
+                var data = response.data
                 if (data.length == 0) {
                     that.havePic = false
                     that.picVisable = true

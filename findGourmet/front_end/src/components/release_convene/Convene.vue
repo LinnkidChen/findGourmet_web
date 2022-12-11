@@ -92,9 +92,9 @@ export default {
         })
         .then(function(response) {
             if (response.status == 200) {
-                that.callOption = response.data.data
+                that.callOption = response.data
             } else {
-                that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                that.$message({showClose: true, message: response.message, type: 'warning'})
             }
         })
         .catch(function(error) {
@@ -145,15 +145,15 @@ export default {
                 var that = this
                 this.$http(config)
                 .then(function (response) {
-                    console.log(response.data, that.callForm.typeId, that.callForm.typeName);
+                    console.log(Response, that.callForm.typeId, that.callForm.typeName);
                     if (response.status == 200) {
                         that.$router.push('/myconvene')
                         window.sessionStorage.setItem('activeNav', '/myconvene')
                         that.$store.commit('call/set_activeNav', '/myconvene')
-                        that.$message({ showClose: true, message: response.data.message,type: 'success'})
+                        that.$message({ showClose: true, message: response.message,type: 'success'})
                         that.uploadVisible = true
                     } else {
-                        that.$message({showClose: true, message:response.data.message, type: 'error'})
+                        that.$message({showClose: true, message:response.message, type: 'error'})
                     }
                 })
                 .catch(function (error) {

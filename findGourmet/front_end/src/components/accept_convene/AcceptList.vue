@@ -131,9 +131,9 @@ export default {
                 }
             }).then(function(response) {
                 if(response.status != 200) {
-                    return that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                    return that.$message({showClose: true, message: response.message, type: 'warning'})
                 }
-                var data = response.data.data
+                var data = response.data
                 if (data.length == 0) {
                     that.havePic = false
                     that.picVisable = true
@@ -159,29 +159,29 @@ export default {
                             })
             .then(function(response) {
                 console.log('acceptList');
-                for(var i = 0; i < response.data.data.records.length; i ++) {
-                    switch (response.data.data.records[i]['state']) {
+                for(var i = 0; i < response.data.records.length; i ++) {
+                    switch (response.data.records[i]['state']) {
                         case 0:
-                            response.data.data.records[i]['state'] = "待处理";
+                            response.data.records[i]['state'] = "待处理";
                             break;
                         case 1:
-                            response.data.data.records[i]['state'] = "同意";
+                            response.data.records[i]['state'] = "同意";
                             break;
                         case 2:
-                            response.data.data.records[i]['state'] = "拒绝";
+                            response.data.records[i]['state'] = "拒绝";
                             break;
                         case 3:
-                            response.data.data.records[i]['state'] = "取消";
+                            response.data.records[i]['state'] = "取消";
                             break;
                         case 4:
-                            response.data.data.records[i]['state'] = "响应中";
+                            response.data.records[i]['state'] = "响应中";
                             break;
                         default:
                             break;
                     }
                 }
-                that.tableData = response.data.data.records
-                that.total = response.data.data.total
+                that.tableData = response.data.records
+                that.total = response.data.total
             })
             .catch(function(error) {
                 console.log(error)
@@ -218,10 +218,10 @@ export default {
             this.$http(config)
             .then(function (response) {
                 if (response.status == 200) {
-                    that.$message({showClose: true, message: response.data.message, type: 'success'})
+                    that.$message({showClose: true, message: response.message, type: 'success'})
                     that.init()
                 } else {
-                    that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                    that.$message({showClose: true, message: response.message, type: 'warning'})
                 }
             })
             .catch(function (error) {
@@ -251,14 +251,14 @@ export default {
                 this.$http(config)
                 .then(function (response) {
                     if (response.status == 200) {
-                        that.$message({ showClose: true, message: response.data.message, type: 'success' })
+                        that.$message({ showClose: true, message: response.message, type: 'success' })
                         that.init()
                     } else {
-                        that.$message({ showClose: true, message: response.data.message, type: 'warning' })
+                        that.$message({ showClose: true, message: response.message, type: 'warning' })
                     }
                 })
                 .catch(function (response) {
-                    that.$message({ showClose: true, message: response.data.message, type: 'error' })
+                    that.$message({ showClose: true, message: response.message, type: 'error' })
                 })
             })
             .catch(() => {
@@ -276,19 +276,19 @@ export default {
             .then(function(response) {
                 that.call = new Array(11)
                 if (response.status == 200) {
-                    Object.getOwnPropertyNames(response.data.data).forEach(function(key){
+                    Object.getOwnPropertyNames(response.data).forEach(function(key){
                         switch(key) {
-                            case 'id': that.call[0] =['召集令标识', response.data.data[key]]; break;
-                            case 'userId': that.call[1] = ['发布者ID', response.data.data[key]]; break;
-                            case 'typeName': that.call[2] = ['召集令类型', response.data.data[key]]; break;
-                            case 'name': that.call[3] = ['召集令名称', response.data.data[key]]; break;
-                            case 'description': that.call[4] = ['召集令描述', response.data.data[key]]; break;
-                            case 'people': that.call[5] = ['已召集人数', response.data.data[key]]; break;
-                            case 'peopleCount': that.call[6] = ['召集令总人数', response.data.data[key]]; break;
-                            case 'endTime': that.call[7] = ['召集结束时间', response.data.data[key]]; break;
-                            case 'createTime': that.call[8] = ['召集令创建时间', response.data.data[key]]; break;
-                            case 'modifyTime': that.call[9] = ['召集令修改时间', response.data.data[key]]; break;
-                            case 'stateName': that.call[10] = ['召集令状态', response.data.data[key]]; break;
+                            case 'id': that.call[0] =['召集令标识', response.data[key]]; break;
+                            case 'userId': that.call[1] = ['发布者ID', response.data[key]]; break;
+                            case 'typeName': that.call[2] = ['召集令类型', response.data[key]]; break;
+                            case 'name': that.call[3] = ['召集令名称', response.data[key]]; break;
+                            case 'description': that.call[4] = ['召集令描述', response.data[key]]; break;
+                            case 'people': that.call[5] = ['已召集人数', response.data[key]]; break;
+                            case 'peopleCount': that.call[6] = ['召集令总人数', response.data[key]]; break;
+                            case 'endTime': that.call[7] = ['召集结束时间', response.data[key]]; break;
+                            case 'createTime': that.call[8] = ['召集令创建时间', response.data[key]]; break;
+                            case 'modifyTime': that.call[9] = ['召集令修改时间', response.data[key]]; break;
+                            case 'stateName': that.call[10] = ['召集令状态', response.data[key]]; break;
                             default: break;
                         }
                     })

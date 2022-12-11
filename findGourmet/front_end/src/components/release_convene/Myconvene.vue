@@ -269,8 +269,8 @@ export default {
                             }
                         })
         
-        for(var i = 0; i < response.data.data.records.length; i ++) {
-            var id = response.data.data.records[i]['id']
+        for(var i = 0; i < response.data.records.length; i ++) {
+            var id = response.data.records[i]['id']
             if (this.ids.indexOf(id) == -1) {
                 this.ids.push(id)
             }
@@ -322,8 +322,8 @@ export default {
                             })
             .then(function(response) {
                 // console.log('convene_show', response.data.data);
-                that.tableData = response.data.data.records
-                that.total = response.data.data.total
+                that.tableData = response.data.records
+                that.total = response.data.total
             })
             .catch(function(error) {
                 console.log(error)
@@ -341,9 +341,9 @@ export default {
             })
             .then(function(response) {
                 if (response.status == 200) {
-                    that.callTypeOption = response.data.data
+                    that.callTypeOption = response.data
                 } else {
-                    that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                    that.$message({showClose: true, message: response.message, type: 'warning'})
                 }
             })
             .catch(function(error) {
@@ -359,7 +359,7 @@ export default {
                             })
             .then(function(response) { 
                 if (response.status == 200) {
-                    that.call = response.data.data 
+                    that.call = response.data 
                     that.getImageList()  // 获取该召集令已经上传的图片
                     that.editVisable = true
                 } else {
@@ -433,14 +433,14 @@ export default {
                 this.$http(config)
                 .then(function (response) {
                     if (response.status == 200) {
-                        that.$message({ showClose: true, message: response.data.message, type: 'success' })
+                        that.$message({ showClose: true, message: response.message, type: 'success' })
                         that.init()
                     } else {
-                        that.$message({ showClose: true, message: response.data.message, type: 'warning' })
+                        that.$message({ showClose: true, message: response.message, type: 'warning' })
                     }
                 })
                 .catch(function (response) {
-                    that.$message({ showClose: true, message: response.data.message, type: 'error' })
+                    that.$message({ showClose: true, message: response.message, type: 'error' })
                 })
             })
             .catch(() => {
@@ -458,8 +458,8 @@ export default {
                                 })
                 var flag = 0
                 // this.newRequest[id] = false
-                for(var i = 0; i < response.data.data.records.length; i ++) {
-                    if (response.data.data.records[i]['state'] == 0) {
+                for(var i = 0; i < response.data.records.length; i ++) {
+                    if (response.data.records[i]['state'] == 0) {
                         /* this.newRequest[id] = true
                         break */
                         ++ flag;
@@ -483,29 +483,29 @@ export default {
                             })
             .then(function(response) {
                 if (response.status != 200) {
-                    return that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                    return that.$message({showClose: true, message: response.message, type: 'warning'})
                 }
-                // console.log(response.data.data.records[0]['state'])
-                var flag = response.data.data.records.length
-                for(var i = 0; i < response.data.data.records.length; i ++) {
-                    switch (response.data.data.records[i]['state']) {
+                // console.log(response.data.records[0]['state'])
+                var flag = response.data.records.length
+                for(var i = 0; i < response.data.records.length; i ++) {
+                    switch (response.data.records[i]['state']) {
                         case 0:
-                            response.data.data.records[i]['state'] = "待处理";
+                            response.data.records[i]['state'] = "待处理";
                             break;
                         case 1:
-                            response.data.data.records[i]['state'] = "同意";
+                            response.data.records[i]['state'] = "同意";
                             -- flag; break;
                         case 2:
-                            response.data.data.records[i]['state'] = "拒绝";
+                            response.data.records[i]['state'] = "拒绝";
                             -- flag; break;
                         case 3:
-                            response.data.data.records[i]['state'] = "取消";
+                            response.data.records[i]['state'] = "取消";
                             -- flag; break;
                         default:
                             break;
                     }
                 }
-                that.requestData = response.data.data.records
+                that.requestData = response.data.records
                 // 如果申请列表中没有待处理的条目就 去掉红点/改变数值
                 /* if (flag == 0) {
                     that.newRequest[id] = false
@@ -535,7 +535,7 @@ export default {
             var that = this
             axios(config)
             .then(function (response) {
-                console.log(response.data)
+                console.log(response)
                 that.init() // 为了显示人数变化所以需要重新加载页面
                 that.addRequestVisable(callId)
             })
@@ -562,7 +562,7 @@ export default {
             var that = this
             axios(config)
             .then(function (response) {
-                console.log(response.data)
+                console.log(response)
                 // that.init()  // 拒绝之后没有人数变化
                 that.addRequestVisable(callId)
             })
@@ -594,22 +594,22 @@ export default {
             .then(function(response) {
                 that.userInfo = new Array(7)
                 if (response.status == 200) {
-                    Object.getOwnPropertyNames(response.data.data).forEach(function(key){
-                        // console.log(key, '---', response.data.data[key])
+                    Object.getOwnPropertyNames(response.data).forEach(function(key){
+                        // console.log(key, '---', response.data[key])
                         switch(key) {
-                            case 'id': that.userInfo[0] =['用户ID', response.data.data[key]]; break;
-                            case 'username': that.userInfo[1] = ['用户名', response.data.data[key]]; break;
-                            case 'name': that.userInfo[2] = ['用户名称', response.data.data[key]]; break;
-                            case 'phoneNumber': that.userInfo[3] = ['手机号', response.data.data[key]]; break;
-                            case 'levelName': that.userInfo[4] = ['用户级别', response.data.data[key]]; break;
-                            case 'introduce': that.userInfo[5] = ['用户简介', response.data.data[key]]; break;
-                            case 'cityName': that.userInfo[6] = ['所在城市', response.data.data[key]]; break;
+                            case 'id': that.userInfo[0] =['用户ID', response.data[key]]; break;
+                            case 'username': that.userInfo[1] = ['用户名', response.data[key]]; break;
+                            case 'name': that.userInfo[2] = ['用户名称', response.data[key]]; break;
+                            case 'phoneNumber': that.userInfo[3] = ['手机号', response.data[key]]; break;
+                            case 'levelName': that.userInfo[4] = ['用户级别', response.data[key]]; break;
+                            case 'introduce': that.userInfo[5] = ['用户简介', response.data[key]]; break;
+                            case 'cityName': that.userInfo[6] = ['所在城市', response.data[key]]; break;
                             default: break;
                         }
                     })
                     that.infoVisable = true
                 } else {
-                    that.$message({showClose: true, message: response.data.data, type: 'error'})
+                    that.$message({showClose: true, message: response.data, type: 'error'})
                 }
             })
             .catch(function(error) {
@@ -626,9 +626,9 @@ export default {
                 }
             }).then(function(response) {
                 if(response.status != 200) {
-                    return that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                    return that.$message({showClose: true, message: response.message, type: 'warning'})
                 }
-                var data = response.data.data
+                var data = response.data
                 that.fileList = data
                 // 'http://localhost:9998/'
                 for(var i = 0; i < data.length; ++ i) {
@@ -657,9 +657,9 @@ export default {
                 }
             }).then(function(response) {
                 if(response.status != 200) {
-                    return that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                    return that.$message({showClose: true, message: response.message, type: 'warning'})
                 }
-                var data = response.data.data
+                var data = response.data
                 if (data.length == 0) {
                     that.havePic = false
                     that.picVisable = true
@@ -712,9 +712,9 @@ export default {
                 this.$http(config)
                 .then(function(response) {
                     if (response.status == 200) {
-                        that.$message({showClose: true, message: response.data.message, type: 'success'})
+                        that.$message({showClose: true, message: response.message, type: 'success'})
                     } else {
-                        that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                        that.$message({showClose: true, message: response.message, type: 'warning'})
                     }
                 })
                 .catch(function(error) {

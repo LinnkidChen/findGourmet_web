@@ -119,7 +119,7 @@ export default {
                             return that.$message({showClose: true, message:'请求错误', type: 'error'})
                         })
                     } else {
-                        return that.$message({showClose: true, message: response.data.message, type: 'error'})
+                        return that.$message({showClose: true, message: response.message, type: 'error'})
                     }
                     
                 })

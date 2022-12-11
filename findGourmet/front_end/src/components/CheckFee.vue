@@ -91,11 +91,11 @@ export default {
         })
         .then(function(response) {
             if (response.status == 200) {
-                for(var i = 0; i < response.data.data.length; i++) {
-                    that.type.push(response.data.data[i]['callTypeName'])
+                for(var i = 0; i < response.data.length; i++) {
+                    that.type.push(response.data[i]['callTypeName'])
                 }
             } else {
-                that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                that.$message({showClose: true, message: response.message, type: 'warning'})
             }
         })
         .catch(function(error) {
@@ -276,9 +276,9 @@ export default {
             }
             
             if (response.status != 200) {
-                return that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                return that.$message({showClose: true, message: response.message, type: 'warning'})
             } else {
-                var res = response.data.data
+                var res = response.data
                 var days = res.length
                 this.series = new Array(5)
                 for (var i = 0; i < 5; ++ i) {
@@ -334,9 +334,9 @@ export default {
             this.$http.get('/user/getCitys')
             .then(function(response) {
                 if (response.status == 200) {
-                    that.cityOption = response.data.data
+                    that.cityOption = response.data
                 } else {
-                    that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                    that.$message({showClose: true, message: response.message, type: 'warning'})
                 }
             })
             .catch(function(response) {

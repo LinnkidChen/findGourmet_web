@@ -99,16 +99,16 @@ export default {
                 },
             })
             .then(function(response) {
-                console.log('checkInfo_getUserIdList', response.data.data);
-                for(var i = 0; i < response.data.data.records.length; i ++) {
-                    if(response.data.data.records[i]['userType'] == false) {
-                        response.data.data.records[i]['userType'] = '系统管理员'
+                console.log('checkInfo_getUserIdList', response.data);
+                for(var i = 0; i < response.data.records.length; i ++) {
+                    if(response.data.records[i]['userType'] == false) {
+                        response.data.records[i]['userType'] = '系统管理员'
                     } else {
-                        response.data.data.records[i]['userType'] = '普通用户'
+                        response.data.records[i]['userType'] = '普通用户'
                     }
                 }
-                that.total = response.data.data.total
-                that.tableData = response.data.data.records
+                that.total = response.data.total
+                that.tableData = response.data.records
             })
             .catch(function(error) {
                 console.error(error)
@@ -147,20 +147,20 @@ export default {
 
             this.$http(config)
             .then(function(response) {
-                console.log('checkInfo', response.data)
+                console.log('checkInfo', response)
                 if (response.status == '400') {
                     that.isPageShow = true
-                    return that.$message({showClose: true, message:response.data.message})
+                    return that.$message({showClose: true, message:response.message})
                 }
-                for(var i = 0; i < response.data.data.records.length; i ++) {
-                    if(response.data.data.records[i]['userType'] == false) {
-                        response.data.data.records[i]['userType'] = '系统管理员'
+                for(var i = 0; i < response.data.records.length; i ++) {
+                    if(response.data.records[i]['userType'] == false) {
+                        response.data.records[i]['userType'] = '系统管理员'
                     } else {
-                        response.data.data.records[i]['userType'] = '普通用户'
+                        response.data.records[i]['userType'] = '普通用户'
                     }
                 }
-                that.total = response.data.data.total
-                that.tableData = response.data.data.records
+                that.total = response.data.total
+                that.tableData = response.data.records
             })
             .catch(function(error) {
                 console.error(error)

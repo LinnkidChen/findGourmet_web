@@ -105,9 +105,9 @@ export default {
         })
         .then(function(response) {
             if (response.status == 200) {
-                that.calls = that.calls.concat(response.data.data)
+                that.calls = that.calls.concat(response.data)
             } else {
-                that.$message({showClose: true, message: response.data.message, type: 'warning'})
+                that.$message({showClose: true, message: response.message, type: 'warning'})
             }
         })
         .catch(function(error) {
@@ -128,8 +128,8 @@ export default {
             })
             .then(function(response) {
                 // console.log(kind, 'checkConvene()');
-                that.tableData = response.data.data.records
-                that.total = response.data.data.total
+                that.tableData = response.data.records
+                that.total = response.data.total
             })
             .catch(function(error) {
                 console.error(error)
@@ -177,30 +177,30 @@ export default {
                                 }
                             })
             .then(function(response) {
-                console.log(response.data.data)
+                console.log(response.data)
                 that.userInfo = new Array(12)
                 if (response.status == 200) {
-                    Object.getOwnPropertyNames(response.data.data).forEach(function(key){
-                        // console.log(key, '---', response.data.data[key])
+                    Object.getOwnPropertyNames(response.data).forEach(function(key){
+                        // console.log(key, '---', response.data[key])
                         switch(key) {
-                            case 'id': that.userInfo[0] =['用户ID', response.data.data[key]]; break;
-                            case 'username': that.userInfo[1] = ['用户名', response.data.data[key]]; break;
-                            case 'password': that.userInfo[2] = ['用户密码', response.data.data[key]]; break;
-                            case 'name': that.userInfo[3] = ['用户名称', response.data.data[key]]; break;
-                            case 'documentTypeName': that.userInfo[4] = ['证件类型', response.data.data[key]]; break;
-                            case 'documentNumber': that.userInfo[5] = ['证件号码', response.data.data[key]]; break;
-                            case 'phoneNumber': that.userInfo[6] = ['手机号', response.data.data[key]]; break;
-                            case 'level': that.userInfo[7] = ['用户级别', response.data.data[key]]; break;
-                            case 'introduce': that.userInfo[8] = ['用户简介', response.data.data[key]]; break;
-                            case 'cityName': that.userInfo[9] = ['所在城市', response.data.data[key]]; break;
-                            case 'createTime': that.userInfo[10] = ['注册时间', response.data.data[key]]; break;
-                            case 'modifyTime': that.userInfo[11] = ['修改时间', response.data.data[key]]; break;
+                            case 'id': that.userInfo[0] =['用户ID', response.data[key]]; break;
+                            case 'username': that.userInfo[1] = ['用户名', response.data[key]]; break;
+                            case 'password': that.userInfo[2] = ['用户密码', response.data[key]]; break;
+                            case 'name': that.userInfo[3] = ['用户名称', response.data[key]]; break;
+                            case 'documentTypeName': that.userInfo[4] = ['证件类型', response.data[key]]; break;
+                            case 'documentNumber': that.userInfo[5] = ['证件号码', response.data[key]]; break;
+                            case 'phoneNumber': that.userInfo[6] = ['手机号', response.data[key]]; break;
+                            case 'level': that.userInfo[7] = ['用户级别', response.data[key]]; break;
+                            case 'introduce': that.userInfo[8] = ['用户简介', response.data[key]]; break;
+                            case 'cityName': that.userInfo[9] = ['所在城市', response.data[key]]; break;
+                            case 'createTime': that.userInfo[10] = ['注册时间', response.data[key]]; break;
+                            case 'modifyTime': that.userInfo[11] = ['修改时间', response.data[key]]; break;
                             default: break;
                         }
                     })
                     that.infoVisable = true
                 } else {
-                    that.$message({showClose: true, message: response.data.data, type: 'warning'})
+                    that.$message({showClose: true, message: response.data, type: 'warning'})
                 }
             })
             .catch(function(error) {
