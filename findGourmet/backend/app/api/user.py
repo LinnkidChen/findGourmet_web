@@ -185,13 +185,13 @@ def modifyMessage():
         res_raw["introduce"] = "modify sucess"
     else:
         res_raw["introduce"] = "invalid introduce"
-
-    if len(modify_dict["password"]) >= 6 and password_valid(modify_dict["password"]):
-        user.password = modify_dict["password"]
-        db.session.commit()
-        res_raw["password"] = "modify success"
-    else:
-        res_raw["password"] = "invalid password"
+    if "password" in modify_dict.keys():
+        if len(modify_dict["password"]) >= 6 and password_valid(modify_dict["password"]):
+            user.password = modify_dict["password"]
+            db.session.commit()
+            res_raw["password"] = "modify success"
+        else:
+            res_raw["password"] = "invalid password"
 
     response = jsonify(res_raw)
     response.status_code = 200
