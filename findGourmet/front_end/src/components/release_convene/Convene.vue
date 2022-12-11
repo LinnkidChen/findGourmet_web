@@ -13,9 +13,9 @@
                 <el-select v-model="callForm.typeId" placeholder="请选择召集令类型" @change="showMessage($event)">
                     <el-option
                         v-for="item in callOption"
-                        :key="item.callTypeId"
-                        :label="item.callTypeName"
-                        :value="item.callTypeId"
+                        :key="item.findGTypeId"
+                        :label="item.findGTypeName"
+                        :value="item.findGTypeId"
                     >
                     </el-option>
                 </el-select>
