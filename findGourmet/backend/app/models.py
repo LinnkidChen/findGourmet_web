@@ -369,10 +369,14 @@ class FindG(db.Model):
     successPosts = db.relationship("Success", backref="FindGPosts")
 
     def to_json(self):
+        if self.photos is None:
+            photos=None
+        else:
+            photos=self.photos.split()
         json_findG = {
             "id": self.id,
             "userId": self.userId,
-            "type": self.type,
+            "typeName": self.type,
             "name": self.name,
             "description": self.description,
             "people": self.people,
@@ -382,8 +386,8 @@ class FindG(db.Model):
             # "photo": self.photo,
             "createTime": self.createTime,
             "modifyTime": self.modifyTime,
-            "state": self.state,
-            "photos": self.photos.split(),
+            "stateName": self.state,
+            "photos": photos,
         }
         return json_findG
 
@@ -406,7 +410,7 @@ class PleEat(db.Model):  # 请品鉴表
     modifyTime = db.Column(
         db.DateTime, default=datetime.now, onupdate=datetime.now
     )  # 修改时间
-    state = db.Column(db.Integer)  # 状态
+    state = db.Column(db.Integer,default=)  # 状态
     FindGpost = db.relationship("FindG", backref=db.backref("PleEats"))
 
     def to_json(self):
