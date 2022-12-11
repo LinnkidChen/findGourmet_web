@@ -114,8 +114,8 @@ def del_photo():
 @api.route("/findG/pageFind/<int:index>/<int:rows>")  # 得到所有寻味道请求的分页信息
 @auth.login_required
 def get_findG_all(index, rows):
-    if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
-        return forbidden("Not logged in as an Admin")
+    # if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
+    #     return forbidden("Not logged in as an Admin")
     findGs = FindG.query.paginate(page=index, per_page=rows).items
     response = jsonify(
         {"total": len(findGs), "records": [findG.to_json() for findG in findGs]}

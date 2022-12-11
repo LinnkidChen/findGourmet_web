@@ -20,4 +20,5 @@ vue端口：8080
 flask端口：8000（手动设置）
 
 待维修：
-用户注册有问题（前端）
+登陆主页报错
+/api/request/pageFind/byCall/1/10/12 url 没改
