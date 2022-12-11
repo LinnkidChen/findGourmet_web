@@ -70,7 +70,7 @@ export default {
         // 获取所有请求信息
         init() {
             var that = this
-            this.$http.get('/request/pageFind/'+ this.page+'/'+ this.rows, {
+            this.$http.get('/pleEat/pageFind/'+ this.page+'/'+ this.rows, {
                                 headers: {
                                     'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                                 }

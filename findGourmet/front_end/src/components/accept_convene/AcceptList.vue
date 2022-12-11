@@ -152,7 +152,7 @@ export default {
         },
         init() {
             var that = this
-            this.$http.get('/request/pageFind/byUser/'+ this.page+'/'+ this.rows+'/'+this.$store.state.user.id, {
+            this.$http.get('/pleEat/pageFind/byUser/'+ this.page+'/'+ this.rows+'/'+this.$store.state.user.id, {
                                 headers: {
                                     'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                                 }
@@ -208,7 +208,7 @@ export default {
             var that = this
             var config = {
                 method: 'post',
-                url: '/request/modify',
+                url: '/pleEat/modify',
                 headers: { 
                     'Content-Type': 'application/json',
                     'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
@@ -242,7 +242,7 @@ export default {
                 console.log(id, 'makesure delete')
                 var config = {
                     method: 'post',
-                    url: '/request/deleteById/'+id,
+                    url: '/pleEat/deleteById/'+id,
                     headers: { 
                         'Content-Type': 'application/json',
                         'Authorization': "Bearer "+ window.sessionStorage.getItem('token')

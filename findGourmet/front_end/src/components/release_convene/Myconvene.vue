@@ -451,7 +451,7 @@ export default {
             // 判断是否有新的请求
             for (var id of this.ids) {
                 var axios = require('axios')
-                var response = await axios.get('/request/pageFind/byCall/1/20/'+id, {
+                var response = await axios.get('/pleEat/pageFind/byfindG/1/20/'+id, {
                                     headers: {
                                         'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                                     }
@@ -476,7 +476,7 @@ export default {
         addRequestVisable(id) {
             this.requestVisable = true
             var that = this
-            this.$http.get('/request/pageFind/byCall/1/10/'+id, {
+            this.$http.get('/pleEat/pageFind/byfindG/1/10/'+id, {
                                 headers: {
                                     'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                                 }
@@ -524,7 +524,7 @@ export default {
 
             var config = {
                 method: 'post',
-                url: '/request/modifyState',
+                url: '/pleEat/modifyState',
                 headers: { 
                     'Authorization': "Bearer "+ window.sessionStorage.getItem('token'), 
                     'Content-Type': 'application/json'
@@ -551,7 +551,7 @@ export default {
 
             var config = {
                 method: 'post',
-                url: '/request/modifyState',
+                url: '/pleEat/modifyState',
                 headers: { 
                     'Authorization': "Bearer "+ window.sessionStorage.getItem('token'), 
                     'Content-Type': 'application/json'

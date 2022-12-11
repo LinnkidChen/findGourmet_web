@@ -237,7 +237,7 @@ export default {
             var that = this
             var config = {
                 method: 'post',
-                url: '/request/add',
+                url: '/pleEat/add',
                 headers: { 
                     'Content-Type': 'application/json',
                     'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
