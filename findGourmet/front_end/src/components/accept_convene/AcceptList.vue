@@ -127,7 +127,7 @@ export default {
             that.havePic = true
             this.$http.get('/findG/getGraphByCallId/'+this.call[0][1], {
                 headers: {
-                    'Authorization': window.sessionStorage.getItem('token') 
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
                 }
             }).then(function(response) {
                 if(response.status != 200) {
@@ -154,7 +154,7 @@ export default {
             var that = this
             this.$http.get('/request/pageFind/byUser/'+ this.page+'/'+ this.rows+'/'+this.$store.state.user.id, {
                                 headers: {
-                                    'Authorization': window.sessionStorage.getItem('token')
+                                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                                 }
                             })
             .then(function(response) {
@@ -211,7 +211,7 @@ export default {
                 url: '/request/modify',
                 headers: { 
                     'Content-Type': 'application/json',
-                    'Authorization': window.sessionStorage.getItem('token')
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                 },
                 data : data
             };
@@ -245,7 +245,7 @@ export default {
                     url: '/request/deleteById/'+id,
                     headers: { 
                         'Content-Type': 'application/json',
-                        'Authorization': window.sessionStorage.getItem('token')
+                        'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                     },
                 };
                 this.$http(config)
@@ -270,7 +270,7 @@ export default {
             var that = this
             this.$http.get(`/findG/findById/${id}`,{
                                 headers: {
-                                    'Authorization': window.sessionStorage.getItem('token')
+                                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                                 }
                             })
             .then(function(response) {

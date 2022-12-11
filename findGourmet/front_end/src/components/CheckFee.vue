@@ -86,7 +86,7 @@ export default {
         var that = this
         this.$http.get("/findG/getCallType", {
                 headers: {
-                    'Authorization': window.sessionStorage.getItem('token') 
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
                 }
         })
         .then(function(response) {
@@ -239,7 +239,7 @@ export default {
                 if (i <= 30) {
                     var response  = await this.$http.get(`/income/getIncomeByDayTimeByType/${this.value[0]}/${this.value[1]}`, {
                         headers: {
-                            'Authorization': window.sessionStorage.getItem('token')
+                            'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                         }
                     })
                 } else {
@@ -247,7 +247,7 @@ export default {
                     this.optionCnt['xAxis'].data = this.month
                     var response  = await this.$http.get(`/income/getIncomeByMonthTimeByType/${this.month[0]}/${this.month[this.month.length - 1]}`, {
                         headers: {
-                            'Authorization': window.sessionStorage.getItem('token')
+                            'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                         }
                     })
                     console.log(this.month)
@@ -259,7 +259,7 @@ export default {
                 if (i <= 30) {
                     var response  = await this.$http.get(`/income/getIncomeByDayTimeByLocation/${this.value[0]}/${this.value[1]}/${this.city}`, {
                         headers: {
-                            'Authorization': window.sessionStorage.getItem('token')
+                            'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                         }
                     })
                 } else {
@@ -267,7 +267,7 @@ export default {
                     this.optionCnt['xAxis'].data = this.month
                     var response  = await this.$http.get(`/income/getIncomeByMonthTimeByLocation/${this.month[0]}/${this.month[this.month.length - 1]}/${this.city}`, {
                         headers: {
-                            'Authorization': window.sessionStorage.getItem('token')
+                            'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                         }
                     })
                 }

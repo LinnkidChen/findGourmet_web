@@ -265,7 +265,7 @@ export default {
         // 获取所有的callIds，这个axios的异步特性真的害死我
         let response = await this.$http.get('findG/pageFind/byUserId/1/20/'+this.$store.state.user.id, {
                             headers: {
-                                'Authorization': window.sessionStorage.getItem('token')
+                                'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                             }
                         })
         
@@ -317,7 +317,7 @@ export default {
             var that = this
             this.$http.get('findG/pageFind/byUserId/'+ this.page+'/'+ this.rows+'/'+this.$store.state.user.id, {
                                 headers: {
-                                    'Authorization': window.sessionStorage.getItem('token')
+                                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                                 }
                             })
             .then(function(response) {
@@ -336,7 +336,7 @@ export default {
             // 获取召集令类型列表
             this.$http.get("/findG/getType", {
                     headers: {
-                        'Authorization': window.sessionStorage.getItem('token') 
+                        'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
                     }
             })
             .then(function(response) {
@@ -354,7 +354,7 @@ export default {
             // 获取这个召集令的基本信息
             this.$http.get(`/findG/findById/${id}`,{
                                 headers: {
-                                    'Authorization': window.sessionStorage.getItem('token')
+                                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                                 }
                             })
             .then(function(response) { 
@@ -387,7 +387,7 @@ export default {
                 url: '/findG/modify',
                 headers: { 
                     'Content-Type': 'application/json',
-                    'Authorization': window.sessionStorage.getItem('token')
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                 },
                 data : data
             };
@@ -427,7 +427,7 @@ export default {
                     url: '/findG/delById/'+id,
                     headers: { 
                         'Content-Type': 'application/json',
-                        'Authorization': window.sessionStorage.getItem('token')
+                        'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                     },
                 };
                 this.$http(config)
@@ -453,7 +453,7 @@ export default {
                 var axios = require('axios')
                 var response = await axios.get('/request/pageFind/byCall/1/20/'+id, {
                                     headers: {
-                                        'Authorization': window.sessionStorage.getItem('token')
+                                        'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                                     }
                                 })
                 var flag = 0
@@ -478,7 +478,7 @@ export default {
             var that = this
             this.$http.get('/request/pageFind/byCall/1/10/'+id, {
                                 headers: {
-                                    'Authorization': window.sessionStorage.getItem('token')
+                                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                                 }
                             })
             .then(function(response) {
@@ -526,7 +526,7 @@ export default {
                 method: 'post',
                 url: '/request/modifyState',
                 headers: { 
-                    'Authorization': window.sessionStorage.getItem('token'), 
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token'), 
                     'Content-Type': 'application/json'
                 },
                 data : data
@@ -553,7 +553,7 @@ export default {
                 method: 'post',
                 url: '/request/modifyState',
                 headers: { 
-                    'Authorization': window.sessionStorage.getItem('token'), 
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token'), 
                     'Content-Type': 'application/json'
                 },
                 data : data
@@ -588,7 +588,7 @@ export default {
             var that = this
             this.$http.get(`/user/getById/${userId}`,{
                                 headers: {
-                                    'Authorization': window.sessionStorage.getItem('token')
+                                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                                 }
                             })
             .then(function(response) {
@@ -622,7 +622,7 @@ export default {
             var that = this
             this.$http.get('/findG/getGraphByCallId/'+this.call.id, {
                 headers: {
-                    'Authorization': window.sessionStorage.getItem('token') 
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
                 }
             }).then(function(response) {
                 if(response.status != 200) {
@@ -653,7 +653,7 @@ export default {
             that.havePic = true
             this.$http.get('/findG/getGraphByCallId/'+id, {
                 headers: {
-                    'Authorization': window.sessionStorage.getItem('token') 
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
                 }
             }).then(function(response) {
                 if(response.status != 200) {
@@ -704,7 +704,7 @@ export default {
                     method: 'post',
                     url: '/findG/delGraphByLocation',
                     headers: { 
-                        'Authorization': window.sessionStorage.getItem('token'), 
+                        'Authorization': "Bearer "+ window.sessionStorage.getItem('token'), 
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     data : data

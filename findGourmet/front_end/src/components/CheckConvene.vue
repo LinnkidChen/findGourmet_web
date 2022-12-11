@@ -100,7 +100,7 @@ export default {
         var that = this
         this.$http.get("/findG/getCallType", {
                 headers: {
-                    'Authorization': window.sessionStorage.getItem('token') 
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
                 }
         })
         .then(function(response) {
@@ -123,7 +123,7 @@ export default {
             var that = this
             this.$http.get(url, {
                 headers: {
-                    'Authorization': window.sessionStorage.getItem('token')
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                 }
             })
             .then(function(response) {
@@ -173,7 +173,7 @@ export default {
             var that = this
             this.$http.get(`/user/getById/${userId}`,{
                                 headers: {
-                                    'Authorization': window.sessionStorage.getItem('token')
+                                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                                 }
                             })
             .then(function(response) {

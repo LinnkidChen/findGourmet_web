@@ -87,7 +87,7 @@ export default {
         var that = this
         this.$http.get("/findG/getType", {
                 headers: {
-                    'Authorization': window.sessionStorage.getItem('token') 
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
                 }
         })
         .then(function(response) {
@@ -138,7 +138,7 @@ export default {
                     url: '/findG/add',
                     headers: { 
                         'Content-Type': 'application/json',
-                        'Authorization': window.sessionStorage.getItem('token') 
+                        'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
                     },
                     data : this.callForm
                 };

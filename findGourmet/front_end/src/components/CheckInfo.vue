@@ -95,7 +95,7 @@ export default {
             var that = this
             this.$http.get(`/user/pageFindAll/${this.page}/${this.rows}`, {
                 headers: { 
-                    'Authorization': window.sessionStorage.getItem('token')
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                 },
             })
             .then(function(response) {

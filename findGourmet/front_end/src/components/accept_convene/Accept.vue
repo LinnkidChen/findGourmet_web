@@ -126,7 +126,7 @@ export default {
         var that = this
         this.$http.get("/findG/getCallType", {
                 headers: {
-                    'Authorization': window.sessionStorage.getItem('token') 
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
                 }
         })
         .then(function(response) {
@@ -150,7 +150,7 @@ export default {
             console.log(this.url)
             this.$http.get(url, {
                 headers: {
-                    'Authorization': window.sessionStorage.getItem('token')
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                 }
             })
             .then(function(response) {
@@ -185,7 +185,7 @@ export default {
             var that = this
             this.$http.get(`/findG/findById/${id}`,{
                                 headers: {
-                                    'Authorization': window.sessionStorage.getItem('token')
+                                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                                 }
                             })
             .then(function(response) {
@@ -240,7 +240,7 @@ export default {
                 url: '/request/add',
                 headers: { 
                     'Content-Type': 'application/json',
-                    'Authorization': window.sessionStorage.getItem('token')
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
                 },
                 data : data
             };
@@ -296,7 +296,7 @@ export default {
             // console.log(this.call)
             this.$http.get('/findG/getGraphByCallId/'+this.call[0][1], {
                 headers: {
-                    'Authorization': window.sessionStorage.getItem('token') 
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
                 }
             }).then(function(response) {
                 if(response.status != 200) {
