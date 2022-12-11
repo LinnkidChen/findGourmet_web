@@ -294,7 +294,7 @@ export default {
             var that = this
             that.havePic = true
             // console.log(this.call)
-            this.$http.get('/findG/getGraphByCallId/'+this.call[0][1], {
+            this.$http.get('/findG/getGraphByFindGId/'+this.call[0][1], {
                 headers: {
                     'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
                 }
@@ -315,7 +315,7 @@ export default {
                 that.srcInitUrl = that.srcList[0]
                 that.picVisable = true
             }).catch(function(error) {
-                console.log(error, '/findG/getGraphByCallId/'+this.call.id)
+                console.log(error, '/findG/getGraphByFindGId/'+this.call.id)
                 return that.$message({showClose: true, message: "请求错误", type: 'error'})
             })
         },

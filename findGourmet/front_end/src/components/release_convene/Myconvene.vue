@@ -262,7 +262,7 @@ export default {
     },
     async mounted() {
         var axios = require('axios')
-        // 获取所有的callIds，这个axios的异步特性真的害死我
+        // 获取所有的findGIds，这个axios的异步特性真的害死我
         let response = await this.$http.get('findG/pageFind/byUserId/1/20/'+this.$store.state.user.id, {
                             headers: {
                                 'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
@@ -518,7 +518,7 @@ export default {
             })
         },
         // 同意请求之后
-        agreeRequest(id, callId) {
+        agreeRequest(id, findGId) {
             var axios = require('axios');
             var data = JSON.stringify({"id":id, "state":1});
 
@@ -537,7 +537,7 @@ export default {
             .then(function (response) {
                 console.log(response)
                 that.init() // 为了显示人数变化所以需要重新加载页面
-                that.addRequestVisable(callId)
+                that.addRequestVisable(findGId)
             })
             .catch(function (error) {
                 console.log(error)
@@ -545,7 +545,7 @@ export default {
             });
         },
         // 拒绝请求之后
-        rejectRequest(id, callId) {
+        rejectRequest(id, findGId) {
             var axios = require('axios');
             var data = JSON.stringify({"id":id,"state":2});
 
@@ -564,7 +564,7 @@ export default {
             .then(function (response) {
                 console.log(response)
                 // that.init()  // 拒绝之后没有人数变化
-                that.addRequestVisable(callId)
+                that.addRequestVisable(findGId)
             })
             .catch(function (error) {
                 console.log(error)
@@ -620,7 +620,7 @@ export default {
         // 获取已存在的图片
         getImageList() {
             var that = this
-            this.$http.get('/findG/getGraphByCallId/'+this.call.id, {
+            this.$http.get('/findG/getGraphByFindGId/'+this.call.id, {
                 headers: {
                     'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
                 }
@@ -637,7 +637,7 @@ export default {
                 }
                 // console.log(that.fileList)
             }).catch(function(error) {
-                console.log(error, '/findG/getGraphByCallId/'+this.call.id)
+                console.log(error, '/findG/getGraphByFindGId/'+this.call.id)
                 return that.$message({showClose: true, message: "请求错误", type: 'error'})
             }) 
         },
@@ -651,7 +651,7 @@ export default {
         showPic(id) {
             var that = this
             that.havePic = true
-            this.$http.get('/findG/getGraphByCallId/'+id, {
+            this.$http.get('/findG/getGraphByFindGId/'+id, {
                 headers: {
                     'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
                 }
@@ -672,7 +672,7 @@ export default {
                 that.srcInitUrl = that.srcList[0]
                 that.picVisable = true
             }).catch(function(error) {
-                console.log(error, '/findG/getGraphByCallId/'+this.call.id)
+                console.log(error, '/findG/getGraphByFindGId/'+this.call.id)
                 return that.$message({showClose: true, message: "请求错误", type: 'error'})
             })
         },
