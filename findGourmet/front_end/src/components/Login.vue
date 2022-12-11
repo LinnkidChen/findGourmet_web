@@ -109,7 +109,7 @@ export default {
                                 that.$router.push('/home')
                                 // 调用方法
                                 console.log(response.data, that.loginForm)
-                                that.$store.commit('user/set_userInfo', response.data.data)
+                                that.$store.commit('user/set_userInfo', response.data)
                                 return that.$message({ showClose: true, message: '登录成功', type: 'success' })
                             } else {
                                 return that.$message({showClose: true, message: '登录失败', type: 'error'})
