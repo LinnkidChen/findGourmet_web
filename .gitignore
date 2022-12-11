@@ -32,6 +32,10 @@ venv1/
 # OSX dir files
 .DS_Store
 
+
 # Sublime Text settings
 *.sublime-workspace
 *.sublime-project
+
+/node_modules
+/venv
