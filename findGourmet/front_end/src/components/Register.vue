@@ -226,7 +226,7 @@ export default {
                 this.$http(config)
                 .then(function (response) {
                     // console.log(response.data)
-                    if (response.data.code == '200') {
+                    if (response.status == '200') {
                         that.$message({ showClose: true, message: '注册成功',type: 'success'})
                         that.$router.push('/login')
                     } else {
