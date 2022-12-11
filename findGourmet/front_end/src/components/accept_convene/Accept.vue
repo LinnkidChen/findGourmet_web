@@ -116,7 +116,7 @@ export default {
             haveRequest: {},        // 判断是否已经请求，其实这个后端已经完成了
             request: {
                 findG_id: '',
-                callId: '',
+                userId: '',
                 description: ''
             },
             url: '',
@@ -218,9 +218,9 @@ export default {
             })
         },
         // 点击添加请求按钮显示对话框组件
-        addRequest(callId) {
+        addRequest(findG_id) {
             this.requestVisable = true
-            this.request.callId = callId
+            this.request.findG_id = findG_id
             this.request.userId = this.$store.state.user.id
             this.request.description = ''
         },
@@ -232,7 +232,7 @@ export default {
         // 点击确定请求按钮
         Request() {
             this.requestVisable = false
-            this.haveRequest[this.request.callId] = true
+            this.haveRequest[this.request.findG_id] = true
             var data = JSON.stringify(this.request);
             var that = this
             var config = {
