@@ -29,8 +29,8 @@
                 </el-table-column>
                 <el-table-column prop="username" label="用户名" width="100">
                 </el-table-column>
-                <el-table-column prop="password" label="密码" width="100">
-                </el-table-column>
+                <!-- <el-table-column prop="password" label="密码" width="100">
+                </el-table-column> -->
                 <el-table-column prop="userType" label="用户类型" width="100">
                 </el-table-column>
                 <el-table-column prop="name" label="用户姓名" width="100">
