@@ -3,16 +3,16 @@
         <!-- 面包屑 -->
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 10px">
             <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>查询接令请求信息</el-breadcrumb-item>
+            <el-breadcrumb-item>查询分享请求信息</el-breadcrumb-item>
         </el-breadcrumb>
         <!-- 信息主体 -->
-        <h2>接令请求信息表</h2>
+        <h2>分享请求信息表</h2>
         <el-card>
             <el-table :data="tableData" :header-cell-style="{'text-align':'center'}" 
                       :cell-style="{'text-align':'center'}" border>
                 <el-table-column prop="id" label="请求标识" width="100"></el-table-column>
-                <el-table-column prop="findGId" label="请求召集令标识" width="150"></el-table-column>
-                <el-table-column prop="findGName" label="召集令名字" width="150"></el-table-column>
+                <el-table-column prop="findGId" label="请求寻味道标识" width="150"></el-table-column>
+                <el-table-column prop="findGName" label="寻味道名字" width="150"></el-table-column>
                 <el-table-column prop="userId" label="请求者ID" width="100"></el-table-column>
                 <el-table-column prop="description" label="请求描述" ></el-table-column>
                 <el-table-column prop="createTime" label="创建请求时间" width="180"></el-table-column>
@@ -59,7 +59,7 @@ export default {
             page: 1,                // 数据页数
             rows: 10,               // 每页行数
             total: 0,               // 数据总数
-            infoVisable: false,     // 查看召集令信息是否可见
+            infoVisable: false,     // 查看寻味道信息是否可见
             userInfo: [],           // 个人基本信息
         }
     },

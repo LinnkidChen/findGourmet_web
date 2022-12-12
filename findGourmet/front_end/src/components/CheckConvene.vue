@@ -3,13 +3,13 @@
         <!-- 面包屑 -->
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 10px">
             <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>查询所有召集令信息</el-breadcrumb-item>
+            <el-breadcrumb-item>查询所有寻味道信息</el-breadcrumb-item>
         </el-breadcrumb>
         <!-- 信息主体 -->
-        <h2>召集令信息表</h2>
+        <h2>寻味道信息表</h2>
         <el-card>
             <template>
-                <el-select style="float: left; width: 25%" v-model="value" placeholder="请要查询的召集令类型">
+                <el-select style="float: left; width: 25%" v-model="value" placeholder="请要查询的寻味道类型">
                     <el-option
                         v-for="item in calls"
                         :key="item.callTypeId"
@@ -23,19 +23,19 @@
             </template>
             <el-table :data="tableData" 
                 :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" border>
-                <el-table-column prop="id" label="召集令标识" width="100">
+                <el-table-column prop="id" label="寻味道标识" width="100">
                 </el-table-column>
                 <el-table-column prop="userId" label="发布者ID" width="100">
                 </el-table-column>
-                <el-table-column prop="typeName" label="召集令类型" width="120">
+                <el-table-column prop="typeName" label="寻味道类型" width="120">
                 </el-table-column>
-                <el-table-column prop="name" label="召集令名称" width="120">
+                <el-table-column prop="name" label="寻味道名称" width="120">
                 </el-table-column>
-                <el-table-column prop="description" label="召集令描述" width="200">
+                <el-table-column prop="description" label="寻味道描述" width="200">
                 </el-table-column>
-                <el-table-column prop="peopleCount" label="召集人数" width="120">
+                <el-table-column prop="peopleCount" label="寻找人数" width="120">
                 </el-table-column>
-                <el-table-column prop="endTime" label="召集结束时间" width="200">
+                <el-table-column prop="endTime" label="寻找结束时间" width="200">
                 </el-table-column>
                 <el-table-column prop="introPicture" label="描述照片" width="100">
                 </el-table-column>
@@ -43,11 +43,11 @@
                 </el-table-column>
                 <el-table-column prop="modifyTime" label="修改时间" width="200">
                 </el-table-column>
-                <el-table-column prop="people" label="已召集人数" width="100">
+                <el-table-column prop="people" label="已寻找人数" width="100">
                 </el-table-column>
-                <el-table-column prop="stateName" label="召集令状态" width="100">
+                <el-table-column prop="stateName" label="寻味道状态" width="100">
                 </el-table-column>
-                <el-table-column label="查看令主信息" width="120">
+                <el-table-column label="查看寻找者信息" width="120">
                     <template slot-scope='scope'>
                         <el-button type="primary" @click="checkInfo(scope.row.userId)" icon="el-icon-user-solid"></el-button>
                     </template>
@@ -65,9 +65,9 @@
                 </el-pagination>
             </div>
         </el-card>
-        <p>注：第一个下拉框可以选择查询类型，第二个输入框可以输入要查询的召集令模糊名称。</p>
-        <!-- 展示令主信息 -->
-        <el-dialog title="令主信息" :visible.sync="infoVisable" width="50%">
+        <p>注：第一个下拉框可以选择查询类型，第二个输入框可以输入要查询的寻味道模糊名称。</p>
+        <!-- 展示寻找者信息 -->
+        <el-dialog title="寻找者信息" :visible.sync="infoVisable" width="50%">
             <table style="width: 100%" class="myTable">
                 <tr v-for="item in userInfo">
                     <td class="column" v-if="item">{{ item[0] }}</td>
@@ -118,7 +118,7 @@ export default {
         this.getConveneList(this.url, 'created()')
     },
     methods: {
-        // 得到所有召集令分页信息
+        // 得到所有寻味道分页信息
         getConveneList(url, kind) {
             var that = this
             this.$http.get(url, {
@@ -168,7 +168,7 @@ export default {
             this.page = newPage
             this.check('changeSize')
         },
-        // 查看令主信息
+        // 查看寻找者信息
         checkInfo(userId) {
             var that = this
             this.$http.get(`/user/getById/${userId}`,{

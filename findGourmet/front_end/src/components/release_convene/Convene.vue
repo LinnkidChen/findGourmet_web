@@ -3,14 +3,14 @@
         <!-- 面包屑 -->
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>令主</el-breadcrumb-item>
-            <el-breadcrumb-item>发布召集令</el-breadcrumb-item>
+            <el-breadcrumb-item>寻找美食</el-breadcrumb-item>
+            <el-breadcrumb-item>发布寻味道</el-breadcrumb-item>
         </el-breadcrumb>
-        <!-- 发布召集令主体 -->
+        <!-- 发布寻味道主体 -->
         <h2>填写相关信息</h2>
         <el-form :model="callForm" :rules="callRules" ref="callFormRef" label-width="120px">
-            <el-form-item label="召集令类型" prop="typeName">
-                <el-select v-model="callForm.typeId" placeholder="请选择召集令类型" @change="showMessage($event)">
+            <el-form-item label="寻味道类型" prop="typeName">
+                <el-select v-model="callForm.typeId" placeholder="请选择寻味道类型" @change="showMessage($event)">
                     <el-option
                         v-for="item in callOption"
                         :key="item.findGTypeId"
@@ -20,16 +20,16 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="召集令名称" prop="name">
+            <el-form-item label="寻味道名称" prop="name">
                 <el-input v-model="callForm.name"></el-input>
             </el-form-item>
-            <el-form-item label="召集令描述" prop="description">
+            <el-form-item label="寻味道描述" prop="description">
                 <el-input type="textarea" v-model="callForm.description"></el-input>
             </el-form-item>
-            <el-form-item label="召集人数" prop="peopleCount">
+            <el-form-item label="寻找人数" prop="peopleCount">
                 <el-input v-model="callForm.peopleCount"></el-input>
             </el-form-item>
-            <el-form-item label="召集结束日期" required>
+            <el-form-item label="寻找结束日期" required>
                 <el-col :span="11">
                 <el-form-item prop="endTime">
                     <el-date-picker type="datetime" placeholder="选择日期" v-model="callForm.endTime" value-format="yyyy-MM-dd HH:mm:ss" :picker-options="expireTimeOption" style="width: 100%;"></el-date-picker>
@@ -49,7 +49,7 @@
 export default {
     data() {
         return {
-            callOption: [], // 召集令类型列表
+            callOption: [], // 寻味道类型列表
             callForm: {
                 userId: this.$store.state.user.id,
                 typeName: '',
@@ -66,19 +66,19 @@ export default {
             },
             callRules: {
                 typeName: [
-                    { required: true, message: '请选择召集令类型', trigger: 'blur' },
+                    { required: true, message: '请选择寻味道类型', trigger: 'blur' },
                 ],
                 name: [
-                    { required: true, message: '请输入召集令名称', trigger: 'blur' },
+                    { required: true, message: '请输入寻味道名称', trigger: 'blur' },
                 ],
                 description: [
-                    { required: true, message: '请输入召集令描述', trigger: 'blur' },
+                    { required: true, message: '请输入寻味道描述', trigger: 'blur' },
                 ],
                 peopleCount: [
                     { validator: this.check_cnt, trigger: 'blur' },
                 ],
                 endTime: [
-                    { required: true, message: '请选择召集令结束时间', trigger: 'blur'}
+                    { required: true, message: '请选择寻味道结束时间', trigger: 'blur'}
                 ]
             }
         }
@@ -103,12 +103,12 @@ export default {
         })
     },
     methods: {
-        // 检查召集人数
+        // 检查寻找人数
         check_cnt(rule, value, callback) {
             if (String(value).trim() == '') {
-                return callback(new Error('请输入召集人数'))
+                return callback(new Error('请输入寻找人数'))
             } else if (Number(value) <= 0 || Number(value) >=101) {
-                return callback(new Error('召集人数必须在1~100内'))
+                return callback(new Error('寻找人数必须在1~100内'))
             } else {
                 return callback()
             }
@@ -122,7 +122,7 @@ export default {
             this.callForm.typeId = e            // value
             console.log('changeOption', e, obj.findGTypeName)
         },
-        // 发布召集令
+        // 发布寻味道
         submit() {
             console.log(this.callForm.endTime)
             this.$refs.callFormRef.validate((valid) => {

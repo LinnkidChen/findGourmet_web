@@ -3,17 +3,17 @@
         <!-- 面包屑 -->
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 10px">
             <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>接令者</el-breadcrumb-item>
-            <el-breadcrumb-item>已经发起的召集令请求信息</el-breadcrumb-item>
+            <el-breadcrumb-item>分享美食</el-breadcrumb-item>
+            <el-breadcrumb-item>已经发起的寻味道请求信息</el-breadcrumb-item>
         </el-breadcrumb>
         <!-- 信息主体 -->
-        <h2>接令列表信息</h2>
+        <h2>分享列表信息</h2>
         <el-card>
             <el-table :data="tableData" :header-cell-style="{'text-align':'center'}" 
                       :cell-style="{'text-align':'center'}" border>
                 <el-table-column prop="id" label="请求标识" width="100"></el-table-column>
-                <el-table-column prop="findGId" label="请求召集令标识" width="150"></el-table-column>
-                <el-table-column prop="findGName" label="召集令名字" width="150"></el-table-column>
+                <el-table-column prop="findGId" label="请求寻味道标识" width="150"></el-table-column>
+                <el-table-column prop="findGName" label="寻味道名字" width="150"></el-table-column>
                 <el-table-column prop="userId" label="请求者ID" width="100"></el-table-column>
                 <el-table-column prop="description" label="请求描述" ></el-table-column>
                 <el-table-column prop="createTime" label="创建请求时间" width="180"></el-table-column>
@@ -27,7 +27,7 @@
                         <el-tooltip effect="dark" :enterable="false" content="删除此条请求" placement="top">
                            <el-button type="danger" :disabled="scope.row.state == '同意' || scope.row.state == '拒绝'" icon="el-icon-delete" @click="addDeleteVisable(scope.row.id)"></el-button>
                         </el-tooltip>
-                        <el-tooltip effect="dark" :enterable="false" content="查看召集令信息" placement="top">
+                        <el-tooltip effect="dark" :enterable="false" content="查看寻味道信息" placement="top">
                             <el-button type="primary" :disabled="scope.row.state != '同意'" icon="el-icon-chat-dot-square" @click="checkCall(scope.row.findGId)"></el-button>
                         </el-tooltip>
                     </template>
@@ -54,7 +54,7 @@
                 <el-form-item label="请求标识">
                     <el-input v-model="request.id" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="召集令ID">
+                <el-form-item label="寻味道ID">
                     <el-input v-model="request.findGId" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="请求者ID">
@@ -70,10 +70,10 @@
             </span>
         </el-dialog>
 
-        <!-- 自己所有已经接令的召集令信息 -->
-        <el-dialog title="召集令详情" :visible.sync="infoVisable" width="50%">
+        <!-- 自己所有已经接令的寻味道信息 -->
+        <el-dialog title="寻味道详情" :visible.sync="infoVisable" width="50%">
             <div>
-                <span style="font-size: 20px; margin-right: 10px;">召集令图片</span>
+                <span style="font-size: 20px; margin-right: 10px;">寻味道图片</span>
                 <el-button type="primary" @click="checkPic()" size="mini" style="margin-bottom: 5px;" icon="el-icon-picture"></el-button>
             </div>
             
@@ -86,7 +86,7 @@
         </el-dialog>
 
         <!-- 展示图片 -->
-        <el-dialog title="召集令相关图片" :visible.sync="picVisable">
+        <el-dialog title="寻味道相关图片" :visible.sync="picVisable">
             <el-image v-show="havePic" v-for="url in srcList" :key="url" :src="url" lazy></el-image>
             <span v-show="!havePic">暂无照片</span>
         </el-dialog>
@@ -107,7 +107,7 @@ export default {
             rows: 10,                // 每页行数
             total: 0,               // 数据总数
             editVisable: false,     // 请求表单是否可见
-            infoVisable: false,     // 查看召集令信息是否可见
+            infoVisable: false,     // 查看寻味道信息是否可见
             call: [],
             request: {
                 id: '',
@@ -278,17 +278,17 @@ export default {
                 if (response.status == 200) {
                     Object.getOwnPropertyNames(response.data).forEach(function(key){
                         switch(key) {
-                            case 'id': that.call[0] =['召集令标识', response.data[key]]; break;
+                            case 'id': that.call[0] =['寻味道标识', response.data[key]]; break;
                             case 'userId': that.call[1] = ['发布者ID', response.data[key]]; break;
-                            case 'typeName': that.call[2] = ['召集令类型', response.data[key]]; break;
-                            case 'name': that.call[3] = ['召集令名称', response.data[key]]; break;
-                            case 'description': that.call[4] = ['召集令描述', response.data[key]]; break;
-                            case 'people': that.call[5] = ['已召集人数', response.data[key]]; break;
-                            case 'peopleCount': that.call[6] = ['召集令总人数', response.data[key]]; break;
-                            case 'endTime': that.call[7] = ['召集结束时间', response.data[key]]; break;
-                            case 'createTime': that.call[8] = ['召集令创建时间', response.data[key]]; break;
-                            case 'modifyTime': that.call[9] = ['召集令修改时间', response.data[key]]; break;
-                            case 'stateName': that.call[10] = ['召集令状态', response.data[key]]; break;
+                            case 'typeName': that.call[2] = ['寻味道类型', response.data[key]]; break;
+                            case 'name': that.call[3] = ['寻味道名称', response.data[key]]; break;
+                            case 'description': that.call[4] = ['寻味道描述', response.data[key]]; break;
+                            case 'people': that.call[5] = ['已寻找人数', response.data[key]]; break;
+                            case 'peopleCount': that.call[6] = ['寻味道总人数', response.data[key]]; break;
+                            case 'endTime': that.call[7] = ['寻找结束时间', response.data[key]]; break;
+                            case 'createTime': that.call[8] = ['寻味道创建时间', response.data[key]]; break;
+                            case 'modifyTime': that.call[9] = ['寻味道修改时间', response.data[key]]; break;
+                            case 'stateName': that.call[10] = ['寻味道状态', response.data[key]]; break;
                             default: break;
                         }
                     })

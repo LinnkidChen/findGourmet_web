@@ -2,8 +2,8 @@
   <!-- 头部区域 -->
     <el-container class="container">
         <el-header class="header" height="90px">
-        <img src="../assets/logo.gif" />
-        <span>召集令管理后台</span>
+        <img src="../assets/logo.png" />
+        <span>好味道管理后台</span>
         <el-button type="info" @click="logout()">退出</el-button>
         </el-header>
         <!-- 左侧菜单区域 -->
@@ -16,21 +16,21 @@
                         <el-submenu :index="'/Convener'" v-if="!isAdmin">
                             <template slot="title" >
                                 <i class="el-icon-s-promotion"></i>
-                                <span>令主</span>
+                                <span>寻找美食</span>
                             </template>
                             <el-menu-item-group>
-                                <el-menu-item :index="'/convene'" @click="saveNavState('/convene')">发布召集令</el-menu-item>
-                                <el-menu-item :index="'/myconvene'" @click="saveNavState('/myconvene')">我的召集令</el-menu-item>
+                                <el-menu-item :index="'/convene'" @click="saveNavState('/convene')">发布寻味道</el-menu-item>
+                                <el-menu-item :index="'/myconvene'" @click="saveNavState('/myconvene')">我的寻味道</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
                         <el-submenu :index="'/Accepter'" v-if="!isAdmin">
                             <template slot="title" >
                                 <i class="el-icon-bangzhu"></i>
-                                <span>接令者</span>
+                                <span>分享美食</span>
                             </template>
                             <el-menu-item-group>
-                                <el-menu-item :index="'/accept'" @click="saveNavState('/accept')">所有召集令</el-menu-item>
-                                <el-menu-item :index="'/acceptlist'" @click="saveNavState('/acceptlist')">我的接令列表</el-menu-item>
+                                <el-menu-item :index="'/accept'" @click="saveNavState('/accept')">所有寻味道</el-menu-item>
+                                <el-menu-item :index="'/acceptlist'" @click="saveNavState('/acceptlist')">我的请品鉴列表</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
 
@@ -44,11 +44,11 @@
                         </el-menu-item>
                         <el-menu-item :index="'/checkconvene'" @click="saveNavState('/checkconvene')" v-if="isAdmin">
                             <i class="el-icon-s-promotion"></i>
-                            <span slot="title">查询召集令信息</span>
+                            <span slot="title">查询寻味道信息</span>
                         </el-menu-item>
                         <el-menu-item :index="'/checkaccept'" @click="saveNavState('/checkaccept')" v-if="isAdmin">
                             <i class="el-icon-bangzhu"></i>
-                            <span slot="title">查询接令请求信息</span>
+                            <span slot="title">查询请品鉴请求信息</span>
                         </el-menu-item>
                         <el-menu-item :index="'/checkfee'" @click="saveNavState('/checkfee')" v-if="isAdmin">
                             <i class="el-icon-success"></i>
@@ -147,9 +147,9 @@ export default {
     padding: 0px;
     justify-content: space-between;
     img {
-        width: 240px;
-        height: 240px;
-        transform: translate(-70px, -65px);
+        width: 100px;
+        height: 100px;
+        transform: translate(0px, -5px);
         // z-index: 1;
         mix-blend-mode: color-burn;
     }

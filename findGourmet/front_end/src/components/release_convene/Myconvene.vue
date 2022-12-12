@@ -3,30 +3,30 @@
         <!-- 面包屑 -->
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 10px">
             <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>令主</el-breadcrumb-item>
-            <el-breadcrumb-item>所有已经发布召集令信息</el-breadcrumb-item>
+            <el-breadcrumb-item>寻找美食</el-breadcrumb-item>
+            <el-breadcrumb-item>所有已经发布寻味道信息</el-breadcrumb-item>
         </el-breadcrumb>
         <!-- 信息主体 -->
-        <h2>召集令信息</h2>
+        <h2>寻味道信息</h2>
         <el-card>
             <el-table :data="tableData" :header-cell-style="{'text-align':'center'}" 
                       :cell-style="{'text-align':'center'}" 
                       v-loading="loading" border>
-                <el-table-column prop="id" label="召集令标识" width="100">
+                <el-table-column prop="id" label="寻味道标识" width="100">
                 </el-table-column>
                 <el-table-column prop="userId" label="发布者ID" width="80">
                 </el-table-column>
-                <el-table-column prop="typeName" label="召集令类型" width="120">
+                <el-table-column prop="typeName" label="寻味道类型" width="120">
                 </el-table-column>
-                <el-table-column prop="name" label="召集令名称" width="120">
+                <el-table-column prop="name" label="寻味道名称" width="120">
                 </el-table-column>
-                <el-table-column prop="description" label="召集令描述" width="200">
+                <el-table-column prop="description" label="寻味道描述" width="200">
                 </el-table-column>
-                <el-table-column prop="people" label="已召集人数" width="100">
+                <el-table-column prop="people" label="已寻找人数" width="100">
                 </el-table-column>
-                <el-table-column prop="peopleCount" label="召集人数" width="80">
+                <el-table-column prop="peopleCount" label="寻找人数" width="80">
                 </el-table-column>
-                <el-table-column prop="endTime" label="召集结束时间" width="180">
+                <el-table-column prop="endTime" label="寻找结束时间" width="180">
                 </el-table-column>
                 <el-table-column label="描述照片" width="100">
                     <template slot-scope='scope'>
@@ -37,7 +37,7 @@
                 </el-table-column>
                 <el-table-column prop="modifyTime" label="修改时间" width="180">
                 </el-table-column>
-                <el-table-column prop="stateName" label="召集令状态" width="100">
+                <el-table-column prop="stateName" label="寻味道状态" width="100">
                 </el-table-column>
                 <el-table-column label="操作" width="180">
                     <template slot-scope='scope'>
@@ -66,19 +66,19 @@
                     :total="total">
                     </el-pagination>
                 </div>
-                <el-button type="primary" @click="addConvene()" size="medium" style="margin: 5px; float: right">添加召集令</el-button>
+                <el-button type="primary" @click="addConvene()" size="medium" style="margin: 5px; float: right">添加寻味道</el-button>
                 <el-button type="primary" @click="myClick()" size="medium" style="margin: 5px;" v-if="flush" v-clickDown>刷新页面</el-button>
             </div>
         </el-card>
 
         <!-- 修改界面对话框 -->
-        <el-dialog title="修改召集令信息" :visible.sync="editVisable" width="50%">
+        <el-dialog title="修改寻味道信息" :visible.sync="editVisable" width="50%">
             <el-form label-width="120px" style="margin:10px 20px 10px 10px" >
-                <el-form-item label="召集令id">
+                <el-form-item label="寻味道id">
                     <el-input v-model="call.id" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="召集令类型">
-                    <el-select v-model="call.typeName" placeholder="请选择召集令类型">
+                <el-form-item label="寻味道类型">
+                    <el-select v-model="call.typeName" placeholder="请选择寻味道类型">
                     <el-option
                         v-for="item in callTypeOption"
                         :key="item.callTypeId"
@@ -88,13 +88,13 @@
                     </el-option>
                 </el-select>
                 </el-form-item>
-                <el-form-item label="召集令名称">
+                <el-form-item label="寻味道名称">
                     <el-input v-model="call.name"></el-input>
                 </el-form-item>
-                <el-form-item label="召集令描述">
+                <el-form-item label="寻味道描述">
                     <el-input v-model="call.description"></el-input>
                 </el-form-item>
-                <el-form-item label="召集人数">
+                <el-form-item label="寻找人数">
                     <el-input v-model="call.peopleCount"></el-input>
                 </el-form-item>
                 <el-form-item label="描述照片">
@@ -128,7 +128,7 @@
                         <img width="100%" :src="preImageUrl" alt="">
                     </el-dialog>
                 </el-form-item>
-                <el-form-item label="召集结束日期" required>
+                <el-form-item label="寻找结束日期" required>
                     <el-col :span="11">
                         <el-form-item >
                             <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" type="datetime" :picker-options="expireTimeOption" placeholder="选择日期" v-model="call.endTime" style="width: 100%;"></el-date-picker>
@@ -146,7 +146,7 @@
             <el-table :data="requestData" :header-cell-style="{'text-align':'center'}" 
                       :cell-style="{'text-align':'center'}" border>
                 <el-table-column prop="id" label="请求标识" width="100"></el-table-column>
-                <el-table-column prop="findGId" label="召集令ID" width="100"></el-table-column>
+                <el-table-column prop="findGId" label="寻味道ID" width="100"></el-table-column>
                 <!-- 这里是不是需要加一个请求者姓名什么的 -->
                 <el-table-column prop="userId" label="请求者ID" width="100"></el-table-column>
                 <el-table-column prop="description" label="请求描述" width="250"></el-table-column>
@@ -174,7 +174,7 @@
         </el-dialog>
 
         <!-- 展示图片 -->
-        <el-dialog title="召集令相关图片" :visible.sync="picVisable">
+        <el-dialog title="寻味道相关图片" :visible.sync="picVisable">
             <!-- <el-image v-show="havePic"
                 style="width: 100px; height: 100px"
                 :src="srcInitUrl" 
@@ -217,7 +217,7 @@ export default {
             userInfo: [],
             loading: false,
             flush: true,
-            // 修改召集令表单
+            // 修改寻味道表单
             callTypeOption: [],
             call: {
                 id: '',
@@ -236,8 +236,8 @@ export default {
                     return date.getTime() <= Date.now();
                 }
             },
-            ids: [],        // 记录召集令的id
-            newRequest: {}, // 记录某条召集令是否有新的请求
+            ids: [],        // 记录寻味道的id
+            newRequest: {}, // 记录某条寻味道是否有新的请求
             timer: null,
         }
     },
@@ -330,10 +330,10 @@ export default {
                 return that.$message({showClose: true, message:'请求错误', type: 'error'})
             })
         },
-        // 点击修改召集令按钮显示组件
+        // 点击修改寻味道按钮显示组件
         addEditVisable(id) {
             var that = this
-            // 获取召集令类型列表
+            // 获取寻味道类型列表
             this.$http.get("/findG/getType", {
                     headers: {
                         'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
@@ -351,7 +351,7 @@ export default {
                 that.$message({showClose: true, message: "请求错误", type: 'error'})
             })
 
-            // 获取这个召集令的基本信息
+            // 获取这个寻味道的基本信息
             this.$http.get(`/findG/findById/${id}`,{
                                 headers: {
                                     'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
@@ -360,7 +360,7 @@ export default {
             .then(function(response) { 
                 if (response.status == 200) {
                     that.call = response.data 
-                    that.getImageList()  // 获取该召集令已经上传的图片
+                    that.getImageList()  // 获取该寻味道已经上传的图片
                     that.editVisable = true
                 } else {
                     that.$message({showClose: true, message:'没有权限', type: 'error'})
@@ -376,7 +376,7 @@ export default {
             this.editVisable = false
             this.$message({showClose: true, message:'取消修改'})
         },
-        // 点击确定修改召集令按钮
+        // 点击确定修改寻味道按钮
         edit() {
             this.editVisable = false
             // console.log(this.call.endTime, 666)
@@ -406,7 +406,7 @@ export default {
                 return that.$message({showClose: true, message:'请求错误', type: 'error'})
             });
         },
-        // 点击添加召集令按钮跳转页面
+        // 点击添加寻味道按钮跳转页面
         addConvene() {
             this.$store.commit('call/set_activeNav', '/convene')
             this.$router.push('/convene')
@@ -414,7 +414,7 @@ export default {
         // 点击删除按钮显示组件
         addDeleteVisable(id) {
             var that = this
-            this.$confirm('是否删除此召集令?', '警告', {
+            this.$confirm('是否删除此寻味道?', '警告', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning',

@@ -72,7 +72,7 @@ export default {
 
             option: {},
             optionCnt: {},
-            // type: ['技术交流', '学业探讨', '社会实践', '公益志愿者', '游玩'],
+            // type: ['家乡小吃'、'地方特色小馆'、'香辣味'、'甜酸味'、'绝一味菜'],
             type: [],
             color: ['#85adad', '#FA6F53', '#99b3ff', '#ffff80', '#ffcc80'],
             series: [],
@@ -100,7 +100,7 @@ export default {
         })
         .catch(function(error) {
             console.log(error)
-            that.$message({showClose: true, message: "请求召集令类型列表错误", type: 'error'})
+            that.$message({showClose: true, message: "请求寻味道类型列表错误", type: 'error'})
         })
         
         this.value[0] = this.getDate(-3)

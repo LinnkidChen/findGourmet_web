@@ -3,15 +3,15 @@
         <!-- 面包屑 -->
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 10px">
             <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>接令者</el-breadcrumb-item>
-            <el-breadcrumb-item>所有已经发布的召集令信息</el-breadcrumb-item>
+            <el-breadcrumb-item>分享美食</el-breadcrumb-item>
+            <el-breadcrumb-item>所有已经发布的寻味道信息</el-breadcrumb-item>
         </el-breadcrumb>
         <!-- 信息主体 -->
-        <h2>申请接令</h2>
+        <h2>申请分享</h2>
         <el-card >
             <div id="slectType">
                 <span>选择类型</span>
-                <el-select v-model="typeId" placeholder="默认展示全部召集令类型" @change="check($event)">
+                <el-select v-model="typeId" placeholder="默认展示全部寻味道类型" @change="check($event)">
                     <el-option
                         v-for="item in callOption"
                         :key="item.findGTypeId"
@@ -23,12 +23,12 @@
             </div>
             <el-table :data="tableData" :header-cell-style="{'text-align':'center'}" 
                       :cell-style="{'text-align':'center'}" border>
-                <el-table-column prop="id" label="召集令标识" width="100"></el-table-column>
+                <el-table-column prop="id" label="寻味道标识" width="100"></el-table-column>
                 <el-table-column prop="userId" label="发布者ID" width="80"></el-table-column>
-                <el-table-column prop="typeName" label="召集令类型" width="120"></el-table-column>
-                <el-table-column prop="name" label="召集令名称"></el-table-column>
-                <el-table-column prop="stateName" label="召集令状态" width="120"></el-table-column>
-                <el-table-column prop="endTime" label="召集结束时间" width="200"></el-table-column>
+                <el-table-column prop="typeName" label="寻味道类型" width="120"></el-table-column>
+                <el-table-column prop="name" label="寻味道名称"></el-table-column>
+                <el-table-column prop="stateName" label="寻味道状态" width="120"></el-table-column>
+                <el-table-column prop="endTime" label="寻找结束时间" width="200"></el-table-column>
                 <el-table-column label="操作" width="200">
                     <template slot-scope='scope'>
                         <el-button type="primary" @click="checkInfo(scope.row.id)">查看</el-button> 
@@ -51,10 +51,10 @@
             </div>
         </el-card>
 
-        <!-- 展示召集令详细信息 -->
-        <el-dialog title="召集令详情" :visible.sync="infoVisable" width="50%">
+        <!-- 展示寻味道详细信息 -->
+        <el-dialog title="寻味道详情" :visible.sync="infoVisable" width="50%">
             <div>
-                <span style="font-size: 20px; margin-right: 10px;">召集令图片</span>
+                <span style="font-size: 20px; margin-right: 10px;">寻味道图片</span>
                 <el-button type="primary" @click="checkPic()" size="mini" style="margin-bottom: 5px;" icon="el-icon-picture"></el-button>
             </div>
            
@@ -69,7 +69,7 @@
         <!-- 发起请求 -->
         <el-dialog title="填写请求信息" :visible.sync="requestVisable" width="50%">
             <el-form label-width="120px" style="margin:10px 20px 10px 10px" >
-                <el-form-item label="召集令ID">
+                <el-form-item label="寻味道ID">
                     <el-input v-model="request.findG_id" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="请求者ID">
@@ -86,7 +86,7 @@
         </el-dialog>
 
         <!-- 展示图片 -->
-        <el-dialog title="召集令相关图片" :visible.sync="picVisable">
+        <el-dialog title="寻味道相关图片" :visible.sync="picVisable">
             <el-image v-show="havePic" v-for="url in srcList" :key="url" :src="url" lazy></el-image>
             <span v-show="!havePic">暂无照片</span>
         </el-dialog>
@@ -138,13 +138,13 @@ export default {
         })
         .catch(function(error) {
             console.log(error)
-            that.$message({showClose: true, message: "请求召集令类型列表错误", type: 'error'})
+            that.$message({showClose: true, message: "请求寻味道类型列表错误", type: 'error'})
         })
         this.url = `/findG/pageFind/${this.page}/${this.rows}`
         this.getConveneList(this.url)
     },
     methods: {
-        // 得到所有召集令分页信息
+        // 得到所有寻味道分页信息
         getConveneList(url) {
             var that = this
             console.log(this.url)
@@ -159,7 +159,7 @@ export default {
             })
             .catch(function(error) {
                 console.error(error)
-                return that.$message({showClose: true, message:'请求召集令列表错误', type: 'error'})
+                return that.$message({showClose: true, message:'请求寻味道列表错误', type: 'error'})
             })
         },
         // 查询类型变化
@@ -176,7 +176,7 @@ export default {
                 this.getConveneList(this.url)
             }
         },
-        // 是否自己发布的召集令
+        // 是否自己发布的寻味道
         isSelf(id) {
             return id == this.$store.state.user.id
         },
@@ -193,17 +193,17 @@ export default {
                 if (response.status == 200) {
                     Object.getOwnPropertyNames(response.data).forEach(function(key){
                         switch(key) {
-                            case 'id': that.call[0] =['召集令标识', response.data[key]]; break;
+                            case 'id': that.call[0] =['寻味道标识', response.data[key]]; break;
                             case 'userId': that.call[1] = ['发布者ID', response.data[key]]; break;
-                            case 'typeName': that.call[2] = ['召集令类型', response.data[key]]; break;
-                            case 'name': that.call[3] = ['召集令名称', response.data[key]]; break;
-                            case 'description': that.call[4] = ['召集令描述', response.data[key]]; break;
-                            case 'people': that.call[5] = ['已召集人数', response.data[key]]; break;
-                            case 'peopleCount': that.call[6] = ['召集令总人数', response.data[key]]; break;
-                            case 'endTime': that.call[7] = ['召集结束时间', response.data[key]]; break;
-                            case 'createTime': that.call[8] = ['召集令创建时间', response.data[key]]; break;
-                            case 'modifyTime': that.call[9] = ['召集令修改时间', response.data[key]]; break;
-                            case 'stateName': that.call[10] = ['召集令状态', response.data[key]]; break;
+                            case 'typeName': that.call[2] = ['寻味道类型', response.data[key]]; break;
+                            case 'name': that.call[3] = ['寻味道名称', response.data[key]]; break;
+                            case 'description': that.call[4] = ['寻味道描述', response.data[key]]; break;
+                            case 'people': that.call[5] = ['已寻找人数', response.data[key]]; break;
+                            case 'peopleCount': that.call[6] = ['寻味道总人数', response.data[key]]; break;
+                            case 'endTime': that.call[7] = ['寻找结束时间', response.data[key]]; break;
+                            case 'createTime': that.call[8] = ['寻味道创建时间', response.data[key]]; break;
+                            case 'modifyTime': that.call[9] = ['寻味道修改时间', response.data[key]]; break;
+                            case 'stateName': that.call[10] = ['寻味道状态', response.data[key]]; break;
                             default: break;
                         }
                     })

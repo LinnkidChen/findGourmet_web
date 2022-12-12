@@ -170,7 +170,7 @@ export default {
   transform: translate(-50%, -40%); */
   background-color: white;
   img {
-    height: 100px;
+    height: 115px;
     border-radius: 30%;
     padding: 10% 10% 10% 6%;
   }
