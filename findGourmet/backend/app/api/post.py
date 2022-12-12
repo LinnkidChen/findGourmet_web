@@ -184,7 +184,7 @@ def get_findG_byType(index, rows, typeId):
         findGs = (
             FindG.query.filter_by(type="香辣味").paginate(page=index, per_page=rows).items
         )
-        totals=indG.query.filter_by(type="香辣味").count()
+        totals=FindG.query.filter_by(type="香辣味").count()
     elif typeId == 4:
         findGs = (
             FindG.query.filter_by(type="甜酸味").paginate(page=index, per_page=rows).items
