@@ -101,7 +101,7 @@ export default {
         },
         // 判断是否是管理员
         is_admin() {
-            if (this.$store.state.user.password == 'admin') {
+            if (this.$store.state.user.level == 1) {
                 this.isAdmin = true
             } else {
                 this.isAdmin = false
