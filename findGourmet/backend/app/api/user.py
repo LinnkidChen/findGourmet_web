@@ -216,9 +216,10 @@ def fine_all_users(index, rows):
     if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
         return forbidden("Not logged in as an Admin")
     users = User.query.paginate(page=index, per_page=rows).items
+    totals = User.query.count()
     # users=users.
     response = jsonify(
-        {"total": len(users), "records": [user.to_json for user in users]}
+        {"total": totals, "records": [user.to_json for user in users]}
     )
     response.status_code = 200
     return response
@@ -239,10 +240,10 @@ def query_user():
         .paginate(page=req_json.get("page"), per_page=req_json.get("rows"))
         .items
     )
-
+    totals = User.query.filter_by(**filter_dict).count()
     # users=users.
     response = jsonify(
-        {"total": len(users), "records": [user.to_json for user in users]}
+        {"total": totals, "records": [user.to_json for user in users]}
     )
     response.status_code = 200
     return response
