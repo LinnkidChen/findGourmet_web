@@ -144,6 +144,22 @@ def get_findG_byInput(index, rows, input):
     response.status_code = 200
     return response
 
+@api.route("/api/findG/modify",methods=["POST"])
+@auth.login_required
+def modify_findG():
+    input = request.get_json()
+    if g.current_user.id!=input["userId"]:
+        return forbidden("Not your post")
+    findgPost=FindG.query.filter_by(id=input["id"]).first()
+    if findgPost is None:
+        return forbidden("Post not exist")
+    findgPost.update(input)
+    response=jsonify({"success":1})
+    response.status_code=200
+    return response
+    
+    
+    
 
 @api.route("/findG/pageFind/byType/<int:index>/<int:rows>/<int:typeId>")  # 按类型查找
 @auth.login_required
