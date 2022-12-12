@@ -310,7 +310,7 @@ export default {
                 }
                 that.srcList = []
                 for(var i = 0; i < data.length; ++ i) {
-                    that.srcList.push('http://localhost:9998/' + data[i]['graphLocation'])
+                    that.srcList.push('http://localhost:8000/static/UserImages/' + data[i]['graphLocation'] +'.jpg')
                 }
                 that.srcInitUrl = that.srcList[0]
                 that.picVisable = true

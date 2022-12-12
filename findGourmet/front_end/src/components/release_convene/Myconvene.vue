@@ -198,7 +198,7 @@ export default {
             preImageUrl: '',
             previewVisible: false,
             fileList: [],
-            baseUrl: 'http://localhost:9998/findG/upload/',
+            baseUrl: 'http://localhost:8000/api/findG/UploadFindGPhoto/',
             picVisable: false,
             srcInitUrl: '',
             srcList: [],
@@ -630,10 +630,10 @@ export default {
                 }
                 var data = response.data
                 that.fileList = data
-                // 'http://localhost:9998/'
+                // 'http://localhost:8000/'
                 for(var i = 0; i < data.length; ++ i) {
-                    that.fileList[i]['url'] = 'http://localhost:9998/' + data[i]['graphLocation']
-                    // that.fileList[i]['name'] = 'http://localhost:9998/' + data[i]['graphLocation']
+                    that.fileList[i]['url'] = 'http://localhost:8000/static/UserImages/' + data[i]['graphLocation']+ '.jpg' 
+                    // that.fileList[i]['name'] = 'http://localhost:8000/' + data[i]['graphLocation']
                 }
                 // console.log(that.fileList)
             }).catch(function(error) {
@@ -667,7 +667,7 @@ export default {
                 }
                 that.srcList = []
                 for(var i = 0; i < data.length; ++ i) {
-                    that.srcList.push('http://localhost:9998/' + data[i]['graphLocation'])
+                    that.srcList.push('http://localhost:8000/static/UserImages/' + data[i]['graphLocation'] + '.jpg')
                 }
                 that.srcInitUrl = that.srcList[0]
                 that.picVisable = true
@@ -735,7 +735,7 @@ export default {
         handleSuccess(res, file) {
             console.log('success', res, file.url)
             this.fileList.push(res.data)
-            this.fileList[this.fileList.length - 1]['url'] = 'http://localhost:9998/' + res.data['graphLocation']
+            this.fileList[this.fileList.length - 1]['url'] = 'http://localhost:8000/static/UserImages/' + res.data['graphLocation'] + '.jpg'
             this.$message.success('上传图片成功！')
             console.log(this.fileList)
         },
