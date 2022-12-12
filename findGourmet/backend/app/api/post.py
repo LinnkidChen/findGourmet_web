@@ -144,7 +144,7 @@ def get_findG_byInput(index, rows, input):
     response.status_code = 200
     return response
 
-@api.route("/api/findG/modify",methods=["POST"])
+@api.route("/findG/modify",methods=["POST"])
 @auth.login_required
 def modify_findG():
     input = request.get_json()
