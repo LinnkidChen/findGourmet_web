@@ -43,8 +43,10 @@ def getType():
 def getFindGGraph(postID):
     post = FindG.query.filter_by(id=postID).first()
     
-    if post == None:
+    if post == None :
         return bad_request("post not exitst")
+    elif post.to_json()["photos"] is None:
+        return  bad_request("No photo exist for this FindG")
     else:
         return jsonify(
             {"data": [{"data": photo} for photo in post.to_json()["photos"]]}
@@ -65,6 +67,7 @@ def addPhoto(postID):
         and len(post.photos.split()) >= current_app.config["POST_PHOTO_NUM"]
     ):
         return bad_request("photo number exceed limit.")
+    print(request.files)
     photo = request.files.get("file")
     photo_hash = hashlib.md5(
         photo.read() + str(g.current_user.id).encode("utf-8")
@@ -130,7 +133,7 @@ def get_findG_all(index, rows):
 @api.route("/findG/pageFind/byName/<int:index>/<int:rows>/<input>")  # 模糊名称查找
 @auth.login_required
 def get_findG_byInput(index, rows, input):
-    if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
+    if g.current_user.level != current_app.config["ADMIN_PERMISSION"]:
         return forbidden("Not logged in as an Admin")
     findGs = (
         
@@ -154,7 +157,14 @@ def modify_findG():
     findgPost=FindG.query.filter_by(id=input["id"]).first()
     if findgPost is None:
         return forbidden("Post not exist")
-    findgPost.update(input)
+    findgPost.description=input["description"]
+    findgPost.endTime = datetime.datetime.strptime(input.get("endTime"), "%Y-%m-%d %H:%M:%S")
+    findgPost.name=input["name"]
+    findgPost.type=input["typeName"]
+    
+    
+    db.session.commit()
+
     response=jsonify({"success":1})
     response.status_code=200
     return response

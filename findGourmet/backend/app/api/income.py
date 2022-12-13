@@ -163,7 +163,7 @@ def GetIncByDayByType2(start, end, city):
                     citysum += tmp.totalFee
                     count += tmp.count
                 tmplist += [
-                    {
+                    {   "city":city,
                         "name": type,
                         "money": citysum,
                         "count": count,
@@ -205,7 +205,7 @@ def GetIncByDayByType3(start, end, city):
                     citysum += tmp.totalFee
                     count += tmp.count
                 tmplist += [
-                    {
+                    {   "name":type,
                         "location":city,
                         "money": citysum,
                         "count": count,
