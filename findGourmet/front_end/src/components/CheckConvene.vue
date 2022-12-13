@@ -12,9 +12,9 @@
                 <el-select style="float: left; width: 25%" v-model="value" placeholder="请要查询的寻味道类型">
                     <el-option
                         v-for="item in calls"
-                        :key="item.callTypeId"
-                        :label="item.callTypeName"
-                        :value="item.callTypeId"
+                        :key="item.TypeId"
+                        :label="item.TypeName"
+                        :value="item.TypeId"
                     >
                     </el-option>
                 </el-select>
@@ -87,7 +87,7 @@ export default {
             infoVisable: false,     // 用户信息对话框可见性
             userInfo: [],           // 用户信息数组
             calls: [
-                { callTypeId: '', callTypeName: '全部类别'}
+                { TypeId: '', TypeName: '全部类别'}
             ],
             value: '',
             page: 1,
