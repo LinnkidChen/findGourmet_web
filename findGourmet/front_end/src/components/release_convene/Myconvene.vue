@@ -105,7 +105,7 @@
                     :on-preview="handlePictureCardPreview" 
                     :on-success="handleSuccess"
                     :on-error="handleFail" 
-                    :auto-upload="false" 
+                    :auto-upload="true" 
                     :http-request="fileUpload" 
                     :file-list="fileList"
                     accept=".png, .jpg, .jpeg, .gif" ref="upload">
