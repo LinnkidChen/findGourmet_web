@@ -751,11 +751,11 @@ export default {
             console.log('error', res, file.url)
             this.$message.warning('上传图片失败！')
         },
-        fileUpload(file) {
+        fileUpload(params) {
             let form = new FormData();
-            form.append('file', file);
+            form.append('file', params.file);
             this.$http({
-                url: ""+getImageUrl(),
+                url: ""+this.getImageUrl(),
                 method: "post",
                 headers: {
                     'Authorization': "Bearer " + window.sessionStorage.getItem('token'),
