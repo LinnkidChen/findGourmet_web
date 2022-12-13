@@ -30,25 +30,25 @@ def get_date(input):
     return result
 
 
-@db.event.listens_for(Success, "after_insert")
-def success_after_insert(mapper, connection, target):
-    t_date = target.date
-    FS = (
-        FeeSummary.query.filter_by(cityName=target.cityName, type=target.type)
-        .filter()
-        .filter(Success.date >= target.date)
-        .filter(Success.date < target.date + relativedelta(days=+1))
-        .first()
-    )
-    if FS is None:
-        tmp = FeeSummary(
-            target.cityName,
-            target.date,
-            datetime(t_date.year, t_date.month, t_date.day),
-        )
-    else:
-        FS.totalFee += target.fee
-        FS.totalFee += target.fee2
+# @db.event.listens_for(Success, "after_insert")
+# def success_after_insert(mapper, connection, target):
+#     t_date = target.date
+#     FS = (
+#         FeeSummary.query.filter_by(cityName=target.cityName, type=target.type)
+#         .filter()
+#         .filter(Success.date >= target.date)
+#         .filter(Success.date < target.date + relativedelta(days=+1))
+#         .first()
+#     )
+#     if FS is None:
+#         tmp = FeeSummary(
+#             target.cityName,
+#             target.date,
+#             datetime(t_date.year, t_date.month, t_date.day),
+#         )
+#     else:
+#         FS.totalFee += target.fee
+#         FS.totalFee += target.fee2
 
 
 # @db.event.listens_for(Success,"after_update")
@@ -78,6 +78,7 @@ def GetIncByDayByType(start, end):
                 count = 0
                 
                 for tmp in tmps:
+                    tmp.sum_all_fees()
                     citysum += tmp.totalFee
                     count += tmp.count
                 tmplist += [
@@ -119,6 +120,7 @@ def GetIncByDayByType1(start, end):
                 citysum = 0
                 count = 0
                 for tmp in tmps:
+                    tmp.sum_all_fees()
                     citysum += tmp.totalFee
                     count += tmp.count
                 tmplist += [
@@ -126,7 +128,7 @@ def GetIncByDayByType1(start, end):
                         "name": type,
                         "money": citysum,
                         "count": count,
-                        "date": datetime.strftime("%Y-%m-%d"),
+                        "date": i.strftime("%Y-%m-%d"),
                     }
                 ]
         sumlist += [tmplist]
@@ -157,6 +159,7 @@ def GetIncByDayByType2(start, end, city):
                 citysum = 0
                 count = 0
                 for tmp in tmps:
+                    tmp.sum_all_fees()
                     citysum += tmp.totalFee
                     count += tmp.count
                 tmplist += [
@@ -164,7 +167,7 @@ def GetIncByDayByType2(start, end, city):
                         "name": type,
                         "money": citysum,
                         "count": count,
-                        "date": datetime.strftime("%Y-%m-%d"),
+                        "date": i.strftime("%Y-%m-%d"),
                     }
                 ]
         sumlist += [tmplist]
@@ -175,7 +178,7 @@ def GetIncByDayByType2(start, end, city):
 
 @api.route("income/getIncomeByMonthTimeByLocation/<start>/<end>/<city>")
 def GetIncByDayByType3(start, end, city):
-
+    print(city)
     start = get_date(start)
     end = get_date(end)
     end = end + relativedelta(months=+1)
@@ -198,6 +201,7 @@ def GetIncByDayByType3(start, end, city):
                 citysum = 0
                 count = 0
                 for tmp in tmps:
+                    tmp.sum_all_fees()
                     citysum += tmp.totalFee
                     count += tmp.count
                 tmplist += [
@@ -205,7 +209,7 @@ def GetIncByDayByType3(start, end, city):
                         "location":city,
                         "money": citysum,
                         "count": count,
-                        "date": datetime.strftime("%Y-%M-%d"),
+                        "date": i.strftime("%Y-%m-%d"),
                     }
                 ]
         sumlist += [tmplist]
