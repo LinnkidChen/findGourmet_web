@@ -235,7 +235,8 @@ def query_user():
     valid_keys = [valid_key for valid_key in valid_keys if valid_key in req_json.keys()]
     valid_keys = [valid_key for valid_key in valid_keys if req_json[valid_key] != '']   # 过滤掉空的查询条件
     filter_dict = {your_key: req_json[your_key] for your_key in valid_keys}
-    # users = User.query.filter_by(**req_json).paginate()  # TODO 更新一下分页
+    print(filter_dict)
+    # users = User.query.filter_by(**req_json).paginate()  
     users = (
         User.query.filter_by(**filter_dict)
         .paginate(page=req_json.get("page"), per_page=req_json.get("rows"))

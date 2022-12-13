@@ -19,7 +19,7 @@ class Config:
     FINDG_FOLLOWERS_PER_PAGE = 50
     FINDG_COMMENTS_PER_PAGE = 30
     TOKEN_EXPIRE = 3600
-    ADMIN_PERMISSION = 9
+    ADMIN_PERMISSION = 1
     POST_PHOTO_NUM = 3
     TYPES = ["家乡小吃", "地方特色小馆", "香辣味", "甜酸味", "绝一味菜"]
 
