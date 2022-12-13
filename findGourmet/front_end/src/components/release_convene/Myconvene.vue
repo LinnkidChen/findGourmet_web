@@ -672,7 +672,7 @@ export default {
                 that.srcInitUrl = that.srcList[0]
                 that.picVisable = true
             }).catch(function(error) {
-                console.log(error, '/findG/getGraphByFindGId/'+this.call.id)
+                console.log(error, '/findG/getGraphByFindGId/'+id)
                 return that.$message({showClose: true, message: "请求错误", type: 'error'})
             })
         },

@@ -13,9 +13,9 @@
                 <el-select v-model="callForm.typeId" placeholder="请选择寻味道类型" @change="showMessage($event)">
                     <el-option
                         v-for="item in callOption"
-                        :key="item.findGTypeId"
-                        :label="item.findGTypeName"
-                        :value="item.findGTypeId"
+                        :key="item.TypeId"
+                        :label="item.TypeName"
+                        :value="item.TypeId"
                     >
                     </el-option>
                 </el-select>
@@ -116,11 +116,11 @@ export default {
         showMessage(e) {
             let obj = {};
             obj = this.callOption.find((item)=>{ //这里的callOption就是上面遍历的数据源
-                return item.findGTypeId === e;     //筛选出匹配数据
+                return item.TypeId === e;     //筛选出匹配数据
             });
-            this.callForm.typeName = obj.findGTypeName  // label
+            this.callForm.typeName = obj.TypeName  // label
             this.callForm.typeId = e            // value
-            console.log('changeOption', e, obj.findGTypeName)
+            console.log('changeOption', e, obj.TypeName)
         },
         // 发布寻味道
         submit() {

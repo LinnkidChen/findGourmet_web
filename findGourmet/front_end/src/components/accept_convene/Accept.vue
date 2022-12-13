@@ -14,9 +14,9 @@
                 <el-select v-model="typeId" placeholder="默认展示全部寻味道类型" @change="check($event)">
                     <el-option
                         v-for="item in callOption"
-                        :key="item.findGTypeId"
-                        :label="item.findGTypeName"
-                        :value="item.findGTypeId"
+                        :key="item.TypeId"
+                        :label="item.TypeName"
+                        :value="item.TypeId"
                     >
                     </el-option>
                 </el-select>
@@ -102,7 +102,7 @@ export default {
             srcInitUrl: '',
             srcList: [],
             callOption: [
-                { findGTypeId: '', findGTypeName: '全部类别'}
+                { TypeId: '', TypeName: '全部类别'}
             ],
             typeId: '',
 

@@ -92,7 +92,7 @@ export default {
         .then(function(response) {
             if (response.status == 200) {
                 for(var i = 0; i < response.data.length; i++) {
-                    that.type.push(response.data[i]['findGTypeName'])
+                    that.type.push(response.data[i]['TypeName'])
                 }
             } else {
                 that.$message({showClose: true, message: response.message, type: 'warning'})
