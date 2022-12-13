@@ -137,7 +137,7 @@ export default {
                 method: 'post',
                 url: '/user/getByQuery',
                 headers: { 
-                    'Authorization': 'qwqw', 
+                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token'),
                     'Content-Type': 'application/json'
                 },
                 data : JSON.stringify(data)
