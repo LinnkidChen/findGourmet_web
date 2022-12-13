@@ -95,12 +95,12 @@ def addPhoto(postID):
     return {"photo_hash": photo_hash}
 
 
-@api.route("/findG/delGraphByLocation", methods=["POST"])
+@api.route("/findG/delGraphByLocation/<int:id>", methods=["POST"])
 @auth.login_required
-def del_photo():
-    req = request.get_json()
+def del_photo(id):
+    req = request.form
     loc = req["location"]
-    postid = req["postid"]
+    postid = id
 
     post = FindG.query.filter_by(id=postid).first()
     if post.userId != g.current_user.id:
