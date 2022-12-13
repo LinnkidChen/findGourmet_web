@@ -213,7 +213,7 @@ def password_valid(password):
 @auth.login_required
 def fine_all_users(index, rows):
 
-    if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
+    if g.current_user.level != current_app.config["ADMIN_PERMISSION"]:
         return forbidden("Not logged in as an Admin")
     users = User.query.paginate(page=index, per_page=rows).items
     totals = User.query.count()
@@ -225,11 +225,11 @@ def fine_all_users(index, rows):
     return response
 
 
-@api.route("/user/getByQuery", methods=["POST"])
-# @auth.login_required
+@api.route("/user/getByQuery", methods=['POST'])
+@auth.login_required
 def query_user():
-    # if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
-    #     return forbidden("Not logged in as an Admin")
+    if g.current_user.level != current_app.config["ADMIN_PERMISSION"]:
+        return forbidden("Not logged in as an Admin")
     req_json = request.get_json()
     valid_keys = ["id", "username", "level"]
     valid_keys = [valid_key for valid_key in valid_keys if valid_key in req_json.keys()]
