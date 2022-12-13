@@ -121,8 +121,8 @@
                                 </span>
                             </span>
                         </div>
+                        <el-button size="small" type="primary">点击上传</el-button>
                     </el-upload>
-                    <el-button size="small" type="primary">点击上传</el-button>
                     <el-dialog :visible.sync="previewVisible">
                         <img width="100%" :src="preImageUrl" alt="">
                     </el-dialog>
