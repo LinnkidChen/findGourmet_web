@@ -48,9 +48,11 @@ def getFindGGraph(postID):
     elif post.to_json()["photos"] is None:
         return  bad_request("No photo exist for this FindG")
     else:
-        return jsonify(
-            {"data": [{"data": photo} for photo in post.to_json()["photos"]]}
+        rep =jsonify(
+            {"data": [{"graphLocation": photo} for photo in post.to_json()["photos"]]}
         )
+        rep.status_code=200
+        return rep
 
 
 @api.route("/findG/UploadFindGPhoto/<int:postID>", methods=["POST"])

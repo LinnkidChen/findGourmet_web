@@ -668,6 +668,8 @@ export default {
                     return that.$message({ showClose: true, message: response.message, type: 'warning' })
                 }
                 var data = response.data
+                console.log(Object.keys(data))
+                console.log(data["data"])
                 if (data.length == 0) {
                     that.havePic = false
                     that.picVisable = true
