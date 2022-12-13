@@ -121,7 +121,6 @@
                                 </span>
                             </span>
                         </div>
-                        <el-button size="small" type="primary">点击上传</el-button>
                     </el-upload>
                     <el-dialog :visible.sync="previewVisible">
                         <img width="100%" :src="preImageUrl" alt="">
@@ -636,7 +635,7 @@ export default {
                 if (response.status != 200) {
                     return that.$message({ showClose: true, message: response.message, type: 'warning' })
                 }
-                var data = response.data
+                var data = response.data.data
                 that.fileList = data
                 // 'http://localhost:8000/'
                 for (var i = 0; i < data.length; ++i) {
