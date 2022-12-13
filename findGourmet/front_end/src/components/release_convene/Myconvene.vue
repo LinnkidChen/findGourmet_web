@@ -9,9 +9,8 @@
         <!-- 信息主体 -->
         <h2>寻味道信息</h2>
         <el-card>
-            <el-table :data="tableData" :header-cell-style="{'text-align':'center'}" 
-                      :cell-style="{'text-align':'center'}" 
-                      v-loading="loading" border>
+            <el-table :data="tableData" :header-cell-style="{ 'text-align': 'center' }"
+                :cell-style="{ 'text-align': 'center' }" v-loading="loading" border>
                 <el-table-column prop="id" label="寻味道标识" width="100">
                 </el-table-column>
                 <el-table-column prop="userId" label="发布者ID" width="80">
@@ -41,52 +40,50 @@
                 </el-table-column>
                 <el-table-column label="操作" width="180">
                     <template slot-scope='scope'>
-                        <el-button type="primary" :disabled="scope.row.people != 0 || !dateControlFunc(scope.row.endTime)" @click="addEditVisable(scope.row.id)">编辑</el-button>
-                        <el-button type="danger" :disabled="scope.row.people != 0" @click="addDeleteVisable(scope.row.id)">删除</el-button>
+                        <el-button type="primary"
+                            :disabled="scope.row.people != 0 || !dateControlFunc(scope.row.endTime)"
+                            @click="addEditVisable(scope.row.id)">编辑</el-button>
+                        <el-button type="danger" :disabled="scope.row.people != 0"
+                            @click="addDeleteVisable(scope.row.id)">删除</el-button>
                     </template>
                 </el-table-column>
                 <el-table-column label="申请列表" width="100">
                     <template slot-scope='scope'>
                         <!-- <el-badge :is-dot="newRequest[scope.row.id]" style="margin-top: 5px"> -->
-                        <el-badge :value="newRequest[scope.row.id]" :max="10" :hidden="!newRequest[scope.row.id]" style="margin-top: 9px; margin-right: 2px;">
-                            <el-button type="info" icon="el-icon-menu" size="min" @click="addRequestVisable(scope.row.id)" ></el-button>
+                        <el-badge :value="newRequest[scope.row.id]" :max="10" :hidden="!newRequest[scope.row.id]"
+                            style="margin-top: 9px; margin-right: 2px;">
+                            <el-button type="info" icon="el-icon-menu" size="min"
+                                @click="addRequestVisable(scope.row.id)"></el-button>
                         </el-badge>
                     </template>
                 </el-table-column>
             </el-table>
             <div class="card_foot">
                 <div class="block" style="margin: 5px 0px; float: left;">
-                    <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="page"
-                    :page-sizes="[2, 5, 10, 15]"
-                    :page-size="rows"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="total">
+                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                        :current-page="page" :page-sizes="[2, 5, 10, 15]" :page-size="rows"
+                        layout="total, sizes, prev, pager, next, jumper" :total="total">
                     </el-pagination>
                 </div>
-                <el-button type="primary" @click="addConvene()" size="medium" style="margin: 5px; float: right">添加寻味道</el-button>
-                <el-button type="primary" @click="myClick()" size="medium" style="margin: 5px;" v-if="flush" v-clickDown>刷新页面</el-button>
+                <el-button type="primary" @click="addConvene()" size="medium"
+                    style="margin: 5px; float: right">添加寻味道</el-button>
+                <el-button type="primary" @click="myClick()" size="medium" style="margin: 5px;" v-if="flush"
+                    v-clickDown>刷新页面</el-button>
             </div>
         </el-card>
 
         <!-- 修改界面对话框 -->
         <el-dialog title="修改寻味道信息" :visible.sync="editVisable" width="50%">
-            <el-form label-width="120px" style="margin:10px 20px 10px 10px" >
+            <el-form label-width="120px" style="margin:10px 20px 10px 10px">
                 <el-form-item label="寻味道id">
                     <el-input v-model="call.id" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="寻味道类型">
                     <el-select v-model="call.typeName" placeholder="请选择寻味道类型">
-                    <el-option
-                        v-for="item in callTypeOption"
-                        :key="item.TypeId"
-                        :label="item.TypeName"
-                        :value="item.TypeName"
-                    >
-                    </el-option>
-                </el-select>
+                        <el-option v-for="item in callTypeOption" :key="item.TypeId" :label="item.TypeName"
+                            :value="item.TypeName">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="寻味道名称">
                     <el-input v-model="call.name"></el-input>
@@ -98,41 +95,44 @@
                     <el-input v-model="call.peopleCount"></el-input>
                 </el-form-item>
                 <el-form-item label="描述照片">
+
+                    <el-upload 
+                    :action="getImageUrl()" 
                     
-                    <el-upload
-                        :action="getImageUrl()"
-                        :headers="myHeaders"
-                        list-type="picture-card"
-                        :limit="3"
-                        :on-exceed="handleExceed"
-                        :on-preview="handlePictureCardPreview"
-                        :on-success="handleSuccess"
-                        :on-error="handleFail"
-                        :auto-upload="true"
-                        :file-list="fileList"
-                        accept=".png, .jpg, .jpeg, .gif"
-                        ref="upload">
+                    list-type="picture-card" 
+                    :limit="3"
+                    :on-exceed="handleExceed" 
+                    :on-preview="handlePictureCardPreview" 
+                    :on-success="handleSuccess"
+                    :on-error="handleFail" 
+                    :auto-upload="false" 
+                    :http-request="fileUpload" 
+                    :file-list="fileList"
+                    accept=".png, .jpg, .jpeg, .gif" ref="upload">
                         <i slot="default" class="el-icon-plus"></i>
                         <div slot="file" slot-scope="{file}">
-                        <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" >
+                            <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
                             <span class="el-upload-list__item-actions">
-                                <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)" >
+                                <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
                                     <i class="el-icon-zoom-in"></i>
                                 </span>
-                                <span class="el-upload-list__item-delete" @click="handleRemove(file)" >
+                                <span class="el-upload-list__item-delete" @click="handleRemove(file)">
                                     <i class="el-icon-delete"></i>
                                 </span>
                             </span>
                         </div>
                     </el-upload>
+                    <el-button size="small" type="primary">点击上传</el-button>
                     <el-dialog :visible.sync="previewVisible">
                         <img width="100%" :src="preImageUrl" alt="">
                     </el-dialog>
                 </el-form-item>
                 <el-form-item label="寻找结束日期" required>
                     <el-col :span="11">
-                        <el-form-item >
-                            <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" type="datetime" :picker-options="expireTimeOption" placeholder="选择日期" v-model="call.endTime" style="width: 100%;"></el-date-picker>
+                        <el-form-item>
+                            <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" type="datetime"
+                                :picker-options="expireTimeOption" placeholder="选择日期" v-model="call.endTime"
+                                style="width: 100%;"></el-date-picker>
                         </el-form-item>
                     </el-col>
                 </el-form-item>
@@ -144,8 +144,8 @@
         </el-dialog>
 
         <el-dialog title="申请信息列表" :visible.sync="requestVisable" width="77%">
-            <el-table :data="requestData" :header-cell-style="{'text-align':'center'}" 
-                      :cell-style="{'text-align':'center'}" border>
+            <el-table :data="requestData" :header-cell-style="{ 'text-align': 'center' }"
+                :cell-style="{ 'text-align': 'center' }" border>
                 <el-table-column prop="id" label="请求标识" width="100"></el-table-column>
                 <el-table-column prop="findGId" label="寻味道ID" width="100"></el-table-column>
                 <!-- 这里是不是需要加一个请求者姓名什么的 -->
@@ -155,9 +155,11 @@
                 <el-table-column prop="modifyTime" label="修改请求时间" width="180"></el-table-column>
                 <el-table-column prop="state" label="状态" width="100"></el-table-column>
                 <el-table-column label="操作" width="300">
-                    <template slot-scope='scope'> 
-                        <el-button type="danger" :disabled="scope.row.state != '待处理'" @click="agreeRequest(scope.row.id, scope.row.findGId)">同意</el-button>
-                        <el-button type="danger" :disabled="scope.row.state != '待处理'" @click="rejectRequest(scope.row.id, scope.row.findGId)">拒绝</el-button>
+                    <template slot-scope='scope'>
+                        <el-button type="danger" :disabled="scope.row.state != '待处理'"
+                            @click="agreeRequest(scope.row.id, scope.row.findGId)">同意</el-button>
+                        <el-button type="danger" :disabled="scope.row.state != '待处理'"
+                            @click="rejectRequest(scope.row.id, scope.row.findGId)">拒绝</el-button>
                         <el-button type="primary" @click="checkInfo(scope.row.userId)">请求者信息</el-button>
                     </template>
                 </el-table-column>
@@ -196,9 +198,11 @@ export default {
     data() {
         return {
             // 照片相关
-            myHeaders: 
-            {'Authorization': "Bearer "+ window.sessionStorage.getItem('token'),
-            'Content-Type': 'application/form-data'},
+            myHeaders:
+            {
+                'Authorization': "Bearer " + window.sessionStorage.getItem('token'),
+                'Content-Type': 'application/form-data'
+            },
             preImageUrl: '',
             previewVisible: false,
             fileList: [],
@@ -255,7 +259,7 @@ export default {
     },
     computed: {
         headers() {
-           return{
+            return {
                 "Authorization": window.sessionStorage.getItem('token') // 直接从本地获取token就行
             }
         }
@@ -267,19 +271,19 @@ export default {
     async mounted() {
         var axios = require('axios')
         // 获取所有的findGIds，这个axios的异步特性真的害死我
-        let response = await this.$http.get('findG/pageFind/byUserId/1/20/'+this.$store.state.user.id, {
-                            headers: {
-                                'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
-                            }
-                        })
-        
-        for(var i = 0; i < response.data.records.length; i ++) {
+        let response = await this.$http.get('findG/pageFind/byUserId/1/20/' + this.$store.state.user.id, {
+            headers: {
+                'Authorization': "Bearer " + window.sessionStorage.getItem('token')
+            }
+        })
+
+        for (var i = 0; i < response.data.records.length; i++) {
             var id = response.data.records[i]['id']
             if (this.ids.indexOf(id) == -1) {
                 this.ids.push(id)
             }
         }
-        
+
         this.helpNewRequest()
         console.log("mounted myConvene")
     },
@@ -291,10 +295,10 @@ export default {
             console.log("自动触发")
             this.flush = false
             clearTimeout(this.timer);  //清除延迟执行 
-            this.timer = setTimeout(()=>{   //设置延迟执行
+            this.timer = setTimeout(() => {   //设置延迟执行
                 // this.helpVisable = false
                 this.loading = false
-            },500);
+            }, 500);
             /* clearTimeout(this.timer);  //清除延迟执行 
             this.timer = setTimeout(()=>{   //设置延迟执行
                 this.helpVisable = true
@@ -319,66 +323,66 @@ export default {
         // 初始化表格信息
         init() {
             var that = this
-            this.$http.get('findG/pageFind/byUserId/'+ this.page+'/'+ this.rows+'/'+this.$store.state.user.id, {
-                                headers: {
-                                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
-                                }
-                            })
-            .then(function(response) {
-                // console.log('convene_show', response.data.data);
-                that.tableData = response.data.records
-                that.total = response.data.total
+            this.$http.get('findG/pageFind/byUserId/' + this.page + '/' + this.rows + '/' + this.$store.state.user.id, {
+                headers: {
+                    'Authorization': "Bearer " + window.sessionStorage.getItem('token')
+                }
             })
-            .catch(function(error) {
-                console.log(error)
-                return that.$message({showClose: true, message:'请求错误', type: 'error'})
-            })
+                .then(function (response) {
+                    // console.log('convene_show', response.data.data);
+                    that.tableData = response.data.records
+                    that.total = response.data.total
+                })
+                .catch(function (error) {
+                    console.log(error)
+                    return that.$message({ showClose: true, message: '请求错误', type: 'error' })
+                })
         },
         // 点击修改寻味道按钮显示组件
         addEditVisable(id) {
             var that = this
             // 获取寻味道类型列表
             this.$http.get("/findG/getType", {
-                    headers: {
-                        'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
-                    }
-            })
-            .then(function(response) {
-                if (response.status == 200) {
-                    that.callTypeOption = response.data
-                } else {
-                    that.$message({showClose: true, message: response.message, type: 'warning'})
+                headers: {
+                    'Authorization': "Bearer " + window.sessionStorage.getItem('token')
                 }
             })
-            .catch(function(error) {
-                console.log(error)
-                that.$message({showClose: true, message: "请求错误", type: 'error'})
-            })
+                .then(function (response) {
+                    if (response.status == 200) {
+                        that.callTypeOption = response.data
+                    } else {
+                        that.$message({ showClose: true, message: response.message, type: 'warning' })
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error)
+                    that.$message({ showClose: true, message: "请求错误", type: 'error' })
+                })
 
             // 获取这个寻味道的基本信息
-            this.$http.get(`/findG/findById/${id}`,{
-                                headers: {
-                                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
-                                }
-                            })
-            .then(function(response) { 
-                if (response.status == 200) {
-                    that.call = response.data 
-                    that.getImageList()  // 获取该寻味道已经上传的图片
-                    that.editVisable = true
-                } else {
-                    that.$message({showClose: true, message:'没有权限', type: 'error'})
+            this.$http.get(`/findG/findById/${id}`, {
+                headers: {
+                    'Authorization': "Bearer " + window.sessionStorage.getItem('token')
                 }
             })
-            .catch(function(error) {
-                console.error();
-                return that.$message({showClose: true, message:'请求错误', type: 'error'})
-            })
+                .then(function (response) {
+                    if (response.status == 200) {
+                        that.call = response.data
+                        that.getImageList()  // 获取该寻味道已经上传的图片
+                        that.editVisable = true
+                    } else {
+                        that.$message({ showClose: true, message: '没有权限', type: 'error' })
+                    }
+                })
+                .catch(function (error) {
+                    console.error();
+                    return that.$message({ showClose: true, message: '请求错误', type: 'error' })
+                })
         },
         // 点击取消修改或者点击空白处提示信息
         notEdit() {
             this.editVisable = false
-            this.$message({showClose: true, message:'取消修改'})
+            this.$message({ showClose: true, message: '取消修改' })
         },
         // 点击确定修改寻味道按钮
         edit() {
@@ -389,26 +393,26 @@ export default {
             var config = {
                 method: 'post',
                 url: '/findG/modify',
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
+                    'Authorization': "Bearer " + window.sessionStorage.getItem('token')
                 },
-                data : data
+                data: data
             };
             this.$http(config)
-            .then(function (response) {
-                if (response.status == 200) {
-                    // that.$refs.upload.submit()
-                    that.$message({showClose: true, message:'修改成功', type: 'success'})
-                    that.init()
-                } else {
-                    that.$message({showClose: true, message:'修改失败', type: 'warning'})
-                }
-            })
-            .catch(function (error) {
-                console.error();
-                return that.$message({showClose: true, message:'请求错误', type: 'error'})
-            });
+                .then(function (response) {
+                    if (response.status == 200) {
+                        // that.$refs.upload.submit()
+                        that.$message({ showClose: true, message: '修改成功', type: 'success' })
+                        that.init()
+                    } else {
+                        that.$message({ showClose: true, message: '修改失败', type: 'warning' })
+                    }
+                })
+                .catch(function (error) {
+                    console.error();
+                    return that.$message({ showClose: true, message: '请求错误', type: 'error' })
+                });
         },
         // 点击添加寻味道按钮跳转页面
         addConvene() {
@@ -424,49 +428,49 @@ export default {
                 type: 'warning',
                 center: true
             })
-            .then(() => {
-                console.log(id, 'makesure delete')
-                var config = {
-                    method: 'post',
-                    url: '/findG/delById/'+id,
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
-                    },
-                };
-                this.$http(config)
-                .then(function (response) {
-                    if (response.status == 200) {
-                        that.$message({ showClose: true, message: response.message, type: 'success' })
-                        that.init()
-                    } else {
-                        that.$message({ showClose: true, message: response.message, type: 'warning' })
-                    }
+                .then(() => {
+                    console.log(id, 'makesure delete')
+                    var config = {
+                        method: 'post',
+                        url: '/findG/delById/' + id,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': "Bearer " + window.sessionStorage.getItem('token')
+                        },
+                    };
+                    this.$http(config)
+                        .then(function (response) {
+                            if (response.status == 200) {
+                                that.$message({ showClose: true, message: response.message, type: 'success' })
+                                that.init()
+                            } else {
+                                that.$message({ showClose: true, message: response.message, type: 'warning' })
+                            }
+                        })
+                        .catch(function (response) {
+                            that.$message({ showClose: true, message: response.message, type: 'error' })
+                        })
                 })
-                .catch(function (response) {
-                    that.$message({ showClose: true, message: response.message, type: 'error' })
-                })
-            })
-            .catch(() => {
-                this.$message({ showClose: true,  message: '已取消删除', type: 'info' });
-            });
+                .catch(() => {
+                    this.$message({ showClose: true, message: '已取消删除', type: 'info' });
+                });
         },
         async helpNewRequest() {
             // 判断是否有新的请求
             for (var id of this.ids) {
                 var axios = require('axios')
-                var response = await axios.get('/pleEat/pageFind/byfindG/1/20/'+id, {
-                                    headers: {
-                                        'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
-                                    }
-                                })
+                var response = await axios.get('/pleEat/pageFind/byfindG/1/20/' + id, {
+                    headers: {
+                        'Authorization': "Bearer " + window.sessionStorage.getItem('token')
+                    }
+                })
                 var flag = 0
                 // this.newRequest[id] = false
-                for(var i = 0; i < response.data.records.length; i ++) {
+                for (var i = 0; i < response.data.records.length; i++) {
                     if (response.data.records[i]['state'] == 0) {
                         /* this.newRequest[id] = true
                         break */
-                        ++ flag;
+                        ++flag;
                     }
                 }
                 /* if (flag == 0) {
@@ -480,100 +484,100 @@ export default {
         addRequestVisable(id) {
             this.requestVisable = true
             var that = this
-            this.$http.get('/pleEat/pageFind/byfindG/1/10/'+id, {
-                                headers: {
-                                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
-                                }
-                            })
-            .then(function(response) {
-                if (response.status != 200) {
-                    return that.$message({showClose: true, message: response.message, type: 'warning'})
+            this.$http.get('/pleEat/pageFind/byfindG/1/10/' + id, {
+                headers: {
+                    'Authorization': "Bearer " + window.sessionStorage.getItem('token')
                 }
-                // console.log(response.data.records[0]['state'])
-                var flag = response.data.records.length
-                for(var i = 0; i < response.data.records.length; i ++) {
-                    switch (response.data.records[i]['state']) {
-                        case 0:
-                            response.data.records[i]['state'] = "待处理";
-                            break;
-                        case 1:
-                            response.data.records[i]['state'] = "同意";
-                            -- flag; break;
-                        case 2:
-                            response.data.records[i]['state'] = "拒绝";
-                            -- flag; break;
-                        case 3:
-                            response.data.records[i]['state'] = "取消";
-                            -- flag; break;
-                        default:
-                            break;
+            })
+                .then(function (response) {
+                    if (response.status != 200) {
+                        return that.$message({ showClose: true, message: response.message, type: 'warning' })
                     }
-                }
-                that.requestData = response.data.records
-                // 如果申请列表中没有待处理的条目就 去掉红点/改变数值
-                /* if (flag == 0) {
-                    that.newRequest[id] = false
-                }  */
-                that.newRequest[id] = flag
-            })
-            .catch(function(error) {
-                console.log(error)
-                return that.$message({showClose: true, message:'请求错误', type: 'error'})
-            })
+                    // console.log(response.data.records[0]['state'])
+                    var flag = response.data.records.length
+                    for (var i = 0; i < response.data.records.length; i++) {
+                        switch (response.data.records[i]['state']) {
+                            case 0:
+                                response.data.records[i]['state'] = "待处理";
+                                break;
+                            case 1:
+                                response.data.records[i]['state'] = "同意";
+                                --flag; break;
+                            case 2:
+                                response.data.records[i]['state'] = "拒绝";
+                                --flag; break;
+                            case 3:
+                                response.data.records[i]['state'] = "取消";
+                                --flag; break;
+                            default:
+                                break;
+                        }
+                    }
+                    that.requestData = response.data.records
+                    // 如果申请列表中没有待处理的条目就 去掉红点/改变数值
+                    /* if (flag == 0) {
+                        that.newRequest[id] = false
+                    }  */
+                    that.newRequest[id] = flag
+                })
+                .catch(function (error) {
+                    console.log(error)
+                    return that.$message({ showClose: true, message: '请求错误', type: 'error' })
+                })
         },
         // 同意请求之后
         agreeRequest(id, findGId) {
             var axios = require('axios');
-            var data = JSON.stringify({"id":id, "state":1});
+            var data = JSON.stringify({ "id": id, "state": 1 });
 
             var config = {
                 method: 'post',
                 url: '/pleEat/modifyState',
-                headers: { 
-                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token'), 
+                headers: {
+                    'Authorization': "Bearer " + window.sessionStorage.getItem('token'),
                     'Content-Type': 'application/json'
                 },
-                data : data
+                data: data
             };
 
             var that = this
             axios(config)
-            .then(function (response) {
-                console.log(response)
-                that.init() // 为了显示人数变化所以需要重新加载页面
-                that.addRequestVisable(findGId)
-            })
-            .catch(function (error) {
-                console.log(error)
-                return that.$message({showClose: true, message:'请求错误', type: 'error'})
-            });
+                .then(function (response) {
+                    console.log(response)
+                    that.init() // 为了显示人数变化所以需要重新加载页面
+                    that.addRequestVisable(findGId)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                    return that.$message({ showClose: true, message: '请求错误', type: 'error' })
+                });
         },
         // 拒绝请求之后
         rejectRequest(id, findGId) {
             var axios = require('axios');
-            var data = JSON.stringify({"id":id,"state":2});
+            var data = JSON.stringify({ "id": id, "state": 2 });
 
             var config = {
                 method: 'post',
                 url: '/pleEat/modifyState',
-                headers: { 
-                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token'), 
+                headers: {
+                    'Authorization': "Bearer " + window.sessionStorage.getItem('token'),
                     'Content-Type': 'application/json'
                 },
-                data : data
+                data: data
             };
 
             var that = this
             axios(config)
-            .then(function (response) {
-                console.log(response)
-                // that.init()  // 拒绝之后没有人数变化
-                that.addRequestVisable(findGId)
-            })
-            .catch(function (error) {
-                console.log(error)
-                return that.$message({showClose: true, message:'请求错误', type: 'error'})
-            });
+                .then(function (response) {
+                    console.log(response)
+                    // that.init()  // 拒绝之后没有人数变化
+                    that.addRequestVisable(findGId)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                    return that.$message({ showClose: true, message: '请求错误', type: 'error' })
+                });
         },
         // 监听最新的pageSize
         handleSizeChange(newSize) {
@@ -590,60 +594,60 @@ export default {
         // 查看请求者个人信息
         checkInfo(userId) {
             var that = this
-            this.$http.get(`/user/getById/${userId}`,{
-                                headers: {
-                                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token')
-                                }
-                            })
-            .then(function(response) {
-                that.userInfo = new Array(7)
-                if (response.status == 200) {
-                    Object.getOwnPropertyNames(response.data).forEach(function(key){
-                        // console.log(key, '---', response.data[key])
-                        switch(key) {
-                            case 'id': that.userInfo[0] =['用户ID', response.data[key]]; break;
-                            case 'username': that.userInfo[1] = ['用户名', response.data[key]]; break;
-                            case 'name': that.userInfo[2] = ['用户名称', response.data[key]]; break;
-                            case 'phoneNumber': that.userInfo[3] = ['手机号', response.data[key]]; break;
-                            case 'levelName': that.userInfo[4] = ['用户级别', response.data[key]]; break;
-                            case 'introduce': that.userInfo[5] = ['用户简介', response.data[key]]; break;
-                            case 'cityName': that.userInfo[6] = ['所在城市', response.data[key]]; break;
-                            default: break;
-                        }
-                    })
-                    that.infoVisable = true
-                } else {
-                    that.$message({showClose: true, message: response.data, type: 'error'})
+            this.$http.get(`/user/getById/${userId}`, {
+                headers: {
+                    'Authorization': "Bearer " + window.sessionStorage.getItem('token')
                 }
             })
-            .catch(function(error) {
-                console.log(error);
-                return that.$message({showClose: true, message:'请求错误', type: 'error'})
-            })
+                .then(function (response) {
+                    that.userInfo = new Array(7)
+                    if (response.status == 200) {
+                        Object.getOwnPropertyNames(response.data).forEach(function (key) {
+                            // console.log(key, '---', response.data[key])
+                            switch (key) {
+                                case 'id': that.userInfo[0] = ['用户ID', response.data[key]]; break;
+                                case 'username': that.userInfo[1] = ['用户名', response.data[key]]; break;
+                                case 'name': that.userInfo[2] = ['用户名称', response.data[key]]; break;
+                                case 'phoneNumber': that.userInfo[3] = ['手机号', response.data[key]]; break;
+                                case 'levelName': that.userInfo[4] = ['用户级别', response.data[key]]; break;
+                                case 'introduce': that.userInfo[5] = ['用户简介', response.data[key]]; break;
+                                case 'cityName': that.userInfo[6] = ['所在城市', response.data[key]]; break;
+                                default: break;
+                            }
+                        })
+                        that.infoVisable = true
+                    } else {
+                        that.$message({ showClose: true, message: response.data, type: 'error' })
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    return that.$message({ showClose: true, message: '请求错误', type: 'error' })
+                })
         },
         // 获取已存在的图片
         getImageList() {
             var that = this
-            this.$http.get('/findG/getGraphByFindGId/'+this.call.id, {
+            this.$http.get('/findG/getGraphByFindGId/' + this.call.id, {
                 headers: {
-                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
+                    'Authorization': "Bearer " + window.sessionStorage.getItem('token')
                 }
-            }).then(function(response) {
-                if(response.status != 200) {
-                    return that.$message({showClose: true, message: response.message, type: 'warning'})
+            }).then(function (response) {
+                if (response.status != 200) {
+                    return that.$message({ showClose: true, message: response.message, type: 'warning' })
                 }
                 var data = response.data
                 that.fileList = data
                 // 'http://localhost:8000/'
-                for(var i = 0; i < data.length; ++ i) {
-                    that.fileList[i]['url'] = 'http://localhost:8000/static/UserImages/' + data[i]['graphLocation']+ '.jpg' 
+                for (var i = 0; i < data.length; ++i) {
+                    that.fileList[i]['url'] = 'http://localhost:8000/static/UserImages/' + data[i]['graphLocation'] + '.jpg'
                     // that.fileList[i]['name'] = 'http://localhost:8000/' + data[i]['graphLocation']
                 }
                 // console.log(that.fileList)
-            }).catch(function(error) {
-                console.log(error, '/findG/getGraphByFindGId/'+this.call.id)
-                return that.$message({showClose: true, message: "请求错误", type: 'error'})
-            }) 
+            }).catch(function (error) {
+                console.log(error, '/findG/getGraphByFindGId/' + this.call.id)
+                return that.$message({ showClose: true, message: "请求错误", type: 'error' })
+            })
         },
         // 上传图片地址
         getImageUrl() {
@@ -655,13 +659,13 @@ export default {
         showPic(id) {
             var that = this
             that.havePic = true
-            this.$http.get('/findG/getGraphByFindGId/'+id, {
+            this.$http.get('/findG/getGraphByFindGId/' + id, {
                 headers: {
-                    'Authorization': "Bearer "+ window.sessionStorage.getItem('token') 
+                    'Authorization': "Bearer " + window.sessionStorage.getItem('token')
                 }
-            }).then(function(response) {
-                if(response.status != 200) {
-                    return that.$message({showClose: true, message: response.message, type: 'warning'})
+            }).then(function (response) {
+                if (response.status != 200) {
+                    return that.$message({ showClose: true, message: response.message, type: 'warning' })
                 }
                 var data = response.data
                 if (data.length == 0) {
@@ -670,14 +674,14 @@ export default {
                     return
                 }
                 that.srcList = []
-                for(var i = 0; i < data.length; ++ i) {
+                for (var i = 0; i < data.length; ++i) {
                     that.srcList.push('http://localhost:8000/static/UserImages/' + data[i]['graphLocation'] + '.jpg')
                 }
                 that.srcInitUrl = that.srcList[0]
                 that.picVisable = true
-            }).catch(function(error) {
-                console.log(error, '/findG/getGraphByFindGId/'+id)
-                return that.$message({showClose: true, message: "请求错误", type: 'error'})
+            }).catch(function (error) {
+                console.log(error, '/findG/getGraphByFindGId/' + id)
+                return that.$message({ showClose: true, message: "请求错误", type: 'error' })
             })
         },
         handleExceed(file) {
@@ -691,45 +695,45 @@ export default {
                 type: 'warning',
                 center: true
             })
-            .then(() => {
-                console.log('同意删除')
-                for(var i = 0; i < this.fileList.length; ++ i) {
-                    if ( this.fileList[i].url == file.url) {
-                        this.fileList.splice(i, 1)
-                        break
+                .then(() => {
+                    console.log('同意删除')
+                    for (var i = 0; i < this.fileList.length; ++i) {
+                        if (this.fileList[i].url == file.url) {
+                            this.fileList.splice(i, 1)
+                            break
+                        }
                     }
-                }
-                var that = this
-                var qs = require('qs');
-                var data = qs.stringify({
-                    'location': file.graphLocation
+                    var that = this
+                    var qs = require('qs');
+                    var data = qs.stringify({
+                        'location': file.graphLocation
                     });
-                var config = {
-                    method: 'post',
-                    url: '/findG/delGraphByLocation',
-                    headers: { 
-                        'Authorization': "Bearer "+ window.sessionStorage.getItem('token'), 
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    data : data
-                };
-                this.$http(config)
-                .then(function(response) {
-                    if (response.status == 200) {
-                        that.$message({showClose: true, message: response.message, type: 'success'})
-                    } else {
-                        that.$message({showClose: true, message: response.message, type: 'warning'})
-                    }
+                    var config = {
+                        method: 'post',
+                        url: '/findG/delGraphByLocation',
+                        headers: {
+                            'Authorization': "Bearer " + window.sessionStorage.getItem('token'),
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        data: data
+                    };
+                    this.$http(config)
+                        .then(function (response) {
+                            if (response.status == 200) {
+                                that.$message({ showClose: true, message: response.message, type: 'success' })
+                            } else {
+                                that.$message({ showClose: true, message: response.message, type: 'warning' })
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error)
+                            return that.$message({ showClose: true, message: "请求错误", type: 'error' })
+                        })
                 })
-                .catch(function(error) {
-                    console.log(error)
-                    return that.$message({showClose: true, message: "请求错误", type: 'error'})
+                .catch(() => {
+                    console('取消删除buging')
+                    return this.$message({ showClose: true, message: "取消删除", type: 'info' })
                 })
-            })
-            .catch(() => {
-                console('取消删除buging')
-                return this.$message({showClose: true, message: "取消删除", type: 'info'})
-            })
         },
         handlePictureCardPreview(file) {
             this.preImageUrl = file.url;
@@ -746,7 +750,27 @@ export default {
         handleFail(res, file) {
             console.log('error', res, file.url)
             this.$message.warning('上传图片失败！')
+        },
+        fileUpload(file) {
+            let form = new FormData();
+            form.append('file', file);
+            this.$http({
+                url: ""+getImageUrl(),
+                method: "post",
+                headers: {
+                    'Authorization': "Bearer " + window.sessionStorage.getItem('token'),
+                    'Content-Type': 'application/form-data'
+                },
+                data: form
+            }).then((res) => {
+                if (res.status == 200) {
+                    this.$message({message: "上传成功",type: "success",});
+                } else {this.$message.error('上传失败');}
+            }).catch((err) => {
+                this.$message.error(err);
+            })
         }
+
     }
 }
 </script>
@@ -756,6 +780,7 @@ div {
     h2 {
         text-align: center;
     }
+
     .el-table {
         width: 100%;
         margin: 10px 0px
