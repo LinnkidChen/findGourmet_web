@@ -28,11 +28,11 @@ def get_photo_path(photo_hash):
 @auth.login_required
 def getType():
     type_all = [
-        {"findGTypeId": 1, "findGTypeName": "家乡小吃"},
-        {"findGTypeId": 2, "findGTypeName": "地方特色小馆"},
-        {"findGTypeId": 3, "findGTypeName": "香辣味"},
-        {"findGTypeId": 4, "findGTypeName": "甜酸味"},
-        {"findGTypeId": 5, "findGTypeName": "绝一味菜"},
+        {"TypeId": 1, "TypeName": "家乡小吃"},
+        {"TypeId": 2, "TypeName": "地方特色小馆"},
+        {"TypeId": 3, "TypeName": "香辣味"},
+        {"TypeId": 4, "TypeName": "甜酸味"},
+        {"TypeId": 5, "TypeName": "绝一味菜"},
     ]
     response = jsonify(type_all)
     response.status_code = 200
@@ -165,7 +165,7 @@ def modify_findG():
 @api.route("/findG/pageFind/byType/<int:index>/<int:rows>/<int:typeId>")  # 按类型查找
 @auth.login_required
 def get_findG_byType(index, rows, typeId):
-    if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
+    if g.current_user.level != current_app.config["ADMIN_PERMISSION"]:
         return forbidden("Not logged in as an Admin")
     findGs = None
     if typeId == 1:
@@ -207,7 +207,7 @@ def get_findG_byType(index, rows, typeId):
 #   按类型和模糊名称同时查找
 @auth.login_required
 def get_findG_byTypeAndName(index, rows, value, input):
-    if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
+    if g.current_user.level!= current_app.config["ADMIN_PERMISSION"]:
         return forbidden("Not logged in as an Admin")
     findGs = None
     if value == 1:
@@ -351,13 +351,14 @@ def addPleEat():
 @api.route("pleEat/pageFind/<int:index>/<int:rows>")
 @auth.login_required
 def get_pleEat_all(index, rows):
-    if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
+    if g.current_user.level != current_app.config["ADMIN_PERMISSION"]:
         return forbidden("Not logged in as an Admin")
     pleEats = PleEat.query.paginate(page=index, per_page=rows).items
+    
     totals= PleEat.query.count()
     response_raw = {"total": totals, "records": []}
     for pleEat in pleEats:
-        findG = FindG.query.filter_by(id=pleEat.findG_id).first()
+        findG = FindG.query.filter_by(id=pleEat.id).first()
         response_raw["records"].append(
             {
                 "id": pleEat.id,
@@ -445,7 +446,8 @@ def modifyState():
         return response
     pleEat.state = req_json["state"]
     findG = FindG.query.get(pleEat.findG_id)
-    db.session.commit()
+    # print(findG)
+    
     # if findG.state == '待响应':
     if req_json["state"] == 1:  # 只可能为1或2，1表示"同意"
         success = Success(findG.id, 
@@ -481,10 +483,12 @@ def modifyState():
             findG.state = '已完成'
         db.session.commit()
         response = jsonify({"state": "The pleEat already be agreed"})
+        
         return response
 
     else:  # 拒绝
         response = jsonify({"state": "The pleEat already be refused"})
+        
         return response
     # elif findG.state == '已完成':
     #     response = jsonify({"state: The findG already finish! Can't accept pleEat(s)!"})
