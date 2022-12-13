@@ -226,13 +226,14 @@ def fine_all_users(index, rows):
 
 
 @api.route("/user/getByQuery", methods=["POST"])
-@auth.login_required
+# @auth.login_required
 def query_user():
-    if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
-        return forbidden("Not logged in as an Admin")
+    # if g.current_user.role.permissions != current_app.config["ADMIN_PERMISSION"]:
+    #     return forbidden("Not logged in as an Admin")
     req_json = request.get_json()
     valid_keys = ["id", "username", "level"]
     valid_keys = [valid_key for valid_key in valid_keys if valid_key in req_json.keys()]
+    valid_keys = [valid_key for valid_key in valid_keys if req_json[valid_key] != '']   # 过滤掉空的查询条件
     filter_dict = {your_key: req_json[your_key] for your_key in valid_keys}
     # users = User.query.filter_by(**req_json).paginate()  # TODO 更新一下分页
     users = (
