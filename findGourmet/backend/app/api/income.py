@@ -52,10 +52,11 @@ def success_after_insert(mapper, connection, target):
 
 
 # @db.event.listens_for(Success,"after_update")
-@api.route("/income/getIncomeByDayTimeByType/<start>/<end>")
+@api.route("income/getIncomeByDayTimeByType/<start>/<end>")
 def GetIncByDayByType(start, end):
     start = get_date(start)
     end = get_date(end)
+    print(start,end)
     types = current_app.config["TYPES"]
     sumlist = []
     result = []
@@ -66,31 +67,34 @@ def GetIncByDayByType(start, end):
             tmps = (
                 FeeSummary.query.filter_by(type=type)
                 .filter(FeeSummary.Date >= i)
-                .filter(FeeSummary.date < (i + relativedelta(days=+1)))
+                .filter(FeeSummary.Date < (i + relativedelta(days=+1)))
                 .all()
             )
+            print("temps",tmps)
             if tmps is None:
                 pass
             else:
                 citysum = 0
                 count = 0
+                
                 for tmp in tmps:
                     citysum += tmp.totalFee
                     count += tmp.count
                 tmplist += [
-                    {
-                        "name": type,
-                        "money": citysum,
-                        "count": count,
-                        "date": datetime.strftime("%Y-%M-%d"),
-                    }
-                ]
+                        {
+                            "name": type,
+                            "money": citysum,
+                            "count": count,
+                            "date": i.strftime("%Y-%m-%d"),
+                        }
+                    ]
         sumlist += [tmplist]
+        print(i)
         i=i+relativedelta(days=1)
     return jsonify(sumlist)
 
 
-@api.route("/income/getIncomeByMonthTimeByType/<start>/<end>")
+@api.route("income/getIncomeByMonthTimeByType/<start>/<end>")
 # TODO need confirm
 def GetIncByDayByType1(start, end):
     start = get_date(start)
@@ -106,7 +110,7 @@ def GetIncByDayByType1(start, end):
             tmps = (
                 FeeSummary.query.filter_by(type=type)
                 .filter(FeeSummary.Date >= i)
-                .filter(FeeSummary.date < (i + relativedelta(months=+1)))
+                .filter(FeeSummary.Date < (i + relativedelta(months=+1)))
                 .all()
             )
             if tmps is None:
@@ -122,7 +126,7 @@ def GetIncByDayByType1(start, end):
                         "name": type,
                         "money": citysum,
                         "count": count,
-                        "date": datetime.strftime("%Y-%M-%d"),
+                        "date": datetime.strftime("%Y-%m-%d"),
                     }
                 ]
         sumlist += [tmplist]
@@ -130,7 +134,7 @@ def GetIncByDayByType1(start, end):
     return jsonify(sumlist)
 
 
-@api.route("/income/getIncomeByDayTimeByLocation/<start>/<end>/<city>")
+@api.route("income/getIncomeByDayTimeByLocation/<start>/<end>/<city>")
 def GetIncByDayByType2(start, end, city):
     start = get_date(start)
     end = get_date(end)
@@ -144,7 +148,7 @@ def GetIncByDayByType2(start, end, city):
             tmps = (
                 FeeSummary.query.filter_by(type=type).filter_by(cityName=city)
                 .filter(FeeSummary.Date >= i)
-                .filter(FeeSummary.date < (i + relativedelta(days=+1)))
+                .filter(FeeSummary.Date < (i + relativedelta(days=+1)))
                 .all()
             )
             if tmps is None:
@@ -160,7 +164,7 @@ def GetIncByDayByType2(start, end, city):
                         "name": type,
                         "money": citysum,
                         "count": count,
-                        "date": datetime.strftime("%Y-%M-%d"),
+                        "date": datetime.strftime("%Y-%m-%d"),
                     }
                 ]
         sumlist += [tmplist]
@@ -169,7 +173,7 @@ def GetIncByDayByType2(start, end, city):
 
 
 
-@api.route("/income/getIncomeByMonthTimeByLocation/<start>/<end>/<city>")
+@api.route("income/getIncomeByMonthTimeByLocation/<start>/<end>/<city>")
 def GetIncByDayByType3(start, end, city):
 
     start = get_date(start)
@@ -185,7 +189,7 @@ def GetIncByDayByType3(start, end, city):
             tmps = (
                 FeeSummary.query.filter_by(type=type).filter_by(cityName=city)
                 .filter(FeeSummary.Date >= i)
-                .filter(FeeSummary.date < (i + relativedelta(months=+1)))
+                .filter(FeeSummary.Date < (i + relativedelta(months=+1)))
                 .all()
             )
             if tmps is None:

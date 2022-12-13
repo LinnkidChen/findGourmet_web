@@ -232,17 +232,25 @@ def query_user():
         return forbidden("Not logged in as an Admin")
     req_json = request.get_json()
     valid_keys = ["id", "username", "level"]
-    valid_keys = [valid_key for valid_key in valid_keys if valid_key in req_json.keys()]
-    valid_keys = [valid_key for valid_key in valid_keys if req_json[valid_key] != '']   # 过滤掉空的查询条件
-    filter_dict = {your_key: req_json[your_key] for your_key in valid_keys}
-    print(filter_dict)
-    # users = User.query.filter_by(**req_json).paginate()  
-    users = (
-        User.query.filter_by(**filter_dict)
-        .paginate(page=req_json.get("page"), per_page=req_json.get("rows"))
-        .items
+    # valid_keys = [valid_key for valid_key in valid_keys if valid_key in req_json.keys()]
+    # valid_keys = [valid_key for valid_key in valid_keys if req_json[valid_key] != '']   # 过滤掉空的查询条件
+    # filter_dict = {your_key: req_json[your_key] for your_key in valid_keys}
+    for key in valid_keys:
+        if key not in req_json.keys():
+            req_json[key]=""
+    print(req_json)
+    # users = User.query.filter_by(**req_json).paginate()
+    if req_json["id"] is not "":
+        users=User.query.filter_by(id=req_json['id']).all()
+        totals=len(users)
+    else:
+        users = (
+        User.query.filter(User.username.like("%"+req_json["username"]+"%"),User.level.like("%"+req_json["level"]+"%"))
+       
     )
-    totals = User.query.filter_by(**filter_dict).count()
+        totals=users.count()
+        users=users.paginate(page=req_json.get("page"), per_page=req_json.get("rows")).items
+    # totals = User.query.filter_by(**filter_dict).count()
     # users=users.
     response = jsonify(
         {"total": totals, "records": [user.to_json for user in users]}

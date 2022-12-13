@@ -460,9 +460,9 @@ class Success(db.Model):  # "寻味道"成功明细表
         userid1,
         commentorIds,
     ) -> None:
-        super().__init__()
         self.findGId = id
         self.user1 = User.query.filter_by(id=userid1).first()
+        print(commentorIds)
         for commentorId in commentorIds:
             self.commentors.append(User.query.filter_by(id=commentorId).first())
         self.cityName = self.user1.cityName
@@ -483,7 +483,7 @@ class FeeSummary(db.Model):
     Date = db.Column(db.DateTime)
     type = db.Column(db.Unicode(32))  # 寻味道请求类型
     modTime = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
-    count = db.Column(db.Integer)
+    count = db.Column(db.Integer,default=0)
 
     def __init__(self, cityName, Date, type):
         if (
