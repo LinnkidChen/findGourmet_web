@@ -68,7 +68,8 @@ def addPhoto(postID):
     ):
         return bad_request("photo number exceed limit.")
     print(request.files)
-    photo = request.files.get("file")
+    photo = request.files['file']
+    
     photo_hash = hashlib.md5(
         photo.read() + str(g.current_user.id).encode("utf-8")
     ).hexdigest()
@@ -158,7 +159,8 @@ def modify_findG():
     if findgPost is None:
         return forbidden("Post not exist")
     findgPost.description=input["description"]
-    findgPost.endTime = datetime.datetime.strptime(input.get("endTime"), "%Y-%m-%d %H:%M:%S")
+    # Sun, 11 Dec 2022 16:54:03 GMT
+    findgPost.endTime = datetime.datetime.strptime(input.get("endTime"), "%a, %d %b %Y %H:%M:%S %Z")
     findgPost.name=input["name"]
     findgPost.type=input["typeName"]
     
