@@ -709,7 +709,7 @@ export default {
                     });
                     var config = {
                         method: 'post',
-                        url: '/findG/delGraphByLocation',
+                        url: '/findG/delGraphByLocation/'+this.call.id,
                         headers: {
                             'Authorization': "Bearer " + window.sessionStorage.getItem('token'),
                             'Content-Type': 'application/x-www-form-urlencoded'
