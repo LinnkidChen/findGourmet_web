@@ -198,7 +198,7 @@ export default {
             // 照片相关
             myHeaders: 
             {'Authorization': "Bearer "+ window.sessionStorage.getItem('token'),
-            'Content-Type': 'application/x-www-form-urlencoded'},
+            'Content-Type': 'application/form-data'},
             preImageUrl: '',
             previewVisible: false,
             fileList: [],
