@@ -42,6 +42,7 @@ def getType():
 @api.route("/findG/getGraphByFindGId/<int:postID>", methods=["GET"])
 def getFindGGraph(postID):
     post = FindG.query.filter_by(id=postID).first()
+    
     if post == None:
         return bad_request("post not exitst")
     else:
