@@ -101,6 +101,7 @@
                     
                     <el-upload
                         :action="getImageUrl()"
+                        :headers="myHeaders"
                         list-type="picture-card"
                         :limit="3"
                         :on-exceed="handleExceed"
@@ -195,6 +196,7 @@ export default {
     data() {
         return {
             // 照片相关
+            myHeaders: {'Authorization': "Bearer "+ window.sessionStorage.getItem('token')},
             preImageUrl: '',
             previewVisible: false,
             fileList: [],

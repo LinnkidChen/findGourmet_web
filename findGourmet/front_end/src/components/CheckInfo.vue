@@ -64,7 +64,7 @@
                 </el-pagination>
             </div>
         </el-card>
-        <p>注：用户级别对应关系是：钻石 0 | 重要 1 | 一般 2</p>
+        <p>注：用户级别对应关系是：管理员 1 | 用户 2</p>
     </div>
 </template>
 
@@ -73,9 +73,8 @@ export default {
     data() {
         return {
             levelOptions: [
-                {'label': '钻石', 'value': '0'},
-                {'label': '重要', 'value': '1'},
-                {'label': '一般', 'value': '2'}
+                {'label': '管理员', 'value': '1'},
+                {'label': '用户', 'value': '2'}
             ],
             inputId: '',
             inputName: '',
