@@ -125,7 +125,7 @@ export default {
             if (this.inputId == '' && this.inputName == '' && this.inputLevel == '') {
                 return this.$message({ showClose: true, message:'至少输入一个查询条件', type: 'warning' })
             }
-            this.isPageShow = false
+            this.isPageShow = true
             var data = {
                             "id": this.inputId, 
                             "username": this.inputName, 

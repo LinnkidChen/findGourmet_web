@@ -81,9 +81,9 @@
                     <el-select v-model="call.typeName" placeholder="请选择寻味道类型">
                     <el-option
                         v-for="item in callTypeOption"
-                        :key="item.callTypeId"
-                        :label="item.callTypeName"
-                        :value="item.callTypeName"
+                        :key="item.TypeId"
+                        :label="item.TypeName"
+                        :value="item.TypeName"
                     >
                     </el-option>
                 </el-select>
