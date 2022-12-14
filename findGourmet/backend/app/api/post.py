@@ -374,7 +374,7 @@ def get_pleEat_all(index, rows):
     totals= PleEat.query.count()
     response_raw = {"total": totals, "records": []}
     for pleEat in pleEats:
-        findG = FindG.query.filter_by(id=pleEat.id).first()
+        findG = FindG.query.filter_by(id=pleEat.findG_id).first()
         response_raw["records"].append(
             {
                 "id": pleEat.id,
