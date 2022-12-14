@@ -764,8 +764,8 @@ export default {
             }).then((res) => {
                 if (res.status == 200) {
                     console.log('success', res, params.file.url)
-                    this.fileList.push(res.data.data)
-                    this.fileList[this.fileList.length - 1]['url'] = 'http://localhost:8000/static/UserImages/' + res.data.data['graphLocation'] + '.jpg'
+                    this.fileList.push(res.data)
+                    this.fileList[this.fileList.length - 1]['url'] = 'http://localhost:8000/static/UserImages/' + res.data['graphLocation'] + '.jpg'
                     this.$message.success('上传图片成功！')
                     console.log(this.fileList)
                 } else {
