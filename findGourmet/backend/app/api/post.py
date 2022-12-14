@@ -92,7 +92,7 @@ def addPhoto(postID):
     imgs = " ".join(imgs)  # seperator being " "
     post.photos = imgs
     db.session.commit()
-    return {"photo_hash": photo_hash}
+    return {"graphLocation": photo_hash}
 
 
 @api.route("/findG/delGraphByLocation/<int:id>", methods=["POST"])
