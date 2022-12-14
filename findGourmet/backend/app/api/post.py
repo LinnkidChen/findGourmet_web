@@ -179,8 +179,8 @@ def modify_findG():
 @api.route("/findG/pageFind/byType/<int:index>/<int:rows>/<int:typeId>")  # 按类型查找
 @auth.login_required
 def get_findG_byType(index, rows, typeId):
-    if g.current_user.level != current_app.config["ADMIN_PERMISSION"]:
-        return forbidden("Not logged in as an Admin")
+    # if g.current_user.level != current_app.config["ADMIN_PERMISSION"]:
+    #     return forbidden("Not logged in as an Admin")
     findGs = None
     if typeId == 1:
         findGs = (
