@@ -633,6 +633,8 @@ export default {
                 }
             }).then(function (response) {
                 if (response.status != 200) {
+                    
+                    that.fileList=[]
                     return that.$message({ showClose: true, message: response.message, type: 'warning' })
                 }
                 var data = response.data.data
@@ -642,7 +644,8 @@ export default {
                     that.fileList[i]['url'] = 'http://localhost:8000/static/UserImages/' + data[i]['graphLocation'] + '.jpg'
                     // that.fileList[i]['name'] = 'http://localhost:8000/' + data[i]['graphLocation']
                 }
-                // console.log(that.fileList)
+
+                console.log(that.fileList)
             }).catch(function (error) {
                 console.log(error, '/findG/getGraphByFindGId/' + this.call.id)
                 return that.$message({ showClose: true, message: "请求错误", type: 'error' })

@@ -46,7 +46,9 @@ def getFindGGraph(postID):
     if post == None :
         return bad_request("post not exitst")
     elif post.to_json()["photos"] is None:
-        return  bad_request("No photo exist for this FindG")
+        rep=jsonify({"data":[]})
+        rep.status_code=200
+        return rep
     else:
         rep =jsonify(
             {"data": [{"graphLocation": photo} for photo in post.to_json()["photos"]]}
