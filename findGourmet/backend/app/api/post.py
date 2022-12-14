@@ -95,12 +95,12 @@ def addPhoto(postID):
     return {"photo_hash": photo_hash}
 
 
-@api.route("/findG/delGraphByLocation", methods=["POST"])
+@api.route("/findG/delGraphByLocation/<int:id>", methods=["POST"])
 @auth.login_required
-def del_photo():
-    req = request.get_json()
+def del_photo(id):
+    req = request.form
     loc = req["location"]
-    postid = req["postid"]
+    postid = id
 
     post = FindG.query.filter_by(id=postid).first()
     if post.userId != g.current_user.id:
@@ -179,8 +179,8 @@ def modify_findG():
 @api.route("/findG/pageFind/byType/<int:index>/<int:rows>/<int:typeId>")  # 按类型查找
 @auth.login_required
 def get_findG_byType(index, rows, typeId):
-    if g.current_user.level != current_app.config["ADMIN_PERMISSION"]:
-        return forbidden("Not logged in as an Admin")
+    # if g.current_user.level != current_app.config["ADMIN_PERMISSION"]:
+    #     return forbidden("Not logged in as an Admin")
     findGs = None
     if typeId == 1:
         findGs = (
