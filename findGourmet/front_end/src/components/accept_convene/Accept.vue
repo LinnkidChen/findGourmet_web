@@ -302,7 +302,7 @@ export default {
                 if(response.status != 200) {
                     return that.$message({showClose: true, message: response.message, type: 'warning'})
                 }
-                var data = response.data
+                var data = response.data.data
                 if (data.length == 0) {
                     that.havePic = false
                     that.picVisable = true

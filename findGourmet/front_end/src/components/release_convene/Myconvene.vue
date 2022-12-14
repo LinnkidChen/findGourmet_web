@@ -739,7 +739,7 @@ export default {
             this.previewVisible = true;
             console.log("preview", file.url)
         },
-        handleSuccess(res, file) {
+/*         handleSuccess(res, file) {
             console.log('success', res, file.url)
             this.fileList.push(res.data)
             this.fileList[this.fileList.length - 1]['url'] = 'http://localhost:8000/static/UserImages/' + res.data['graphLocation'] + '.jpg'
@@ -749,7 +749,7 @@ export default {
         handleFail(res, file) {
             console.log('error', res, file.url)
             this.$message.warning('上传图片失败！')
-        },
+        }, */
         fileUpload(params) {
             let form = new FormData();
             form.append('file', params.file);
@@ -763,8 +763,15 @@ export default {
                 data: form
             }).then((res) => {
                 if (res.status == 200) {
-                    this.$message({message: "上传成功",type: "success",});
-                } else {this.$message.error('上传失败');}
+                    console.log('success', res, params.file.url)
+                    this.fileList.push(res.data)
+                    this.fileList[this.fileList.length - 1]['url'] = 'http://localhost:8000/static/UserImages/' + res.data['graphLocation'] + '.jpg'
+                    this.$message.success('上传图片成功！')
+                    console.log(this.fileList)
+                } else {
+                    console.log('error', res, params.file.url)
+                    this.$message.warning('上传图片失败！')
+                }
             }).catch((err) => {
                 this.$message.error(err);
             })
