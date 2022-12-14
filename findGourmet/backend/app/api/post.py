@@ -460,12 +460,13 @@ def modifyState():
             {"exist state": "The pleEat id " + str(req_json["id"]) + " does not exist"}
         )
         return response
-    pleEat.state = req_json["state"]
+#     pleEat.state = req_json["state"]
     findG = FindG.query.get(pleEat.findG_id)
     # print(findG)
     
     # if findG.state == '待响应':
     if req_json["state"] == 1:  # 只可能为1或2，1表示"同意"
+        pleEat.state = req_json["state"]
         success = Success(findG.id, 
         findG.userId, [pleEat.userId])
         success.fee = 3
@@ -503,6 +504,8 @@ def modifyState():
         return response
 
     else:  # 拒绝
+        pleEat.state = req_json["state"]
+        db.session.commit()
         response = jsonify({"state": "The pleEat already be refused"})
         
         return response
